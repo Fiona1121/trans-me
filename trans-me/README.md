@@ -8,9 +8,9 @@
 2. Make sure you have [Node LTS Version (includeing npm)](https://nodejs.org/en/download/) installed in your computer
 3. Under `trans-me/` directory, use the following command to install the packages used in this project:
 
-    ```
-    npm install
-    ```
+   ```
+   npm install
+   ```
 
 4. You can then run the scripts from "Available Scripts"
 
@@ -20,9 +20,9 @@
 2. Create a new branch from main branch with the issue number
 3. Under `trans-me/` directory, use the following command to install the packages used in this project:
 
-    ```
-    npm install
-    ```
+   ```
+   npm install
+   ```
 
 4. You can then run the scripts from "Available Scripts" and start develop!
 
