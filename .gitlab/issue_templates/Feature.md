@@ -6,6 +6,7 @@ Please fill in as much of the template below as you're able.
 
 - name: Feature Name
 - about: Suggest an idea for this project
+- label: Frontend / Backend 
 
 
 **Is your feature request related to a problem? Please describe.**
