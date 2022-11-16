@@ -1,9 +1,9 @@
----
-name: "\U0001F680 Feature Name"
-about: Suggest an idea for this project
-labels: frontend / backend
-assignees: @Bob
----
+## Feature Request
+
+- name: Feature Name
+- about: Suggest an idea for this project
+- labels: frontend / backend
+- assignees: @Bob
 
 <!--
 Please fill in as much of the template below as you're able.
