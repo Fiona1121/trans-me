@@ -8,10 +8,10 @@
 		<version>2.7.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>trans-me</artifactId>
+	<groupId>com.transme</groupId>
+	<artifactId>transmedb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>trans-me</name>
+	<name>transmedb</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>

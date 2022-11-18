@@ -1,10 +1,10 @@
-package com.example.transme;
+package com.transme.transmedb;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TransMeApplicationTests {
+class TransmedbApplicationTests {
 
 	@Test
 	void contextLoads() {

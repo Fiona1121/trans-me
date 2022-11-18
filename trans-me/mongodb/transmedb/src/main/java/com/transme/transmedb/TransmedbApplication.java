@@ -1,13 +1,13 @@
-package com.example.transme;
+package com.transme.transmedb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TransMeApplication {
+public class TransmedbApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TransMeApplication.class, args);
+		SpringApplication.run(TransmedbApplication.class, args);
 	}
 
 }
