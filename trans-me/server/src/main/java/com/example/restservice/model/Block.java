@@ -7,15 +7,15 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("terms")
+@Document("blocks")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Term {
+public class Block {
     @Id
-    private String name;
+    private String id;
     
-    private String link;
-    private String description;
+    private String content;
+    private boolean hidden;
 }

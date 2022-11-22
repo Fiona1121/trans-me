@@ -1,14 +1,12 @@
 package com.example.restservice.repository;
 
-import com.example.restservice.model.Term;
+import com.example.restservice.model.Block;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
-// import java.util.List;
-
-public interface ItemRepository extends MongoRepository<Term, String>{
+public interface BlockRepository extends MongoRepository<Block, String> {
     @Query("{name:'?0'}")
-    Term findItemByName(String name);
+    Block findItemByName(String name);
 
     public long count();
 }
