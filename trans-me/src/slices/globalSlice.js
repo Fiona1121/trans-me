@@ -52,6 +52,13 @@ export const globalSlice = createSlice({
     setBlocks: (state, action) => {
       state.blocks = action.payload;
     },
+    addEmptyBlock: (state, action) => {
+      state.blocks.push({
+        id: nanoid(),
+        content: "",
+        isHidden: false,
+      });
+    },
     moveBlockUp: (state, action) => {
       const { id } = action.payload;
       const index = state.blocks.findIndex((block) => block.id === id);
@@ -114,6 +121,46 @@ export const globalSlice = createSlice({
       const index = state.blocks.findIndex((block) => block.id === id);
       state.blocks[index].isHidden = !state.blocks[index].isHidden;
     },
+    mergeBlocks: (state, action) => {
+      const { ids } = action.payload;
+      const index = state.blocks.findIndex((block) => block.id === ids[0]);
+      const newBlock = {
+        id: nanoid(6),
+        content: ids
+          .map((id) => state.blocks.find((block) => block.id === id).content)
+          .join(""),
+        isHidden: false,
+      };
+      state.blocks = [
+        ...state.blocks.slice(0, index),
+        newBlock,
+        ...state.blocks.slice(index + ids.length),
+      ];
+    },
+    hideBlocks: (state, action) => {
+      const { ids } = action.payload;
+      state.blocks = state.blocks.map((block) => {
+        if (ids.includes(block.id)) {
+          return { ...block, isHidden: true };
+        } else {
+          return block;
+        }
+      });
+    },
+    showBlocks: (state, action) => {
+      const { ids } = action.payload;
+      state.blocks = state.blocks.map((block) => {
+        if (ids.includes(block.id)) {
+          return { ...block, isHidden: false };
+        } else {
+          return block;
+        }
+      });
+    },
+    deleteBlocks: (state, action) => {
+      const { ids } = action.payload;
+      state.blocks = state.blocks.filter((block) => !ids.includes(block.id));
+    },
     setIsRecording: (state, action) => {
       state.isRecording = action.payload;
     },
@@ -133,6 +180,11 @@ export const {
   deleteBlock,
   duplicateBlock,
   toggleBlockVisibility,
+  mergeBlocks,
+  hideBlocks,
+  showBlocks,
+  deleteBlocks,
+  addEmptyBlock,
 } = globalSlice.actions;
 
 export const selectGlobal = (state) => state.global;
