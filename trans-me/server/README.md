@@ -4,6 +4,6 @@ start a terminal @ ""server"
 
 enter
 
-> ./mvnm spring-boot:run
+> ./mvnw spring-boot:run
 
 If it doesn't work, try adding -e or -X option
