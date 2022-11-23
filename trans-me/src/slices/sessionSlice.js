@@ -1,9 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Todo: current initial state is just for testing
 const initialState = {
-  username: null,
-  expirationTime: null,
+  username: "fiona",
+  expirationTime: 1669303561038,
 };
+
+// const initialState = {
+//   username: null,
+//   expirationTime: null,
+// };
 
 export const sessionSlice = createSlice({
   name: "session",
