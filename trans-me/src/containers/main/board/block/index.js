@@ -117,7 +117,7 @@ export default function Block({ index, id, content, isHidden }) {
   };
 
   return (
-    <Card>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
         <RichEditor content={content} onUpdate={handleBlockUpdate} />
         <Box
