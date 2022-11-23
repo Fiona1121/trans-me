@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.restservice.Model.Account;
+import com.example.restservice.model.Account;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,28 +35,34 @@ public class AccountController {
 		
 	// );
 	
+	// CRUD
+	// 實務上到底是怎麼做，如果攔截 packet & 知道後端 API 的話就可以破解
+	// 應該會 RSA 過
+
+	// 例如 put，如果不帶 username 到底要怎麼 prevent 
+	// 全用 camelCase ?
 
 	public class loginInfo {
 		public String username;
 		public String password;
 	}
 
-	@GetMapping("/")
+	@GetMapping("/test")
 	@Operation(summary = "get account", description = "get it！")
     public String getTest() {
 		return "Hello account test";
 	}
 	
-	// @GetMapping("/")
-	// public Account geAccount(@RequestBody loginInfo info) {
-	// 	return new Account(
-	// 		null, 
-	// 		info.username, 
-	// 		info.password, 
-	// 		null, 
-	// 		null, 
-	// 		null);		
-	// }
+	@GetMapping("/")
+	public Account geAccount(@RequestBody loginInfo info) {
+		
+		return new Account(
+
+		);
+
+	}
+
+	
 
     // @PutMapping("/account/{id}")
     // public SomeEnityData putMethodName(@PathVariable String id, @RequestBody SomeEnityData entity) {
