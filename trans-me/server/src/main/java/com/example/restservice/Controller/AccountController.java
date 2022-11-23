@@ -4,6 +4,8 @@ import java.util.List;
 // import java.util.Random;
 import java.util.stream.Collectors;
 
+import javax.validation.constraints.Null;
+
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,61 +19,45 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+// @Controller 的話就可以傳回 html page
+
 @Tag(name = "test")
 @RestController
+@RequestMapping("/account")
 public class AccountController {
+	
+	// private Account testAccount = new Account(
+		
+	// );
+	
 
-	// private final static Quote NONE = new Quote("None");
-	// private final static Random RANDOMIZER = new Random();
-
-	// private final QuoteRepository repository;
-
-	// public QuoteController(QuoteRepository repository) {
-	// 	this.repository = repository;
-	// }
-
-	// @GetMapping("/api")
-	// public List<QuoteResource> getAll() {
-
-	// 	return repository.findAll().stream()
-	// 		.map(quote -> new QuoteResource(quote, "success"))
-	// 		.collect(Collectors.toList());
-	// }
+	public class loginInfo {
+		public String username;
+		public String password;
+	}
 
 	@GetMapping("/")
 	@Operation(summary = "get account", description = "get it！")
-    public String getTest(@RequestParam String param) {
-		
-		// return new Account(null, param, param, null, null, null);
-		return "Hello Swagger & test";
+    public String getTest() {
+		return "Hello account test";
 	}
-
-	// @GetMapping("/account")
-    // public Account getAccount(@RequestParam String param) {
-		
-	// 	return new Account(null, param, param, null, null, null);
-	// }
-        
-    // public QuoteResource getOne(@PathVariable Long id) {
-	// 	return repository.findById(id)
-	// 		.map(quote -> new QuoteResource(quote, "success"))
-	// 		.orElse(new QuoteResource(NONE, "Quote " + id + " does not exist"));
-	// }
-
-	// @GetMapping("/api/random")
-	// public QuoteResource getRandomOne() {
-	// 	return getOne(nextLong(1, repository.count() + 1));
+	
+	// @GetMapping("/")
+	// public Account geAccount(@RequestBody loginInfo info) {
+	// 	return new Account(
+	// 		null, 
+	// 		info.username, 
+	// 		info.password, 
+	// 		null, 
+	// 		null, 
+	// 		null);		
 	// }
 
-	// private long nextLong(long lowerRange, long upperRange) {
-	// 	return (long) (RANDOMIZER.nextDouble() * (upperRange - lowerRange)) + lowerRange;
-	// }
-
-    
-    
     // @PutMapping("/account/{id}")
     // public SomeEnityData putMethodName(@PathVariable String id, @RequestBody SomeEnityData entity) {
     //     //TODO: process PUT request

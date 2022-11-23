@@ -12,10 +12,10 @@ public class Account {
     private Date expiration_date;
     private List<String> audio_files; 
         // should be audio files data type
-        private List<String> blocks;
+    private List<String> blocks;
         // should be block data type
         
-        public Account(Id id, String username, String password, Date expiration_date, List<String> audio_files,
+    public Account(Id id, String username, String password, Date expiration_date, List<String> audio_files,
             List<String> blocks) {
         this.id = id;
         this.username = username;
