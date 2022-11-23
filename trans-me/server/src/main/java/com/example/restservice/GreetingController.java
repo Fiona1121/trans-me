@@ -19,3 +19,5 @@ public class GreetingController {
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 }
+
+// @Controller 的話就可以傳回 html page
