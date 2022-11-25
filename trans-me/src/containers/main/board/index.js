@@ -8,8 +8,8 @@ import {
   Checkbox,
   List,
   ListItem,
-  ListItemButton,
   ListItemIcon,
+  ListSubheader,
 } from "@mui/material";
 import MergeRoundedIcon from "@mui/icons-material/MergeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
@@ -27,7 +27,7 @@ import {
 
 export default function Board({ blocks }) {
   const dispatch = useDispatch();
-  const [selected, setSelected] = useState([1]);
+  const [selected, setSelected] = useState([]);
 
   const handleSelectAll = () => {
     setSelected((prevSelected) => {
@@ -71,63 +71,59 @@ export default function Board({ blocks }) {
   };
 
   return (
-    <Card>
+    <Card sx={{ height: "90vh", overflow: "scroll" }}>
       <List>
-        <ListItem key="list-menu">
-          <ListItemButton>
-            <ListItemIcon>
-              <Checkbox
-                checked={selected.length === blocks.length}
-                onChange={handleSelectAll}
-              />
-            </ListItemIcon>
-            <ButtonGroup size="large">
-              <Button
-                startIcon={<MergeRoundedIcon />}
-                onClick={handleMergeSelected}
-              >
-                Merge
-              </Button>
-              <Button
-                startIcon={<VisibilityRoundedIcon />}
-                onClick={handleShowSelected}
-              >
-                Show
-              </Button>
-              <Button
-                startIcon={<VisibilityOffRoundedIcon />}
-                onClick={handleHideSelected}
-              >
-                Hide
-              </Button>
+        <ListSubheader key="list-menu" sx={{ zIndex: 950 }}>
+          <ListItemIcon>
+            <Checkbox
+              checked={selected.length === blocks.length}
+              onChange={handleSelectAll}
+            />
+          </ListItemIcon>
+          <ButtonGroup>
+            <Button
+              startIcon={<MergeRoundedIcon />}
+              onClick={handleMergeSelected}
+            >
+              Merge
+            </Button>
+            <Button
+              startIcon={<VisibilityRoundedIcon />}
+              onClick={handleShowSelected}
+            >
+              Show
+            </Button>
+            <Button
+              startIcon={<VisibilityOffRoundedIcon />}
+              onClick={handleHideSelected}
+            >
+              Hide
+            </Button>
 
-              <Button
-                startIcon={<DeleteRoundedIcon />}
-                onClick={handleDeleteSelected}
-                color="secondary"
-              >
-                Delete
-              </Button>
-            </ButtonGroup>
-          </ListItemButton>
-        </ListItem>
+            <Button
+              startIcon={<DeleteRoundedIcon />}
+              onClick={handleDeleteSelected}
+              color="secondary"
+            >
+              Delete
+            </Button>
+          </ButtonGroup>
+        </ListSubheader>
         {blocks.map((block, index) => (
           <ListItem key={"list-item-" + block.id}>
-            <ListItemButton>
-              <ListItemIcon>
-                <Checkbox
-                  checked={selected.includes(block.id)}
-                  onChange={() => handleSelect(block.id)}
-                />
-              </ListItemIcon>
-              <Block
-                key={block.id}
-                index={index}
-                id={block.id}
-                content={block.content}
-                isHidden={block.isHidden}
+            <ListItemIcon>
+              <Checkbox
+                checked={selected.includes(block.id)}
+                onChange={() => handleSelect(block.id)}
               />
-            </ListItemButton>
+            </ListItemIcon>
+            <Block
+              key={block.id}
+              index={index}
+              id={block.id}
+              content={block.content}
+              isHidden={block.isHidden}
+            />
           </ListItem>
         ))}
         <ListItem key="list-add" sx={{ justifyContent: "center" }}>
@@ -135,6 +131,7 @@ export default function Board({ blocks }) {
             variant="contained"
             startIcon={<AddRoundedIcon />}
             onClick={handleAddBlock}
+            fullWidth
           >
             Add Block
           </Button>
