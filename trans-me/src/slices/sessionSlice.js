@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // Todo: current initial state is just for testing
 const initialState = {
   username: "fiona",
-  expirationTime: 1669303561038,
+  expirationTime: 1769303561038,
 };
 
 // const initialState = {
