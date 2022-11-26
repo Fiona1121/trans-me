@@ -1,7 +1,7 @@
-package com.example.restservice.model;
+package com.example.restservice.Model;
 
-import com.example.restservice.model.AudioFile;
-import com.example.restservice.model.Block;
+// import com.example.restservice.model.AudioFile;
+// import com.example.restservice.model.Block;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +24,6 @@ public class Account {
 
     private String password;
     private Date expirationTime;
-    private List<AudioFile> audio_files;
-    private List<Block> blocks;
+    private List<String> audioFilesID;
+    private List<String> blocksID;
 }

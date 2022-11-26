@@ -1,7 +1,8 @@
 package com.example.restservice;
 
-import com.example.restservice.model.Term;
-import com.example.restservice.repository.TermRepository;
+import com.example.restservice.Model.Term;
+import com.example.restservice.Repository.TermRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

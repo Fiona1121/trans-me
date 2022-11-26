@@ -1,4 +1,4 @@
-package com.example.restservice.model;
+package com.example.restservice.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,5 +17,6 @@ public class AudioFile {
     private String id;
 
     private String name;
+    private String url;
     private String format;
 }
