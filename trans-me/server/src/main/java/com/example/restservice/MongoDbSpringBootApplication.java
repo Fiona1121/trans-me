@@ -16,9 +16,14 @@ import java.util.List;
 public class MongoDbSpringBootApplication implements CommandLineRunner {
     @Autowired
     TermRepository termRepo;
-    public static void main(String[] args) {
-        SpringApplication.run(MongoDbSpringBootApplication.class, args);
-    }
+    // public void main(String[] args) {
+        // System.out.println("--------START--------");
+        // System.out.println("ALL TERMS: ");
+        // List<Term> itemList = returnAllItems();
+        // for (Term t: itemList) {
+        //     System.out.println(t.getName() + ", " + t.getLink() + ", " + t.getDescription());
+        // }
+    // }
 
     @Override
     public void run(String... args) throws Exception {
