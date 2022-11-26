@@ -1,38 +1,34 @@
 package com.example.restservice.Controller;
 
-<<<<<<< Updated upstream
-=======
 import java.lang.reflect.Constructor;
->>>>>>> Stashed changes
 import java.util.List;
 // import java.util.Random;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.Null;
 
-<<<<<<< Updated upstream
-=======
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
->>>>>>> Stashed changes
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.restservice.model.Account;
+import com.example.restservice.Model.Account;
+import com.example.restservice.Repository.AccountRepository;
+import com.example.restservice.Response.CommonResponse;
+import com.example.restservice.Response.Msg;
+import com.example.restservice.Service.Registration;
+import com.example.restservice.Service.Payload.Payload;
+import com.example.restservice.Service.Login;
+
+import com.example.restservice.Request.account.PostAccountRequest;
+import com.example.restservice.Request.account.GetAccountRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-<<<<<<< Updated upstream
-=======
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
->>>>>>> Stashed changes
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,11 +41,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Tag(name = "test")
 @RestController
 @RequestMapping("/account")
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 public class AccountController {
+	
+	@Autowired
+	Registration registration;
+
+	@Autowired
+	Login login;
 	
 	// private Account testAccount = new Account(
 		
@@ -62,9 +60,6 @@ public class AccountController {
 	// 例如 put，如果不帶 username 到底要怎麼 prevent 
 	// 全用 camelCase ?
 
-<<<<<<< Updated upstream
-	public class loginInfo {
-=======
 	// ToDo: 其實可以把 req & res 都改成 generic
 	
 	@GetMapping("/test")
@@ -73,117 +68,90 @@ public class AccountController {
 		return "Hello account test";
 	}
 	
-	public class GetRequestBody {
-		public GetRequestData data;
-	}
+	// public class GetRequestBody {
+	// 	public GetRequestData data;
+	// }
 	
-	public class GetRequestData {
->>>>>>> Stashed changes
-		public String username;
-		public String password;
-	}
+	// public class GetRequestData {
+	// 	public String username;
+	// 	public String password;
+	// }
 
-<<<<<<< Updated upstream
-	@GetMapping("/test")
-	@Operation(summary = "get account", description = "get it！")
-    public String getTest() {
-		return "Hello account test";
-	}
-	
-	@GetMapping("/")
-	public Account geAccount(@RequestBody loginInfo info) {
-		
-		return new Account(
-=======
-	@AllArgsConstructor
-	@NoArgsConstructor
-	public class GetResponseBody {
-		public Msg msg;
-		public GetResponseData data;
-	}
+	// @AllArgsConstructor
+	// @NoArgsConstructor
+	// public class GetResponseBody {
+	// 	public Msg msg;
+	// 	public GetResponseData data;
+	// }
 
-	public class GetResponseData {
-		public String username;
-		public List<Id> audioFileIds;
-		public List<Id> blockIds;
-	}
+	// public class GetResponseData {
+	// 	public String username;
+	// 	public List<Id> audioFileIds;
+	// 	public List<Id> blockIds;
+	// }
 	
-	@GetMapping("/")
-	public GetResponseBody getAccount(@RequestBody GetRequestBody req) {
+	// Login
+	// @GetMapping("/")
+	@GetMapping("")
+	public CommonResponse getAccount(@RequestBody GetAccountRequest req) {
 		// TODO: GET request
 
-		String username = req.data.username;
-		String password = req.data.password;
+		String username = req.getData().getUsername();
+		String password = req.getData().getPassword();
 
-		return new GetResponseBody(
-			new Msg(
-				"success",
-				"OK"
-			),
-			new GetResponseData(
+		Payload <Msg, Account> loginResult =  login.login(username, password);
+		
+		System.out.println(loginResult);
+		// return new CommonResponse<Account>(
+		// 	loginResult.getMsg(),
+		// 	loginResult.getData()
+		// 	);
+		
+		CommonResponse<Account> test = new CommonResponse<Account>(
+			loginResult.getMsg(),
+			loginResult.getData()
+			);
 
-			)
->>>>>>> Stashed changes
+		System.out.println(test);
+		return test;
+	}
+	
+	// Register
+	// @PostMapping("/")
+	@PostMapping("")
+	public CommonResponse postAccount(@RequestBody PostAccountRequest req) {
 
+		String username = req.getData().getUsername();
+		String password = req.getData().getPassword();
+
+		// registration.register(username, password);
+		
+		return new CommonResponse<String>(
+			registration.register(username, password),
+			""
 		);
 
 	}
 
-<<<<<<< Updated upstream
-	
+	// public class PutRequestBody {
+	// 	public PutRequestData data;
+	// }
 
-    // @PutMapping("/account/{id}")
-    // public SomeEnityData putMethodName(@PathVariable String id, @RequestBody SomeEnityData entity) {
+	// public class PutRequestData {
+	// 	public String username;
+	// 	public List<Id> audioFileIds;
+	// 	public List<Id> blockIds;
+	// }
+
+    // @PutMapping("/")
+    // public PostResponseBody putAccount(@RequestBody PutRequestBody req) {
     //     //TODO: process PUT request
         
-    //     return entity;
+    //     return new PostResponseBody(
+
+	// 	);
     // }
 
-    // @PostMapping("/account")
-    // public SomeEnityData postMethodName(@RequestBody SomeEnityData entity) {
-    //     //TODO: process POST request
-        
-    //     return entity;
-    // }
-=======
-	public class PostResponseBody {
-		public Msg msg;
-	}
-
-	@PostMapping("/")
-	public PostResponseBody postAccount(@RequestBody GetRequestBody req) {
-		// 直接用 GET 要小心
-	    // TODO: process POST request
-
-		String username = req.data.username;
-		String password = req.data.password;
-
-		
-	    return new PostResponseBody(
-			
-		);
-	}
-	
-	public class PutRequestBody {
-		public PutRequestData data;
-	}
-
-	public class PutRequestData {
-		public String username;
-		public List<Id> audioFileIds;
-		public List<Id> blockIds;
-	}
-
-    @PutMapping("/")
-    public PostResponseBody putAccount(@RequestBody PutRequestBody req) {
-        //TODO: process PUT request
-        
-        return new PostResponseBody(
-
-		);
-    }
-
->>>>>>> Stashed changes
     
     
 }

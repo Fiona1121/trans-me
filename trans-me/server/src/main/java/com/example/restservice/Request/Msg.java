@@ -1,4 +1,4 @@
-package com.example.restservice.Response;
+package com.example.restservice.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

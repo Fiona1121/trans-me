@@ -12,8 +12,8 @@ public interface AccountRepository extends MongoRepository<Account, String> {
     // @Query("{name:'?0', password:'?1'}")
     // Account findItemByName(String name, String password);
 
-    List<Account> findByUsername(@Param("name") String username);
-    // 不能用欸，why
+    Account findByUsername(String username);
+    void deleteAllByUsername(String username);
     // 可以跑一下 main 裡面的 code 就知道了
     
     // 第一種是 override Mongo 裡面的
@@ -21,6 +21,8 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 
     // 測試資料 @ 費南's DB
     // userID: "test", password: "test"
+
+    boolean existsByUsername(String username);
 
     public long count();
 }
