@@ -1,9 +1,8 @@
-package com.example.restservice.Repository;
+package com.example.restservice.repository;
 
+import com.example.restservice.model.Term;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
-
-import com.example.restservice.Model.Term;
 
 // import java.util.List;
 

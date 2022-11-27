@@ -1,4 +1,4 @@
-package com.example.restservice.Model;
+package com.example.restservice.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
