@@ -19,7 +19,7 @@ public class Login { // 1126 已測
         Account user =  accountRepository.findByUsername(username);
         
         if (user == null) {
-            System.out.println("invalid username");
+            System.out.println("username not found");
             return new Payload <Msg, Account> (
                 new Msg(
                     "error",

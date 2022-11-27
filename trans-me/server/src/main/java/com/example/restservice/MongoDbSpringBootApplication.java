@@ -4,6 +4,7 @@ import com.example.restservice.Model.Account;
 import com.example.restservice.Model.Term;
 import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Repository.TermRepository;
+import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     AccountRepository accountRepo;
 
     @Autowired
-    Login login;
+    AccountService accountService;
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
@@ -39,12 +40,26 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // createItem("000", "test", "meow2");
         // delete("test");
 
+        // Account test = accountRepo.findByUsername("POST");
+        // test.setPassword("new password");
+        // accountRepo.save(test);
+
         // System.out.println(accountRepo.findByUsername("POST"));
         //     // 有找到
         // System.out.println(accountRepo.findByUsername("GG"));
         //     // null
 
-        // System.out.println(login.login("GG", ""));
+        // ArrayList<String> test = new ArrayList<String>();
+        // test.add("testID");
+
+        // System.out.println(accountService.update(new Account(
+        //     "",
+        //     "POST",
+        //     "testPW",
+        //     test,
+        //     new ArrayList<String>()
+        // )));
+
         // System.out.println(login.login("POST", ""));
         // System.out.println(login.login("POST", "no"));
         // System.out.println(login.login("test", ""));
