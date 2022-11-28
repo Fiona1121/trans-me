@@ -1,8 +1,10 @@
 package com.example.restservice;
 
 import com.example.restservice.Model.Account;
+import com.example.restservice.Model.Block;
 import com.example.restservice.Model.Term;
 import com.example.restservice.Repository.AccountRepository;
+import com.example.restservice.Repository.BlockRepository;
 import com.example.restservice.Repository.TermRepository;
 import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
@@ -25,6 +27,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     AccountRepository accountRepo;
 
     @Autowired
+    BlockRepository blockRepository;
+
+    @Autowired
     AccountService accountService;
     
     public static void main(String[] args) {
@@ -40,33 +45,82 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // createItem("000", "test", "meow2");
         // delete("test");
 
-        // Account test = accountRepo.findByUsername("POST");
-        // test.setPassword("new password");
-        // accountRepo.save(test);
+        // // test : updateBlock
+        //     ArrayList<Block> test = new ArrayList<Block>();
+        //     List<String> test_id = accountRepo.findByUsername("POST").getBlocksID();
+        //     test.add(new Block(
+        //         test_id.get(0),
+        //         "new content 1",
+        //         true
+        //     ));
+        //     test.add(new Block(
+        //         test_id.get(1),
+        //         "new content 2",
+        //         false
+        //     ));
+        //     accountService.updateBlocks(test);
+        
+        // // test : createBlock
+        //     ArrayList<Block> test = new ArrayList<Block>();
+        //     test.add(new Block(
+        //         "hello block",
+        //         false
+        //         ));
+        //     // test.add(accountRepo.findByUsername("POST").getBlocksID().get(1));
+        //     accountService.createBlocks(test);
 
-        // System.out.println(accountRepo.findByUsername("POST"));
-        //     // 有找到
-        // System.out.println(accountRepo.findByUsername("GG"));
-        //     // null
+        // test : getBlock
+            // ArrayList<String> test = new ArrayList<String>();
+            // test.add(accountRepo.findByUsername("POST").getBlocksID().get(0));
+            // test.add(accountRepo.findByUsername("POST").getBlocksID().get(1));
+            // accountService.getBlocks(test);
 
-        // ArrayList<String> test = new ArrayList<String>();
-        // test.add("testID");
+        // test : create new block
+            // Block testBlock = new Block();
+            // testBlock.setContent("test block content");
+            // blockRepository.save(testBlock);
+            // Account test = accountRepo.findByUsername("POST");
+            // test.getBlocksID().add(testBlock.getId());
+            // accountRepo.save(test);
 
-        // System.out.println(accountService.update(new Account(
-        //     "",
-        //     "POST",
-        //     "testPW",
-        //     test,
-        //     new ArrayList<String>()
-        // )));
+        // test : save
+            // Account test = accountRepo.findByUsername("POST");
+            // test.setPassword("new password");
+            // accountRepo.save(test);
 
-        // System.out.println(login.login("POST", ""));
-        // System.out.println(login.login("POST", "no"));
-        // System.out.println(login.login("test", ""));
+        // test : accountRepo.findByUsername
+            // System.out.println(accountRepo.findByUsername("POST"));
+            //     // 有找到
+            // System.out.println(accountRepo.findByUsername("GG"));
+            //     // null
+
+        // test : ArrayList
+            // ArrayList<String> test = new ArrayList<String>();
+            // test.add("testID");
+
+        // test : update
+            // System.out.println(accountService.update(new Account(
+            //     "",
+            //     "POST",
+            //     "testPW",
+            //     test,
+            //     new ArrayList<String>()
+            // )));
+
+        // test : Login 
+            // System.out.println(login.login("POST", ""));
+            // System.out.println(login.login("POST", "no"));
+            // System.out.println(login.login("test", ""));
 
         System.out.println("ALL ACCOUNTS: ");
         List<Account> itemList = returnAllItems();
         for (Account t: itemList) {
+            System.out.println(t.toString());
+        }
+
+        System.out.println("All Blocks: ");
+        List<Block> blockList = blockRepository.findAll();
+        for (Block t: blockList) {
             System.out.println(t.toString());
         }
 

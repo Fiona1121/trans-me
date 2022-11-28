@@ -37,6 +37,6 @@ public class Account {
     @NonNull
     private String password;
     
-    private List<String> audioFilesID;
-    private List<String> blocksID;
+    private List<String> audioFilesId;
+    private List<String> blocksId;
 }
