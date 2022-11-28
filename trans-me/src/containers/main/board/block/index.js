@@ -13,11 +13,11 @@ import RichEditor from "./richEditor";
 import {
   Box,
   ButtonGroup,
-  Card,
   CardContent,
   IconButton,
   Menu,
   MenuItem,
+  Paper,
   Tooltip,
 } from "@mui/material";
 
@@ -117,7 +117,7 @@ export default function Block({ index, id, content, isHidden }) {
   };
 
   return (
-    <Card sx={{ width: "100%" }}>
+    <Paper sx={{ width: "100%" }} variant="outlined">
       <CardContent>
         <RichEditor content={content} onUpdate={handleBlockUpdate} />
         <Box
@@ -158,11 +158,15 @@ export default function Block({ index, id, content, isHidden }) {
         }}
       >
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.title} onClick={option.onClick}>
+          <MenuItem
+            key={option.title}
+            onClick={option.onClick}
+            sx={{ backgroundColor: "rgba(255, 255, 255, 1)" }}
+          >
             {option.title}
           </MenuItem>
         ))}
       </Menu>
-    </Card>
+    </Paper>
   );
 }

@@ -6,12 +6,12 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card,
   CardContent,
   CircularProgress,
   Grid,
   IconButton,
-  Toolbar,
+  ListSubheader,
+  Paper,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -24,18 +24,19 @@ export default function Term() {
   const [terms, setTerms] = React.useState([
     { name: "Test", details: "This is the detail of test." },
     { name: "Test2", details: "This is the detail of test2." },
+    { name: "Test3", details: "This is the detail of test3." },
   ]);
 
   const fetchTerms = () => {
-    const stringContent = blocks.map((block) => block.content).join("");
-    const text = stringContent.replace(/<[^>]+>/g, "");
+    setIsLoading(true);
+    // const stringContent = blocks.map((block) => block.content).join("");
+    // const text = stringContent.replace(/<[^>]+>/g, "");
     // TODO: fetch terms from server
+    setIsLoading(false);
   };
 
   const handleRefresh = () => {
-    setIsLoading(true);
     fetchTerms();
-    setIsLoading(false);
   };
 
   // Initialize terms
@@ -44,8 +45,20 @@ export default function Term() {
   }, []);
 
   return (
-    <Card sx={{ maxWidth: 300, height: "90vh" }}>
-      <Toolbar sx={{ paddingLeft: 0, paddingRight: 0 }}>
+    <Paper
+      variant="outlined"
+      sx={{ maxWidth: 300, height: "85vh", overflow: "scroll" }}
+    >
+      <ListSubheader
+        sx={{
+          pt: 2,
+          pb: 1,
+          mb: 1,
+          zIndex: 950,
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+        }}
+      >
         <Grid
           container
           direction="row"
@@ -53,8 +66,17 @@ export default function Term() {
           alignItems="stretch"
         >
           <Grid item>
-            <Typography gutterBottom variant="h6">
-              Technical Term
+            <Typography
+              gutterBottom
+              variant="h5"
+              sx={{
+                fontFamily: "Playfair Display",
+                color: "rgba(34, 34, 34, 1)",
+                fontWeight: 700,
+                mt: 1,
+              }}
+            >
+              Terms
             </Typography>
           </Grid>
           <Grid item>
@@ -69,8 +91,8 @@ export default function Term() {
             </Tooltip>
           </Grid>
         </Grid>
-      </Toolbar>
-      <CardContent>
+      </ListSubheader>
+      <CardContent sx={{ pt: 1 }}>
         <div>
           {isLoading ? (
             <Grid
@@ -89,9 +111,18 @@ export default function Term() {
             </Grid>
           ) : (
             terms.map((term, index) => (
-              <Accordion key={"term-" + index}>
-                <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-                  <Typography variant="body1">{term.name}</Typography>
+              <Accordion
+                key={"term-" + index}
+                elevation={0}
+                sx={{ border: "1px solid rgba(0, 0, 0, 0.12)" }}
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreRoundedIcon />}
+                  sx={{ margin: 0 }}
+                >
+                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                    {term.name}
+                  </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <Typography variant="body2">{term.details}</Typography>
@@ -101,6 +132,6 @@ export default function Term() {
           )}
         </div>
       </CardContent>
-    </Card>
+    </Paper>
   );
 }
