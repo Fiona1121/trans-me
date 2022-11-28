@@ -19,7 +19,8 @@ public class PostBlockRequest {
     @Setter
     public class RequestData {
         private Block block;
-        // TODO : 不確定這樣可不可以，input 沒有 id 會不會死?
+        // 不確定這樣可不可以，input 沒有 id 會不會死?
+            // 答案是不會
     }
 
     private RequestData data;
