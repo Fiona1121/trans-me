@@ -141,7 +141,7 @@ export const globalSlice = createSlice({
     setIsRecording: (state, action) => {
       state.isRecording = action.payload;
     },
-    resetState: (state, action) => {
+    resetState: () => {
       return initialState;
     },
   },

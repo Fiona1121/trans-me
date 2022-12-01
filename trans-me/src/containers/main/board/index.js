@@ -86,7 +86,9 @@ export default function Board({ blocks }) {
         >
           <ListItemIcon>
             <Checkbox
-              checked={selected.length && selected.length === blocks.length}
+              checked={
+                selected.length !== 0 && selected.length === blocks.length
+              }
               onChange={handleSelectAll}
             />
           </ListItemIcon>

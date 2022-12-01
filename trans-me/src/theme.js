@@ -12,9 +12,6 @@ const theme = createTheme({
     neutral: {
       main: "rgba(255, 255, 255, 1)",
     },
-    background: {
-      paper: "rgba(255, 255, 255, 0.5)",
-    },
   },
   components: {
     MuiCssBaseline: {
