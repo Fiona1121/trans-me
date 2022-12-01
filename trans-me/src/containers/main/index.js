@@ -18,8 +18,8 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
-import { NodeHtmlMarkdown } from "node-html-markdown";
-import React, { useRef, useState } from "react";
+import TurndownService from "turndown";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { resetState, selectGlobal } from "../../slices/globalSlice";
@@ -34,7 +34,7 @@ export default function Main() {
   const isLoggedIn = username && expirationTime > Date.now();
 
   const [alert, setAlert] = useState({});
-  const [dialog, setDialog] = useState({});
+  const [dialog, setDialog] = useState({ open: false, title: "", content: "" });
 
   if (!isLoggedIn) {
     return <Navigate to={"/login"} />;
@@ -42,13 +42,9 @@ export default function Main() {
 
   const handleExport = () => {
     const stringContent = blocks
-      .map((block) => {
-        if (!block.isHidden) {
-          return block.content;
-        }
-      })
+      .filter((block) => !block.isHidden)
+      .map((block) => block.content)
       .join("");
-    console.log(stringContent);
     if (stringContent === "") {
       setAlert({
         open: true,
@@ -56,7 +52,8 @@ export default function Main() {
         msg: "No content or no unhidden block to export.",
       });
     } else {
-      const markdown = NodeHtmlMarkdown.translate(stringContent);
+      const turndownService = new TurndownService();
+      const markdown = turndownService.turndown(stringContent);
       const element = window.document.createElement("a");
       element.href = window.URL.createObjectURL(
         new Blob([markdown], { type: "text/plain" })
@@ -77,10 +74,10 @@ export default function Main() {
         "All the blocks and audio files from current project will be deleted and cannot be recovered. Are you sure to create a new project?",
       onConfirm: () => {
         dispatch(resetState());
-        setDialog({});
+        setDialog({ ...dialog, open: false });
       },
       onCancel: () => {
-        setDialog({});
+        setDialog({ ...dialog, open: false });
       },
     });
   };
