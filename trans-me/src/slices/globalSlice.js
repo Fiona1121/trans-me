@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 
-// Todo: current initial state is just for testing
 const initialState = {
   // audio operation
   audioFiles: [],
@@ -9,31 +8,9 @@ const initialState = {
   isPlaying: false,
 
   // block operation
-  blocks: [
-    {
-      id: 0,
-      content: "<h1>Hello World</h1>",
-      isHidden: false,
-    },
-    {
-      id: 1,
-      content: "<h2>I am a block!</h2>",
-      isHidden: false,
-    },
-  ],
+  blocks: [],
   isRecording: false,
 };
-
-// const initialState = {
-//   // audio operation
-//   audioFiles: [],
-//   currentPlaying: null,
-//   isPlaying: false,
-
-//   // block operation
-//   blocks: [],
-//   isRecording: false,
-// };
 
 export const globalSlice = createSlice({
   name: "global",
@@ -164,6 +141,9 @@ export const globalSlice = createSlice({
     setIsRecording: (state, action) => {
       state.isRecording = action.payload;
     },
+    resetState: () => {
+      return initialState;
+    },
   },
 });
 
@@ -185,6 +165,7 @@ export const {
   showBlocks,
   deleteBlocks,
   addEmptyBlock,
+  resetState,
 } = globalSlice.actions;
 
 export const selectGlobal = (state) => state.global;
