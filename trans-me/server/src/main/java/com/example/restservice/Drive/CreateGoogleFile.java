@@ -60,18 +60,17 @@ public class CreateGoogleFile {
         return _createGoogleFile(googleFolderIdParent, contentType, customFileName, uploadStreamContent);
     }
 
-    public static void main(String[] args) throws IOException {
+    // public static void main(String[] args) throws IOException {
 
-        java.io.File uploadFile = new java.io.File("./src/main/java/com/example/restservice/Drive/test.txt");
+    //     java.io.File uploadFile = new java.io.File("./src/main/java/com/example/restservice/Drive/test.txt");
 
-        // Create Google File:
+    //     // Create Google File:
 
-        File googleFile = createGoogleFile(null, "text/plain", "newfile.txt", uploadFile);
+    //     File googleFile = createGoogleFile(null, "text/plain", "newfile.txt", uploadFile);
 
-        System.out.println("Created Google file!");
-        System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
-        // System.out.println("WebViewLink: " + googleFile.getWebViewLink() );
+    //     System.out.println("Created Google file!");
+    //     System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
 
-        System.out.println("Done!");
-    }
+    //     System.out.println("Done!");
+    // }
 }

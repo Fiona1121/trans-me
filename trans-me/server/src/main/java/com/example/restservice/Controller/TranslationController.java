@@ -1,4 +1,4 @@
-package com.example.restservice.controller;
+package com.example.restservice.Controller;
 
 public class TranslationController {
     

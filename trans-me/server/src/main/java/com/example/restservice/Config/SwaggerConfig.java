@@ -1,4 +1,3 @@
-package com.example.restservice.onfig;
 package com.example.restservice.Config;
 // package com.example.restservice.Config;
 // // import java.util.List;

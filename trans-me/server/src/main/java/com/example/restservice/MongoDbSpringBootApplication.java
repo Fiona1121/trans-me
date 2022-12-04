@@ -3,9 +3,9 @@ package com.example.restservice;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Model.Block;
 import com.example.restservice.Model.Term;
-import com.example.restservice.Repository.AccountRepository;
-import com.example.restservice.Repository.BlockRepository;
-import com.example.restservice.Repository.TermRepository;
+import com.example.restservice.repository.AccountRepository;
+import com.example.restservice.repository.BlockRepository;
+import com.example.restservice.repository.TermRepository;
 import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
 

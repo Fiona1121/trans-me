@@ -2,7 +2,7 @@ package com.example.restservice.Request.block;
 
 import java.util.List;
 
-import com.example.restservice.model.Block;
+import com.example.restservice.Model.Block;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

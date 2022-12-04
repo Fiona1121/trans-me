@@ -1,4 +1,4 @@
-package com.example.restservice.controller;
+package com.example.restservice.Controller;
 
 // message
 public class msg {

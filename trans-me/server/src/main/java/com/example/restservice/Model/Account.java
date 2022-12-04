@@ -1,4 +1,5 @@
 package com.example.restservice.Model;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
