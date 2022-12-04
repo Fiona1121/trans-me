@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import {
   Button,
   ButtonGroup,
-  Card,
   Checkbox,
   List,
   ListItem,
   ListItemIcon,
   ListSubheader,
+  Paper,
 } from "@mui/material";
 import MergeRoundedIcon from "@mui/icons-material/MergeRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
@@ -71,12 +71,24 @@ export default function Board({ blocks }) {
   };
 
   return (
-    <Card sx={{ height: "90vh", overflow: "scroll" }}>
-      <List>
-        <ListSubheader key="list-menu" sx={{ zIndex: 950 }}>
+    <Paper sx={{ height: "85vh", overflow: "scroll" }} variant="outlined">
+      <List sx={{ pt: 0 }}>
+        <ListSubheader
+          key="list-menu"
+          sx={{
+            pt: 2,
+            pb: 1,
+            mb: 1,
+            zIndex: 950,
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+          }}
+        >
           <ListItemIcon>
             <Checkbox
-              checked={selected.length === blocks.length}
+              checked={
+                selected.length !== 0 && selected.length === blocks.length
+              }
               onChange={handleSelectAll}
             />
           </ListItemIcon>
@@ -84,18 +96,21 @@ export default function Board({ blocks }) {
             <Button
               startIcon={<MergeRoundedIcon />}
               onClick={handleMergeSelected}
+              variant="outlined"
             >
               Merge
             </Button>
             <Button
               startIcon={<VisibilityRoundedIcon />}
               onClick={handleShowSelected}
+              variant="outlined"
             >
               Show
             </Button>
             <Button
               startIcon={<VisibilityOffRoundedIcon />}
               onClick={handleHideSelected}
+              variant="outlined"
             >
               Hide
             </Button>
@@ -104,6 +119,7 @@ export default function Board({ blocks }) {
               startIcon={<DeleteRoundedIcon />}
               onClick={handleDeleteSelected}
               color="secondary"
+              variant="outlined"
             >
               Delete
             </Button>
@@ -137,6 +153,6 @@ export default function Board({ blocks }) {
           </Button>
         </ListItem>
       </List>
-    </Card>
+    </Paper>
   );
 }
