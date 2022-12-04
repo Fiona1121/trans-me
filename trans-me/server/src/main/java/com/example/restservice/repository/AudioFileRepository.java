@@ -1,4 +1,4 @@
-package com.example.restservice.Repository;
+package com.example.restservice.repository;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

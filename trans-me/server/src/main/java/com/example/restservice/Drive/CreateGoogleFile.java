@@ -1,11 +1,10 @@
 package com.example.restservice.Drive;
-import com.example.restservice.Drive.GoogleDriveUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import com.example.restservice.Drive.GoogleDriveUtils;
 import com.google.api.client.http.AbstractInputStreamContent;
 import com.google.api.client.http.ByteArrayContent;
 import com.google.api.client.http.FileContent;
@@ -61,18 +60,18 @@ public class CreateGoogleFile {
         return _createGoogleFile(googleFolderIdParent, contentType, customFileName, uploadStreamContent);
     }
 
-    // public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-    //     java.io.File uploadFile = new java.io.File("./src/main/java/com/example/restservice/Drive/test.txt");
+        java.io.File uploadFile = new java.io.File("./src/main/java/com/example/restservice/Drive/test.txt");
 
-    //     // Create Google File:
+        // Create Google File:
 
-    //     File googleFile = createGoogleFile(null, "text/plain", "newfile.txt", uploadFile);
+        File googleFile = createGoogleFile(null, "text/plain", "newfile.txt", uploadFile);
 
-    //     System.out.println("Created Google file!");
-    //     System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
-    //     System.out.println("WebViewLink: " + googleFile.getWebViewLink() );
+        System.out.println("Created Google file!");
+        System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
+        // System.out.println("WebViewLink: " + googleFile.getWebViewLink() );
 
-    //     System.out.println("Done!");
-    // }
+        System.out.println("Done!");
+    }
 }

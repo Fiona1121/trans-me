@@ -3,10 +3,9 @@ package com.example.restservice.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Response.Msg;
-
-import com.example.restservice.Model.Account;
+import com.example.restservice.model.Account;
+import com.example.restservice.repository.AccountRepository;
 
 @Service
 public class Registration {
