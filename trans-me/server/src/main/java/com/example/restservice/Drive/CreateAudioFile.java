@@ -38,15 +38,15 @@ public class CreateAudioFile {
         return null;
     }
 
-    public static void main(String[] args) throws IOException {
-        java.io.File file = new java.io.File("./src/main/java/com/example/restservice/Drive/everybodys_circulation.mp3");
-        MultipartFile mpFile = new MockMultipartFile("newfile.mp3", new FileInputStream(file));
+    // public static void main(String[] args) throws IOException {
+    //     java.io.File file = new java.io.File("./src/main/java/com/example/restservice/Drive/everybodys_circulation.mp3");
+    //     MultipartFile mpFile = new MockMultipartFile("newfile.mp3", new FileInputStream(file));
 
-        File googleFile = uploadFile(mpFile, "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4");
+    //     File googleFile = uploadFile(mpFile, "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4");
 
-        System.out.println("Created audio file with id: " + googleFile.getId());
-        System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
+    //     System.out.println("Created audio file with id: " + googleFile.getId());
+    //     System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
 
-        System.out.println("Done!");
-    }
+    //     System.out.println("Done!");
+    // }
 }
