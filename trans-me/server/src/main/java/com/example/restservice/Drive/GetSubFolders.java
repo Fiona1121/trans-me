@@ -10,22 +10,18 @@ import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
 public class GetSubFolders {
+    // Returns the subfolders of the transme folder
     // com.google.api.services.drive.model.File
-    public static final List<File> getGoogleSubFolders(String googleFolderIdParent) throws IOException {
+    public static final List<File> getGoogleSubFolders() throws IOException {
+        String folderIdParent = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
 
         Drive driveService = GoogleDriveUtils.getDriveService();
 
         String pageToken = null;
         List<File> list = new ArrayList<File>();
 
-        String query = null;
-        if (googleFolderIdParent == null) {
-            query = " mimeType = 'application/vnd.google-apps.folder' " //
-                    + " and 'root' in parents";
-        } else {
-            query = " mimeType = 'application/vnd.google-apps.folder' " //
-                    + " and '" + googleFolderIdParent + "' in parents";
-        }
+        String query = " mimeType = 'application/vnd.google-apps.folder' " //
+                + " and '" + folderIdParent + "' in parents";
 
         do {
             FileList result = driveService.files().list().setQ(query).setSpaces("drive") //
@@ -41,14 +37,9 @@ public class GetSubFolders {
         return list;
     }
 
-    // com.google.api.services.drive.model.File
-    public static final List<File> getGoogleRootFolders() throws IOException {
-        return getGoogleSubFolders(null);
-    }
-
     // public static void main(String[] args) throws IOException {
 
-    //     List<File> googleRootFolders = getGoogleRootFolders();
+    //     List<File> googleRootFolders = getGoogleSubFolders();
     //     for (File folder : googleRootFolders) {
 
     //         System.out.println("Folder ID: " + folder.getId() + " --- Name: " + folder.getName());

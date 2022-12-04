@@ -19,6 +19,11 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+		<!-- only put here to test CreateAudioFile main -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-drive -->
 		<dependency>
 			<groupId>com.google.apis</groupId>

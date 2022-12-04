@@ -32,9 +32,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     @Autowired
     AccountService accountService;
     
-    public static void main(String[] args) {
-        SpringApplication.run(MongoDbSpringBootApplication.class, args);
-    }
+    // public static void main(String[] args) {
+    //     SpringApplication.run(MongoDbSpringBootApplication.class, args);
+    // }
 
     @Override
     public void run(String... args) throws Exception {

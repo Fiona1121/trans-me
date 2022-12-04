@@ -9,15 +9,15 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
-public class FindFilesByName {
-    public static final List<File> getGoogleFilesByName(String folderIdParent, String fileNameLike) throws IOException {
+public class GetAllFilesInSubFolder {
+    // Pass down the folder id of the parent to get all the files inside
+    public static final List<File> getGoogleFilesInFolder(String folderIdParent) throws IOException {
         Drive driveService = GoogleDriveUtils.getDriveService();
 
         String pageToken = null;
         List<File> list = new ArrayList<File>();
 
-        String query = " name contains '" + fileNameLike + "' " //
-                + " and mimeType != 'application/vnd.google-apps.folder' "
+        String query = "mimeType != 'application/vnd.google-apps.folder' "
                 + " and '" + folderIdParent + "' in parents";
 
         do {
@@ -35,11 +35,11 @@ public class FindFilesByName {
     }
 
     // public static void main(String[] args) throws IOException {
-    //     String folderIdParent = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
-    //     List<File> rootGoogleFolders = getGoogleFilesByName(folderIdParent, "newfile.txt");
-    //     for (File folder : rootGoogleFolders) {
+    //     String folderIdParent = "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4";
+    //     List<File> googleFiles = getGoogleFilesInFolder(folderIdParent);
+    //     for (File file : googleFiles) {
 
-    //         System.out.println("Mime Type: " + folder.getMimeType() + " --- Name: " + folder.getName());
+    //         System.out.println("Mime Type: " + file.getMimeType() + " --- Name: " + file.getName() + " --- Id: " + file.getId());
     //     }
 
     //     System.out.println("Done!");
