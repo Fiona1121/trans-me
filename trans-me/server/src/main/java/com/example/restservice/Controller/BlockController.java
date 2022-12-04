@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.restservice.Model.Account;
-import com.example.restservice.Model.Block;
 import com.example.restservice.Response.CommonResponse;
 import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Registration;
 import com.example.restservice.Service.Payload.Payload;
+import com.example.restservice.Model.Account;
+import com.example.restservice.Model.Block;
 import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
 

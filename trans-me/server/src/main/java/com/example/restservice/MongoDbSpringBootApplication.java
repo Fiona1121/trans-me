@@ -3,9 +3,9 @@ package com.example.restservice;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Model.Block;
 import com.example.restservice.Model.Term;
-import com.example.restservice.Repository.AccountRepository;
-import com.example.restservice.Repository.BlockRepository;
-import com.example.restservice.Repository.TermRepository;
+import com.example.restservice.repository.AccountRepository;
+import com.example.restservice.repository.BlockRepository;
+import com.example.restservice.repository.TermRepository;
 import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
 
@@ -32,9 +32,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     @Autowired
     AccountService accountService;
     
-    public static void main(String[] args) {
-        SpringApplication.run(MongoDbSpringBootApplication.class, args);
-    }
+    // public static void main(String[] args) {
+    //     SpringApplication.run(MongoDbSpringBootApplication.class, args);
+    // }
 
     @Override
     public void run(String... args) throws Exception {

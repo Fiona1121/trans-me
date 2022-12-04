@@ -17,5 +17,7 @@ public class AudioFile {
     private String id;
 
     private String name;
+    private String url;
+    private String driveId;
     private String format;
 }
