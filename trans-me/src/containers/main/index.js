@@ -4,7 +4,6 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,31 +17,57 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
+// import bcrypt from "bcryptjs";
 import TurndownService from "turndown";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
 import { resetState, selectGlobal } from "../../slices/globalSlice";
 import { selectSession } from "../../slices/sessionSlice";
 import Board from "./board";
 import Term from "./term";
+import { AccountAPI } from "../../api";
 
 export default function Main() {
   const dispatch = useDispatch();
-  const { username, expirationTime } = useSelector(selectSession);
-  const { blocks } = useSelector(selectGlobal);
-  const isLoggedIn = username && expirationTime > Date.now();
+  const { username } = useSelector(selectSession);
+  const { blocks, audioFiles } = useSelector(selectGlobal);
 
   const [alert, setAlert] = useState({});
   const [dialog, setDialog] = useState({ open: false, title: "", content: "" });
 
-  if (!isLoggedIn) {
-    return <Navigate to={"/login"} />;
-  }
+  // useEffect(() => {
+  //   async function getData() {
+  //     const { blocksId, audioFilesId } = await AccountAPI.getAccount(
+  //       username,
+  //       password
+  //     ).data;
+  //     const password = bcrypt.hashSync("00000000", 10);
+  //     const response = await AccountAPI.postAccount("user0", password);
+  //     console.log(response);
+  //     const newBlocks = await BlockAPI.getBlocks(blocksId).data;
+  //     dispatch(setBlocks(newBlocks));
+  //     dispatch(setAudioFiles(audioFilesId));
+  //   }
+  //   getData();
+  // }, []);
+
+  useEffect(() => {
+    async function saveData() {
+      const audioFilesId = audioFiles.map((audioFile) => audioFile.id);
+      const blocksId = blocks.map((block) => block.id);
+      await AccountAPI.putAccount({
+        username,
+        blocksId,
+        audioFilesId,
+      });
+    }
+    saveData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocks, audioFiles]);
 
   const handleExport = () => {
     const stringContent = blocks
-      .filter((block) => !block.isHidden)
+      .filter((block) => !block.hidden)
       .map((block) => block.content)
       .join("");
     if (stringContent === "") {
@@ -85,50 +110,48 @@ export default function Main() {
   return (
     <div>
       <Box sx={{ display: "flex" }}>
-        <AppBar sx={{}}>
-          <Container maxWidth="xl">
-            <Toolbar disableGutters>
-              <Typography
-                variant="h4"
-                noWrap
-                sx={{
-                  mr: 2,
-                  display: "flex",
-                  flexGrow: 1,
-                  fontFamily: "Playfair Display SC",
-                  fontWeight: 500,
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
+        <AppBar sx={{ width: "100%", pl: 2, pr: 2 }}>
+          <Toolbar disableGutters>
+            <Typography
+              variant="h4"
+              noWrap
+              sx={{
+                mr: 2,
+                display: "flex",
+                flexGrow: 1,
+                fontFamily: "Playfair Display SC",
+                fontWeight: 500,
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              TransMe
+            </Typography>
+            <Box sx={{ display: "flex", mr: 2 }}>
+              <Button
+                key={"export-button"}
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={handleExport}
               >
-                TransMe
-              </Typography>
-              <Box sx={{ display: "flex", mr: 2 }}>
-                <Button
-                  key={"export-button"}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                  onClick={handleExport}
-                >
-                  Export
-                </Button>
-                <Button
-                  key={"new-project-button"}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                  onClick={handleNewProject}
-                >
-                  New Project
-                </Button>
-              </Box>
+                Export
+              </Button>
+              <Button
+                key={"new-project-button"}
+                sx={{ my: 2, color: "white", display: "block" }}
+                onClick={handleNewProject}
+              >
+                New Project
+              </Button>
+            </Box>
 
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title={"Hello, " + username}>
-                  <IconButton sx={{ p: 0 }}>
-                    <Avatar alt={username}>{username[0].toUpperCase()}</Avatar>
-                  </IconButton>
-                </Tooltip>
-              </Box>
-            </Toolbar>
-          </Container>
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title={"Hello, " + username}>
+                <IconButton sx={{ p: 0 }}>
+                  <Avatar alt={username}>{username[0].toUpperCase()}</Avatar>
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Toolbar>
         </AppBar>
         <Box sx={{ width: "100%" }}>
           <Toolbar />

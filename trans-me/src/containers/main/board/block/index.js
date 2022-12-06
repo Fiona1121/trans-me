@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   deleteBlock,
-  duplicateBlock,
   insertBlock,
   moveBlockDown,
   moveBlockUp,
@@ -29,12 +28,15 @@ import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
+import { BlockAPI } from "../../../../api";
+import RecordingOperator from "./recordingOperator";
 
-export default function Block({ index, id, content, isHidden }) {
+export default function Block({ index, id, content, hidden }) {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [isOpened, setIsOpened] = useState(false);
+  const [isRecordOpened, setIsRecordOpened] = useState(false);
 
   const BLOCK_TOOLBAR = [
     {
@@ -54,27 +56,36 @@ export default function Block({ index, id, content, isHidden }) {
     {
       title: "Add Block",
       icon: <AddRoundedIcon />,
-      onClick: () => {
-        dispatch(insertBlock({ index: index + 1 }));
+      onClick: async () => {
+        const response = await BlockAPI.postBlock({
+          content: "",
+          hidden: false,
+        });
+        dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
     },
     {
       title: "Delete Block",
       icon: <DeleteRoundedIcon />,
       onClick: () => {
+        // TODO: Call API to delete block
         dispatch(deleteBlock({ id }));
       },
     },
     {
       title: "Duplicate Block",
       icon: <ContentCopyRoundedIcon />,
-      onClick: () => {
-        dispatch(duplicateBlock({ id }));
+      onClick: async () => {
+        const response = await BlockAPI.postBlock({
+          content: content,
+          hidden: false,
+        });
+        dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
     },
     {
       title: "Toggle Visibility",
-      icon: isHidden ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />,
+      icon: hidden ? <VisibilityOffRoundedIcon /> : <VisibilityRoundedIcon />,
       onClick: () => {
         dispatch(toggleBlockVisibility({ id }));
       },
@@ -98,6 +109,7 @@ export default function Block({ index, id, content, isHidden }) {
       title: "Recording Conversion",
       onClick: () => {
         handleMenuClose();
+        onOpenRecord();
       },
     },
   ];
@@ -116,57 +128,69 @@ export default function Block({ index, id, content, isHidden }) {
     dispatch(updateBlockContent({ id, content }));
   };
 
+  const onOpenRecord = () => {
+    setIsRecordOpened(true);
+  };
+
   return (
-    <Paper sx={{ width: "100%" }} variant="outlined">
-      <CardContent>
-        <RichEditor content={content} onUpdate={handleBlockUpdate} />
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <ButtonGroup variant="text">
-            {BLOCK_TOOLBAR.map((button) => (
-              <Tooltip key={button.title} title={button.title}>
-                <IconButton id={button.title} onClick={button.onClick}>
-                  {button.icon}
+    <div>
+      <Paper sx={{ width: "100%" }} variant="outlined">
+        <CardContent>
+          <RichEditor content={content} onUpdate={handleBlockUpdate} />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <ButtonGroup variant="text">
+              {BLOCK_TOOLBAR.map((button) => (
+                <Tooltip key={button.title} title={button.title}>
+                  <IconButton id={button.title} onClick={button.onClick}>
+                    {button.icon}
+                  </IconButton>
+                </Tooltip>
+              ))}
+              <Tooltip title="More">
+                <IconButton
+                  id="menu-button"
+                  onClick={handleMenuClick}
+                  aria-controls={isOpened ? "menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={isOpened ? "true" : undefined}
+                >
+                  <MoreVertRoundedIcon />
                 </IconButton>
               </Tooltip>
-            ))}
-            <Tooltip title="More">
-              <IconButton
-                id="menu-button"
-                onClick={handleMenuClick}
-                aria-controls={isOpened ? "menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={isOpened ? "true" : undefined}
-              >
-                <MoreVertRoundedIcon />
-              </IconButton>
-            </Tooltip>
-          </ButtonGroup>
-        </Box>
-      </CardContent>
-      <Menu
-        id="menu"
-        anchorEl={anchorEl}
-        open={isOpened}
-        onClose={handleMenuClose}
-        MenuListProps={{
-          "aria-labelledby": "menu-button",
-        }}
-      >
-        {MENU_OPTIONS.map((option) => (
-          <MenuItem
-            key={option.title}
-            onClick={option.onClick}
-            sx={{ backgroundColor: "rgba(255, 255, 255, 1)" }}
-          >
-            {option.title}
-          </MenuItem>
-        ))}
-      </Menu>
-    </Paper>
+            </ButtonGroup>
+          </Box>
+        </CardContent>
+        <Menu
+          id="menu"
+          anchorEl={anchorEl}
+          open={isOpened}
+          onClose={handleMenuClose}
+          MenuListProps={{
+            "aria-labelledby": "menu-button",
+          }}
+        >
+          {MENU_OPTIONS.map((option) => (
+            <MenuItem
+              key={option.title}
+              onClick={option.onClick}
+              sx={{ backgroundColor: "rgba(255, 255, 255, 1)" }}
+            >
+              {option.title}
+            </MenuItem>
+          ))}
+        </Menu>
+      </Paper>
+
+      <RecordingOperator
+        index={index}
+        open={isRecordOpened}
+        setOpen={setIsRecordOpened}
+      />
+    </div>
   );
 }

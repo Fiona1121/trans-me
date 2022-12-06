@@ -8,6 +8,7 @@ import theme from "./theme";
 import Main from "./containers/main";
 import Login from "./containers/login";
 import Register from "./containers/register";
+import { RequireAuth } from "./components/requireAuth";
 
 export default function App() {
   return (
@@ -15,7 +16,14 @@ export default function App() {
       <CssBaseline />
       <Router>
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Main />
+              </RequireAuth>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
