@@ -1,4 +1,4 @@
-package com.example.restservice.repository;
+package com.example.restservice.Repository;
 
 import java.util.List;
 import java.util.Optional;

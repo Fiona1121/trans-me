@@ -12,8 +12,8 @@ import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Payload.Payload;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Model.Block;
-import com.example.restservice.repository.AccountRepository;
-import com.example.restservice.repository.BlockRepository;
+import com.example.restservice.Repository.AccountRepository;
+import com.example.restservice.Repository.BlockRepository;
 
 @Service
 public class AccountService {
