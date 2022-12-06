@@ -9,7 +9,7 @@ import java.util.List;
 import java.lang.Object;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.mock.web.MockMultipartFile;
+// import org.springframework.mock.web.MockMultipartFile;
 
 import com.google.api.services.drive.model.File;
 import com.google.api.client.http.InputStreamContent;
@@ -17,7 +17,14 @@ import com.google.api.client.util.IOUtils;
 import com.google.api.services.drive.Drive;
 
 public class CreateAudioFile {
-    public static File uploadFile(MultipartFile file, String folderId) {
+    // Input: 
+    // file: the file as a multipart file coming from a POST method
+    // folderId: Account's folder ID to upload the file to
+    // Returns:
+    // List of two elements
+    // First element is the file id from google drive
+    // Second element is the download URL for the frontend to download the file
+    public static List<String> uploadFile(MultipartFile file, String folderId) {
         try {
             File fileMetadata = new File();
 
@@ -31,7 +38,8 @@ public class CreateAudioFile {
                     new ByteArrayInputStream(file.getBytes())
                 ))
                 .setFields("id, webContentLink").execute();
-            return fileResponse;
+            List<String> responseList = Arrays.asList(fileResponse.getId(), fileResponse.getWebContentLink());
+            return responseList;
         } catch (Exception e) {
             System.out.println("Error: " + e);
         }
