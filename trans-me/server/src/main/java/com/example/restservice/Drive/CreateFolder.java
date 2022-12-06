@@ -9,9 +9,11 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
 public class CreateFolder {
-    // Call this function with folderId = 130DakidoW74dLcOt0sj_3-hppX_ia25E
     // To create folder inside transme folder in google drive
-    public static final File createGoogleFolder(String folderName) throws IOException {
+    // Input: name of the folder (account name)
+    // Returns: String
+    // File id of the newly created folder
+    public static final String createGoogleFolder(String folderName) throws IOException {
         String folderIdParent = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
         
         File fileMetadata = new File();
@@ -30,7 +32,9 @@ public class CreateFolder {
         // Returns File object with id & name fields will be assigned values
         File file = driveService.files().create(fileMetadata).setFields("id, name").execute();
 
-        return file;
+        System.out.println("The folder " + file.getName() + " was created succesfully!");
+
+        return file.getId();
     }
 
     // public static void main(String[] args) throws IOException {
