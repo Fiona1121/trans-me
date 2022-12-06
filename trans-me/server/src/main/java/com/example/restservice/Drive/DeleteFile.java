@@ -8,6 +8,8 @@ public class DeleteFile {
         Drive driveService = GoogleDriveUtils.getDriveService();
 
         driveService.files().delete(fileId).execute();
+
+        System.out.println("The file " + fileId + " was deleted succesfully!");
     }
 
     // public static void main(String[] args) throws Exception {

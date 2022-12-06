@@ -19,11 +19,15 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-		<!-- only put here to test CreateAudioFile main -->
 		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-drive -->
 		<dependency>
 			<groupId>com.google.apis</groupId>
@@ -43,11 +47,6 @@
 			<version>1.23.0</version>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		
 		<!-- model & MongoDB -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,10 +57,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.24</version>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
 		</dependency>
 
 		<!-- Swagger -->
@@ -112,6 +107,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- only put here to test CreateAudioFile main -->
+		<!-- <dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency> -->
 	</dependencies>
 
 	<build>
