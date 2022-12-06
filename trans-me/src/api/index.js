@@ -7,7 +7,7 @@ const errorHandler = (error) => {
 export const AccountAPI = {
   getAccount: (username, password) =>
     axios
-      .get("/api/account", { data: { username, password } })
+      .get("/api/account", { params: { username, password } })
       .catch(errorHandler),
   postAccount: (username, password) =>
     axios
@@ -18,8 +18,8 @@ export const AccountAPI = {
 };
 
 export const BlockAPI = {
-  getBlocks: (blocksId) =>
-    axios.get("/api/block", { data: { blocksId } }).catch(errorHandler),
+  getBlocks: (username) =>
+    axios.get("/api/block", { params: { username } }).catch(errorHandler),
   postBlock: (block) =>
     axios.post("/api/block", { data: { block } }).catch(errorHandler),
   putBlocks: (blocks) =>

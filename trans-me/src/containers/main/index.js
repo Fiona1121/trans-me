@@ -35,6 +35,7 @@ export default function Main() {
   const [alert, setAlert] = useState({});
   const [dialog, setDialog] = useState({ open: false, title: "", content: "" });
 
+  // TODO: initialize blocks and audioFiles from server
   // useEffect(() => {
   //   async function getData() {
   //     const { blocksId, audioFilesId } = await AccountAPI.getAccount(
