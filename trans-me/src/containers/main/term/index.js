@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectGlobal } from "../../../slices/globalSlice";
 
@@ -17,11 +17,12 @@ import {
 } from "@mui/material";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
+import { useEffect } from "react";
 
 export default function Term() {
   const { blocks } = useSelector(selectGlobal);
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [terms, setTerms] = React.useState([
+  const [isLoading, setIsLoading] = useState(false);
+  const [terms] = useState([
     { name: "Test", details: "This is the detail of test." },
     { name: "Test2", details: "This is the detail of test2." },
     { name: "Test3", details: "This is the detail of test3." },
@@ -29,9 +30,10 @@ export default function Term() {
 
   const fetchTerms = () => {
     setIsLoading(true);
-    // const stringContent = blocks.map((block) => block.content).join("");
-    // const text = stringContent.replace(/<[^>]+>/g, "");
+    const stringContent = blocks.map((block) => block.content).join("");
+    const text = stringContent.replace(/<[^>]+>/g, "");
     // TODO: fetch terms from server
+    console.log(text);
     setIsLoading(false);
   };
 
@@ -40,8 +42,9 @@ export default function Term() {
   };
 
   // Initialize terms
-  React.useEffect(() => {
+  useEffect(() => {
     fetchTerms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
