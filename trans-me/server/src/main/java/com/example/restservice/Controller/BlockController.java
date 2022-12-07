@@ -48,10 +48,23 @@ public class BlockController {
     AccountService accountService;
     
     // getBlock
-    @GetMapping("")
+    @GetMapping("/ids")
     public CommonResponse getBlock(@RequestBody GetBlockRequest req) {
     
         Payload <Msg, List <Block>> result = accountService.readBlocks(req.getData().getBlocksId());
+
+        return new CommonResponse <List <Block> >(
+            result.getMsg(),
+            result.getData()
+        );
+        
+    }
+    
+    // getBlockByUsername
+    @GetMapping("")
+    public CommonResponse getBlockByUsername(@RequestParam("username") String username) {
+    
+        Payload <Msg, List <Block>> result = accountService.readBlocksByUsername(username);
 
         return new CommonResponse <List <Block> >(
             result.getMsg(),
