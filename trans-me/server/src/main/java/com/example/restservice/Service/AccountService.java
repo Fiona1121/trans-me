@@ -90,8 +90,9 @@ public class AccountService {
     @Autowired
     BlockRepository blockRepository;
     
+    
+    
     // CRUD，全用 list
-
     public Payload<Msg, List<Block>> readBlocks( List<String> blocksId) {
         System.out.println("Read blocks：");
         System.out.println("blocksId： " + blocksId);
@@ -111,11 +112,11 @@ public class AccountService {
         } );
 
         if (blocks.size() == 0) {
-            System.out.println("All of the blocksId are not found");
+            System.out.println("All of the blocksId are not found or blocksId is an empty array");
             return new Payload <Msg, List<Block>> (
                     new Msg(
                         "error",
-                        "All of the blockId are not found"
+                        "All of the blockId are not found or blocksId is an empty array"
                     ),
                     blocks
                 );
@@ -143,6 +144,102 @@ public class AccountService {
                     blocks
                 );
         }
+    }
+
+    public Payload<Msg, List<Block>> readBlocksByUsername(String username) {
+        System.out.println("Read blocks by username：");
+        System.out.println("username： " + username);
+
+        Account user =  accountRepository.findByUsername(username);
+        if (user == null) {
+            System.out.println("username not found");
+            return new Payload <Msg, List<Block>> (
+                new Msg(
+                    "error",
+                    "username not found"
+                ),
+                new ArrayList<Block>()
+            );
+        }
+        else {
+            
+            List<String> blocksId = user.getBlocksId();  
+            if (blocksId == null) {
+                System.out.println("blocksId is null");
+                return new Payload <Msg, List<Block>> (
+                    new Msg(
+                        "warning",
+                        "blocksId is null"
+                    ),
+                    new ArrayList<Block>()
+                    // TODO: status "warning"
+            );
+            }
+            else {
+
+                ArrayList <Block> blocks = new ArrayList<Block> ();
+                blockRepository.findAllById(blocksId).forEach( (item) -> {
+                    if (item != null) {
+                        blocks.add(item);
+                    }
+                } );
+        
+                if (blocks.size() == blocksId.size()) {
+                    if (blocks.size() == 0) {
+                        System.out.println("BlocksId is an empty array");
+                        return new Payload <Msg, List<Block>> (
+                            new Msg(
+                                "success",
+                                "BlocksId is an empty array"
+                            ),
+                            blocks
+                        );
+                    }
+                    else {
+                        System.out.println("Success, return all blocks data");
+                        System.out.println("block data :　" + blocks);
+                        return new Payload <Msg, List<Block>> (
+                            new Msg(
+                                "success",
+                                "return all blocks data"
+                                ),
+                            blocks
+                        );
+                    }
+                    
+                }
+                else {
+                    if ((blocks.size() == 0)) {
+                        System.out.println("All of the blocksId are not found");
+                        return new Payload <Msg, List<Block>> (
+                            new Msg(
+                                "error",
+                                "All of the blocksId are not found"
+                            ),
+                            blocks
+                        );
+                    }
+                    else {
+                        System.out.println("Some of the blocksId are not found");
+                        System.out.println("block data :　" + blocks);
+                        return new Payload <Msg, List<Block>> (
+                            new Msg(
+                                "warning",
+                                // TODO: 要告訴前端 status 有 warning 這種可能
+                                "Some of the blockId are not found"
+                            ),
+                            blocks
+                        );
+                    }
+
+                }
+                
+            }
+           
+            
+            
+        }
+
     }
 
     public Payload<Msg, List<Block> > updateBlocks(List<Block> inBlocks) {

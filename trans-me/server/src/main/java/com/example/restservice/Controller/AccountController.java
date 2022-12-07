@@ -5,6 +5,7 @@ import java.util.List;
 // import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.mortbay.jetty.security.Password;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,10 +66,13 @@ public class AccountController {
 	
 	// Login
 	@GetMapping("")
-	public CommonResponse getAccount(@RequestBody GetAccountRequest req) {
+	// public CommonResponse getAccount(@RequestBody GetAccountRequest req) {
+	public CommonResponse getAccount(
+		@RequestParam("username") String username,
+		@RequestParam("password") String password) {
 
-		String username = req.getData().getUsername();
-		String password = req.getData().getPassword();
+		// String username = req.getData().getUsername();
+		// String password = req.getData().getPassword();
 
 		Payload <Msg, Account> loginResult =  login.login(username, password);
 		
