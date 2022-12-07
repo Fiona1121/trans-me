@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { nanoid } from "nanoid";
 
 const initialState = {
   // audio operation
@@ -29,12 +28,8 @@ export const globalSlice = createSlice({
     setBlocks: (state, action) => {
       state.blocks = action.payload;
     },
-    addEmptyBlock: (state, action) => {
-      state.blocks.push({
-        id: nanoid(),
-        content: "",
-        isHidden: false,
-      });
+    addBlock: (state, action) => {
+      state.blocks = [...state.blocks, action.payload];
     },
     moveBlockUp: (state, action) => {
       const { id } = action.payload;
@@ -58,11 +53,10 @@ export const globalSlice = createSlice({
       }
     },
     insertBlock: (state, action) => {
-      const { index } = action.payload;
-      const id = nanoid(6);
+      const { index, block } = action.payload;
       state.blocks = [
         ...state.blocks.slice(0, index),
-        { id, content: "", isHidden: false },
+        block,
         ...state.blocks.slice(index),
       ];
     },
@@ -79,46 +73,28 @@ export const globalSlice = createSlice({
         ...state.blocks.slice(index + 1),
       ];
     },
-    duplicateBlock: (state, action) => {
-      const { id } = action.payload;
-      const index = state.blocks.findIndex((block) => block.id === id);
-      const newBlock = {
-        id: nanoid(6),
-        content: state.blocks[index].content,
-        isHidden: false,
-      };
-      state.blocks = [
-        ...state.blocks.slice(0, index + 1),
-        newBlock,
-        ...state.blocks.slice(index + 1),
-      ];
-    },
     toggleBlockVisibility: (state, action) => {
       const { id } = action.payload;
       const index = state.blocks.findIndex((block) => block.id === id);
-      state.blocks[index].isHidden = !state.blocks[index].isHidden;
+      state.blocks[index].hidden = !state.blocks[index].hidden;
     },
     mergeBlocks: (state, action) => {
-      const { ids } = action.payload;
+      const { ids, newBlock } = action.payload;
       const index = state.blocks.findIndex((block) => block.id === ids[0]);
-      const newBlock = {
-        id: nanoid(6),
-        content: ids
-          .map((id) => state.blocks.find((block) => block.id === id).content)
-          .join(""),
-        isHidden: false,
-      };
+      // remove blocks in ids
+      state.blocks = state.blocks.filter((block) => !ids.includes(block.id));
+      // insert new block
       state.blocks = [
         ...state.blocks.slice(0, index),
         newBlock,
-        ...state.blocks.slice(index + ids.length),
+        ...state.blocks.slice(index),
       ];
     },
     hideBlocks: (state, action) => {
       const { ids } = action.payload;
       state.blocks = state.blocks.map((block) => {
         if (ids.includes(block.id)) {
-          return { ...block, isHidden: true };
+          return { ...block, hidden: true };
         } else {
           return block;
         }
@@ -128,7 +104,7 @@ export const globalSlice = createSlice({
       const { ids } = action.payload;
       state.blocks = state.blocks.map((block) => {
         if (ids.includes(block.id)) {
-          return { ...block, isHidden: false };
+          return { ...block, hidden: false };
         } else {
           return block;
         }
@@ -158,13 +134,12 @@ export const {
   insertBlock,
   updateBlockContent,
   deleteBlock,
-  duplicateBlock,
   toggleBlockVisibility,
   mergeBlocks,
   hideBlocks,
   showBlocks,
   deleteBlocks,
-  addEmptyBlock,
+  addBlock,
   resetState,
 } = globalSlice.actions;
 

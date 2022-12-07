@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // Todo: current initial state is just for testing
 const initialState = {
-  username: "fiona",
+  username: "user0",
+  password: "00000000",
   expirationTime: 1769303561038,
 };
 
@@ -17,10 +18,12 @@ export const sessionSlice = createSlice({
   reducers: {
     setLogin: (state, action) => {
       state.username = action.payload.username;
+      state.password = action.payload.password;
       state.expirationTime = Date.now() + 48 * 60 * 60 * 1000; // 48 hours
     },
     setLogout: (state) => {
       state.username = null;
+      state.password = null;
       state.expirationTime = null;
     },
   },

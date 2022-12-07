@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-// message
 @AllArgsConstructor
 @Getter
 @Setter
