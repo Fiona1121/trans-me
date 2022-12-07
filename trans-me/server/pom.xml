@@ -102,19 +102,13 @@
             <optional>true</optional> <!-- 這個需要為 true 熱部署才有效 -->
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/uk.ac.shef.dcs/jate -->
-        <dependency>
+        <!-- 先關掉 -->
+		<!-- https://mvnrepository.com/artifact/uk.ac.shef.dcs/jate -->
+        <!-- <dependency>
             <groupId>uk.ac.shef.dcs</groupId>
             <artifactId>jate</artifactId>
             <version>2.0-beta.11</version>
-        </dependency>
+        </dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
