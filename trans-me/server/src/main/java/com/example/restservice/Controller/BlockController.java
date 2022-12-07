@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.naming.spi.DirStateFactory.Result;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -78,7 +79,7 @@ public class BlockController {
 
     // putBlock
     @PutMapping("")
-    public CommonResponse pustBlock(@RequestBody PutBlockRequest req) {
+    public CommonResponse putBlock(@RequestBody PutBlockRequest req) {
     
         Payload <Msg, List <Block>> result = accountService.updateBlocks(req.getData().getBlocks());
 
@@ -87,7 +88,21 @@ public class BlockController {
             result.getData()
         );
         
+    } 
+
+    // deleteBlock
+    @DeleteMapping("")
+    public CommonResponse deleteBlock(@RequestBody GetBlockRequest req) {
+    
+        Payload <Msg, String> result = accountService.deleteBlocks(req.getData().getBlocksId());
+
+        return new CommonResponse <String>(
+            result.getMsg(),
+            result.getData()
+        );
+        
     }
+
 }
 	
 	

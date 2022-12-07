@@ -18,6 +18,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -34,27 +36,77 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
-    }
-
+    }    
+    
     @Override
     public void run(String... args) throws Exception {
 
-        // testing
         System.out.println("--------START--------");
         
+        // List all accounts
+        System.out.println("ALL ACCOUNTS: ");
+        List<Account> itemList = returnAllItems();
+        for (Account t: itemList) {
+            System.out.println(t.toString());
+        }
+    
+        // List all blocks
+        System.out.println("All Blocks: ");
+        List<Block> blockList = blockRepository.findAll();
+        for (Block t: blockList) {
+            System.out.println(t.toString());
+        }
+    
         // createItem("000", "test", "meow2");
-        // delete("test");
+// delete("test");
+        
+        // test : deleteBlock
+            // ArrayList<String> testList = new ArrayList<String>();
+            // String testString = "6384c6e3d227b537c679ea72";  
+            // testList.add(testString);
+            // testList.add("6384c80bd227b537c679ea73");
+            // // accountService.deleteBlocks(testList);
+            
 
+        // test : list containing query
+        // failed
+            // ArrayList<String> testList = new ArrayList<String>();
+            // String testString = "638ec68a4ac7443cf2f2891e";
+            
+            // testList.add(testString);
+            // // Account test = accountRepo.findByBlocksIdContaining(testList);
+            // // System.out.println("account found : " + test);
+
+            // Account test = accountRepo.findByBlocksIdContaining(testString);
+            // System.out.println("account found : " + test);
+
+            // // test = accountRepo.findByUsername("user0");
+            // List<Account> test2 = accountRepo.findByUsernameContaining("POST");
+            // System.out.println("account found : " + test2);
+
+
+        // File testFile = new File("testFile.txt");
+        // if (testFile.createNewFile()) {
+        //     System.out.println("File created: " + testFile.getName());
+        // } else {
+        //     System.out.println("File already exists.");
+        // }
+        // FileWriter myWriter = new FileWriter(testFile.getName());
+        // myWriter.write("user0 : " + test);
+        // myWriter.close();
+        // System.out.println("Successfully wrote to the file.");
+
+        
         // // test : updateBlock
         //     ArrayList<Block> test = new ArrayList<Block>();
         //     List<String> test_id = accountRepo.findByUsername("POST").getBlocksID();
         //     test.add(new Block(
-        //         test_id.get(0),
+        //         test_id.get(0),    
         //         "new content 1",
         //         true
         //     ));
         //     test.add(new Block(
-        //         test_id.get(1),
+        //         test_id.get(1),    
         //         "new content 2",
         //         false
         //     ));
@@ -63,7 +115,7 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // // test : createBlock
         //     ArrayList<Block> test = new ArrayList<Block>();
         //     test.add(new Block(
-        //         "hello block",
+        //         "hello block",    
         //         false
         //         ));
         //     // test.add(accountRepo.findByUsername("POST").getBlocksID().get(1));
@@ -75,7 +127,7 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
             // test.add(accountRepo.findByUsername("POST").getBlocksID().get(1));
             // accountService.getBlocks(test);
 
-        // test : create new block
+        // test : create new block    
             // Block testBlock = new Block();
             // testBlock.setContent("test block content");
             // blockRepository.save(testBlock);
@@ -83,47 +135,35 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
             // test.getBlocksID().add(testBlock.getId());
             // accountRepo.save(test);
 
-        // test : save
+        // test : save    
             // Account test = accountRepo.findByUsername("POST");
             // test.setPassword("new password");
             // accountRepo.save(test);
 
-        // test : accountRepo.findByUsername
+        // test : accountRepo.findByUsername    
             // System.out.println(accountRepo.findByUsername("POST"));
             //     // 有找到
             // System.out.println(accountRepo.findByUsername("GG"));
             //     // null
 
-        // test : ArrayList
+        // test : ArrayList    
             // ArrayList<String> test = new ArrayList<String>();
             // test.add("testID");
 
-        // test : update
+        // test : update    
             // System.out.println(accountService.update(new Account(
-            //     "",
+            //     "",    
             //     "POST",
             //     "testPW",
             //     test,
             //     new ArrayList<String>()
             // )));
 
-        // test : Login 
+        // test : Login     
             // System.out.println(login.login("POST", ""));
             // System.out.println(login.login("POST", "no"));
             // System.out.println(login.login("test", ""));
-
-        System.out.println("ALL ACCOUNTS: ");
-        List<Account> itemList = returnAllItems();
-        for (Account t: itemList) {
-            System.out.println(t.toString());
-        }
-
-        System.out.println("All Blocks: ");
-        List<Block> blockList = blockRepository.findAll();
-        for (Block t: blockList) {
-            System.out.println(t.toString());
-        }
-
+    
         // String customName = "name";
         // System.out.println("Find term by name: " + customName);
         // Term termQueryByName = findTermByName(customName);

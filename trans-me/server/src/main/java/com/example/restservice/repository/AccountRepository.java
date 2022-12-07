@@ -26,6 +26,13 @@ public interface AccountRepository extends MongoRepository<Account, String> {
 
     boolean existsByUsername(String username);
 
+    
+    // Not sure if it works : 
+    // // Account findByBlocksIdContaining(List<String> blocksId);
+    // Account findByBlocksIdContaining(String blockId);
+    // List<Account> findByUsernameContaining(String name);
+    //     // non unique 會報錯
+
     public long count();
 }
 

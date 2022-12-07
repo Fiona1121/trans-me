@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,4 +29,7 @@ public class Block {
     
     @NonNull
     private boolean hidden;
+
+    @Nonnull
+    private String username;
 }
