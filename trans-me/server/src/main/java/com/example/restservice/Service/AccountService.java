@@ -3,6 +3,8 @@ package com.example.restservice.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -247,6 +249,91 @@ public class AccountService {
                 );
         }
     }
+
+    public Payload<Msg, String> deleteBlocks( List<String> blocksId) {
+        System.out.println("Delete blocks：");
+        System.out.println("blocksId： " + blocksId);
+
+        // blockRepository.deleteAllById(blocksId);
+        // TODO: 檢查有沒有成功
+        // 不能刪不存在的?
+                //  > 就存 username 吧，剛好可以先檢查有沒有這個 block
+        // 同時也更新 account
+        
+
+        List <Block> successfulBlocks = new ArrayList <Block>();
+
+        blocksId.forEach( (blockId) -> {
+            Optional<Block> fetchedBlock = blockRepository.findById(blockId);
+            
+            // 1st possibility : block doesn't exist
+                // do nothing
+            // 2nd：block exists, but account doesn't
+                // just delete the block (?)
+            // 3rd : what if account actually exists but block point wrong?
+                    // ...
+            if (fetchedBlock.isPresent()) {
+                Block DBBlock = fetchedBlock.get();
+                if (DBBlock.getUsername() != null) { // support old blocks
+                    Account account = accountRepository.findByUsername(DBBlock.getUsername());
+                    
+                    if (account != null) {
+                        System.out.println(" found account ： " + account);
+                        
+                        account.setBlocksId(
+                            account.getBlocksId().stream().filter(
+                                (accountBlockId) -> {
+                                    return ! accountBlockId.equals(blockId);
+                                }
+                            ).collect(Collectors.toList())
+                        ); 
+                        accountRepository.save(account);
+
+                        System.out.println(" modified account ： " + account);
+                    }
+                    
+                }
+
+                blockRepository.delete(DBBlock);
+                successfulBlocks.add(DBBlock);
+            }
+        });
+
+        if (successfulBlocks.size() == 0) {
+            System.out.println("All of the blocksId are not found");
+            return new Payload <Msg, String> (
+                    new Msg(
+                        "error",
+                        "All of the blockId are not found"
+                    ),
+                    ""
+                );
+        }
+        else if (successfulBlocks.size() != blocksId.size()) {
+            System.out.println("Some of the blocksId are not found");
+            System.out.println("successfulBlocks :　" + successfulBlocks);
+            return new Payload <Msg, String> (
+                    new Msg(
+                        "warning",
+                        // TODO: 要告訴前端 status 有 warning 這種可能
+                        "Some of the blockId are not found"
+                    ),
+                    ""
+                );
+        }
+        else {
+            System.out.println("Success, all operation completed");
+            System.out.println("successfulBlocks :　" + successfulBlocks);
+            return new Payload <Msg, String> (
+                    new Msg(
+                        "success",
+                        "All operation completed"
+                        ),
+                    ""
+                );
+        }
+    }
+
 
     // + clear()
 
