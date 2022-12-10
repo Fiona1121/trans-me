@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Grid,
   IconButton,
+  Link,
   ListSubheader,
   Paper,
   Tooltip,
@@ -17,35 +18,25 @@ import {
 } from "@mui/material";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
-import { useEffect } from "react";
+import { TermAPI } from "../../../api";
 
 export default function Term() {
   const { blocks } = useSelector(selectGlobal);
   const [isLoading, setIsLoading] = useState(false);
-  const [terms] = useState([
-    { name: "Test", details: "This is the detail of test." },
-    { name: "Test2", details: "This is the detail of test2." },
-    { name: "Test3", details: "This is the detail of test3." },
-  ]);
+  const [terms, setTerms] = useState([]);
 
-  const fetchTerms = () => {
+  const fetchTerms = async () => {
     setIsLoading(true);
     const stringContent = blocks.map((block) => block.content).join("");
     const text = stringContent.replace(/<[^>]+>/g, "");
-    // TODO: fetch terms from server
-    console.log(text);
+    const response = await TermAPI.postTerms(text);
+    setTerms(response.data.data);
     setIsLoading(false);
   };
 
   const handleRefresh = () => {
     fetchTerms();
   };
-
-  // Initialize terms
-  useEffect(() => {
-    fetchTerms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Paper
@@ -104,6 +95,7 @@ export default function Term() {
               justifyContent="center"
               alignItems="center"
               spacing={1}
+              sx={{ mt: 2 }}
             >
               <Grid item>
                 <CircularProgress />
@@ -128,7 +120,12 @@ export default function Term() {
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Typography variant="body2">{term.details}</Typography>
+                  <Typography variant="body2">{term.description}</Typography>
+                  {term.links.map((link, index) => (
+                    <Link key={"link-" + index} href={link} target="_blank">
+                      More
+                    </Link>
+                  ))}
                 </AccordionDetails>
               </Accordion>
             ))

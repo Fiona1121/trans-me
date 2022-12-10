@@ -2,6 +2,7 @@ import axios from "axios";
 
 const errorHandler = (error) => {
   if (error.response.status === 403) window.location.replace("/");
+  // cannot connect to server
 };
 
 export const AccountAPI = {
@@ -24,7 +25,7 @@ export const BlockAPI = {
     axios.post("/api/block", { data: { block } }).catch(errorHandler),
   putBlocks: (blocks) =>
     axios.put("/api/block", { data: { blocks } }).catch(errorHandler),
-  deleteBlock: (blocksId) =>
+  deleteBlocks: (blocksId) =>
     axios.delete("/api/block", { data: { blocksId } }).catch(errorHandler),
 };
 

@@ -17,15 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
-// import bcrypt from "bcryptjs";
 import TurndownService from "turndown";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetState, selectGlobal } from "../../slices/globalSlice";
+import { resetState, selectGlobal, setBlocks } from "../../slices/globalSlice";
 import { selectSession } from "../../slices/sessionSlice";
 import Board from "./board";
 import Term from "./term";
-import { AccountAPI } from "../../api";
+import { AccountAPI, BlockAPI } from "../../api";
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -34,37 +33,30 @@ export default function Main() {
 
   const [alert, setAlert] = useState({});
   const [dialog, setDialog] = useState({ open: false, title: "", content: "" });
+  const [welcome, setWelcome] = useState(false);
 
-  // TODO: initialize blocks and audioFiles from server
-  // useEffect(() => {
-  //   async function getData() {
-  //     const { blocksId, audioFilesId } = await AccountAPI.getAccount(
-  //       username,
-  //       password
-  //     ).data;
-  //     const password = bcrypt.hashSync("00000000", 10);
-  //     const response = await AccountAPI.postAccount("user0", password);
-  //     console.log(response);
-  //     const newBlocks = await BlockAPI.getBlocks(blocksId).data;
-  //     dispatch(setBlocks(newBlocks));
-  //     dispatch(setAudioFiles(audioFilesId));
-  //   }
-  //   getData();
-  // }, []);
-
-  useEffect(() => {
-    async function saveData() {
-      const audioFilesId = audioFiles.map((audioFile) => audioFile.id);
-      const blocksId = blocks.map((block) => block.id);
-      await AccountAPI.putAccount({
-        username,
-        blocksId,
-        audioFilesId,
+  const saveAccountData = async () => {
+    const audioFilesId = audioFiles.map((audioFile) => audioFile.id);
+    const blocksId = blocks.map((block) => block.id);
+    const response = await AccountAPI.putAccount({
+      username,
+      blocksId,
+      audioFilesId,
+    });
+    if (response?.status === 200) {
+      setAlert({
+        open: true,
+        severity: "success",
+        msg: "Account data saved.",
+      });
+    } else {
+      setAlert({
+        open: true,
+        severity: "error",
+        msg: "Failed to save account data.",
       });
     }
-    saveData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blocks, audioFiles]);
+  };
 
   const handleExport = () => {
     const stringContent = blocks
@@ -98,8 +90,27 @@ export default function Main() {
       title: "New Project",
       content:
         "All the blocks and audio files from current project will be deleted and cannot be recovered. Are you sure to create a new project?",
-      onConfirm: () => {
+      onConfirm: async () => {
         dispatch(resetState());
+        // TODO: delete all audio files and blocks from server
+        const response = await AccountAPI.putAccount({
+          username,
+          blocksId: [],
+          audioFilesId: [],
+        });
+        if (response?.status === 200) {
+          setAlert({
+            open: true,
+            severity: "success",
+            msg: "New project created.",
+          });
+        } else {
+          setAlert({
+            open: true,
+            severity: "error",
+            msg: "Failed to create new project.",
+          });
+        }
         setDialog({ ...dialog, open: false });
       },
       onCancel: () => {
@@ -107,6 +118,20 @@ export default function Main() {
       },
     });
   };
+
+  // TODO: initialize audioFiles from server
+  useEffect(() => {
+    async function getAccountData() {
+      const response = await BlockAPI.getBlocks(username);
+      if (response?.status === 200) dispatch(setBlocks(response.data.data));
+    }
+    function handleWelcome() {
+      setWelcome(true);
+    }
+    getAccountData();
+    handleWelcome();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -129,6 +154,15 @@ export default function Main() {
               TransMe
             </Typography>
             <Box sx={{ display: "flex", mr: 2 }}>
+              <Button
+                key={"save-button"}
+                sx={{ my: 2, mr: 1, display: "block" }}
+                onClick={saveAccountData}
+                color="secondary"
+                variant="contained"
+              >
+                Save
+              </Button>
               <Button
                 key={"export-button"}
                 sx={{ my: 2, color: "white", display: "block" }}
@@ -159,7 +193,7 @@ export default function Main() {
           <Grid container spacing={2} sx={{ pt: 3, pr: 2, pl: 2 }}>
             <Grid item xs></Grid>
             <Grid item xs={8}>
-              <Board blocks={blocks} />
+              <Board />
             </Grid>
             <Grid item xs>
               <Term />
@@ -180,6 +214,45 @@ export default function Main() {
             variant="outlined"
           >
             Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={welcome} onClose={() => setWelcome(false)}>
+        <DialogTitle>Welcome to TransMe</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <Typography variant="body1">
+              This is a multi-functional tool for transcription. We support:
+              <ul>
+                <li>audio-to-text conversion</li>
+                <li>audio recording with speach recognition</li>
+                <li>summary generating</li>
+                <li>term detection</li>
+                <li>text editing</li>
+                <li>translation</li>
+              </ul>
+            </Typography>
+            <Typography variant="body1">
+              <i>
+                Chrome is recommended for the best experience with above
+                features.
+              </i>
+            </Typography>
+            <br />
+            <Typography variant="body1">
+              You can use the buttons on the top right corner to save your
+              project, export the transcription, or create a new project.{" "}
+              <b>
+                Make sure to save your project before you leave the page to
+                avoid losing your work.
+              </b>{" "}
+              Enjoy!
+            </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ pr: 3, pb: 3 }}>
+          <Button onClick={() => setWelcome(false)} variant="contained">
+            Got it!
           </Button>
         </DialogActions>
       </Dialog>

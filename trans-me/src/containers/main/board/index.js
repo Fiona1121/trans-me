@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Button,
@@ -22,12 +22,16 @@ import {
   deleteBlocks,
   hideBlocks,
   mergeBlocks,
+  selectGlobal,
   showBlocks,
 } from "../../../slices/globalSlice";
 import { BlockAPI } from "../../../api";
+import { selectSession } from "../../../slices/sessionSlice";
 
-export default function Board({ blocks }) {
+export default function Board() {
   const dispatch = useDispatch();
+  const { username } = useSelector(selectSession);
+  const { blocks } = useSelector(selectGlobal);
   const [selected, setSelected] = useState([]);
 
   const handleSelectAll = () => {
@@ -50,12 +54,13 @@ export default function Board({ blocks }) {
   const handleMergeSelected = async () => {
     const newBlock = {
       content: selected
-        .map((id) => blocks.find((block) => block.id === id).content)
+        ?.map((id) => blocks.find((block) => block.id === id).content)
         .join(""),
       hidden: false,
+      username,
     };
     const response = await BlockAPI.postBlock(newBlock);
-    // TODO: delete selected blocks
+    // TODO: Call DELETE API to delete blocks
     dispatch(mergeBlocks({ ids: selected, newBlock: response.data.data }));
     setSelected([]);
   };
@@ -70,14 +75,18 @@ export default function Board({ blocks }) {
     setSelected([]);
   };
 
-  const handleDeleteSelected = () => {
+  const handleDeleteSelected = async () => {
     // TODO: Call API to delete blocks
     dispatch(deleteBlocks({ ids: selected }));
     setSelected([]);
   };
 
   const handleAddBlock = async () => {
-    const response = await BlockAPI.postBlock({ content: "", hidden: false });
+    const response = await BlockAPI.postBlock({
+      content: "",
+      hidden: false,
+      username,
+    });
     dispatch(addBlock(response.data.data));
   };
 

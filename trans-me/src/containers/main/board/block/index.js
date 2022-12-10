@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteBlock,
   insertBlock,
@@ -30,12 +30,14 @@ import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import { BlockAPI } from "../../../../api";
 import RecordingOperator from "./recordingOperator";
+import { selectSession } from "../../../../slices/sessionSlice";
 
 export default function Block({ index, id, content, hidden }) {
   const dispatch = useDispatch();
+  const { username } = useSelector(selectSession);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isOpened, setIsOpened] = useState(false);
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [isRecordOpened, setIsRecordOpened] = useState(false);
 
   const BLOCK_TOOLBAR = [
@@ -60,6 +62,7 @@ export default function Block({ index, id, content, hidden }) {
         const response = await BlockAPI.postBlock({
           content: "",
           hidden: false,
+          username,
         });
         dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
@@ -79,6 +82,7 @@ export default function Block({ index, id, content, hidden }) {
         const response = await BlockAPI.postBlock({
           content: content,
           hidden: false,
+          username,
         });
         dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
@@ -96,12 +100,14 @@ export default function Block({ index, id, content, hidden }) {
     {
       title: "Translate Block",
       onClick: () => {
+        handleTranslate();
         handleMenuClose();
       },
     },
     {
       title: "Generate Abstract",
       onClick: () => {
+        handleGenerateAbstract();
         handleMenuClose();
       },
     },
@@ -109,31 +115,39 @@ export default function Block({ index, id, content, hidden }) {
       title: "Recording Conversion",
       onClick: () => {
         handleMenuClose();
-        onOpenRecord();
+        handleOpenRecord();
       },
     },
   ];
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
-    setIsOpened(!isOpened);
+    setIsMenuOpened(!isMenuOpened);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setIsOpened(false);
+    setIsMenuOpened(false);
   };
 
   const handleBlockUpdate = (content) => {
     dispatch(updateBlockContent({ id, content }));
   };
 
-  const onOpenRecord = () => {
+  const handleTranslate = () => {
+    // TODO: Call API to translate block
+  };
+
+  const handleGenerateAbstract = () => {
+    // TODO: Call API to generate abstract
+  };
+
+  const handleOpenRecord = () => {
     setIsRecordOpened(true);
   };
 
   return (
-    <div>
+    <>
       <Paper sx={{ width: "100%" }} variant="outlined">
         <CardContent>
           <RichEditor content={content} onUpdate={handleBlockUpdate} />
@@ -155,9 +169,9 @@ export default function Block({ index, id, content, hidden }) {
                 <IconButton
                   id="menu-button"
                   onClick={handleMenuClick}
-                  aria-controls={isOpened ? "menu" : undefined}
+                  aria-controls={isMenuOpened ? "menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={isOpened ? "true" : undefined}
+                  aria-expanded={isMenuOpened ? "true" : undefined}
                 >
                   <MoreVertRoundedIcon />
                 </IconButton>
@@ -168,7 +182,7 @@ export default function Block({ index, id, content, hidden }) {
         <Menu
           id="menu"
           anchorEl={anchorEl}
-          open={isOpened}
+          open={isMenuOpened}
           onClose={handleMenuClose}
           MenuListProps={{
             "aria-labelledby": "menu-button",
@@ -185,12 +199,11 @@ export default function Block({ index, id, content, hidden }) {
           ))}
         </Menu>
       </Paper>
-
       <RecordingOperator
         index={index}
         open={isRecordOpened}
         setOpen={setIsRecordOpened}
       />
-    </div>
+    </>
   );
 }
