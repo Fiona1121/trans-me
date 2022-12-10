@@ -12,10 +12,8 @@ import lombok.Setter;
 public class GetAudioFileRequest {
     @Getter
     @Setter
-
     public class RequestData {
         private String username;
-        private String audioFileId;
     }
 
     private RequestData data;
