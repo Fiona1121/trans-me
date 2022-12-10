@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.lang.Object;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 // import org.springframework.mock.web.MockMultipartFile;
 
@@ -16,6 +17,7 @@ import com.google.api.client.http.InputStreamContent;
 import com.google.api.client.util.IOUtils;
 import com.google.api.services.drive.Drive;
 
+@Service
 public class CreateAudioFile {
     // Input: 
     // file: the file as a multipart file coming from a POST method

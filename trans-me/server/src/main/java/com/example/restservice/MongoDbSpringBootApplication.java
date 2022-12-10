@@ -8,6 +8,7 @@ import com.example.restservice.Repository.BlockRepository;
 import com.example.restservice.Repository.TermRepository;
 import com.example.restservice.Service.AccountService;
 import com.example.restservice.Service.Login;
+import com.example.restservice.Service.Transcription;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -33,6 +34,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
 
     @Autowired
     AccountService accountService;
+
+    // @Autowired
+    // Transcription transcription;
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
@@ -56,6 +60,22 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         for (Block t: blockList) {
             System.out.println(t.toString());
         }
+
+        // test : Google API
+            System.out.println("trial 1");
+            Transcription.asyncRecognizeFile("C:\\Users\\user\\Desktop\\test.wav");
+            // System.out.println("trial 2");
+            // Transcription.asyncRecognizeFile( "C:/Users/user/Desktop/test.wav");
+            // 兩種都可以
+        
+            System.out.println("trial 3");
+            String testString = "gs://example-qscgyj830856700/audio-files/test.wav";
+            Transcription.asyncRecognizeGcs(testString);
+            // 這個不行...
+            
+            // sample rate & language 記得改
+            // 要用 single channel，audacity 要檢查
+        
     
         // createItem("000", "test", "meow2");
 // delete("test");

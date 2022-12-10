@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.example.restservice.Drive.GoogleDriveUtils;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 
+@Service
 public class CreateFolder {
     // To create folder inside transme folder in google drive
     // Input: name of the folder (account name)
