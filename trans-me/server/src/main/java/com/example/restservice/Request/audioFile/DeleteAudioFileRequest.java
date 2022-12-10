@@ -9,14 +9,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class PutAudioFileRequest {
+public class DeleteAudioFileRequest {
     @Getter
     @Setter
     public class RequestData {
-        private String id;
-        private String name;
+        private String username;
+        private String audioFileId;
     }
 
     private RequestData data;
 }
-
