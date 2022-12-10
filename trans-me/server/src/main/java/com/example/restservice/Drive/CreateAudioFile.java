@@ -47,13 +47,13 @@ public class CreateAudioFile {
     }
 
     // public static void main(String[] args) throws IOException {
-    //     java.io.File file = new java.io.File("./src/main/java/com/example/restservice/Drive/everybodys_circulation.mp3");
-    //     MultipartFile mpFile = new MockMultipartFile("newfile.mp3", new FileInputStream(file));
+    //     java.io.File file = new java.io.File("./src/main/java/com/example/restservice/Drive/test.wav");
+    //     MultipartFile mpFile = new MockMultipartFile("newfile.wav", new FileInputStream(file));
 
-    //     File googleFile = uploadFile(mpFile, "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4");
+    //     List<String> responseAudioUpload = uploadFile(mpFile, "130DakidoW74dLcOt0sj_3-hppX_ia25E");
 
-    //     System.out.println("Created audio file with id: " + googleFile.getId());
-    //     System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
+    //     System.out.println("Created audio file with id: " + responseAudioUpload.get(0));
+    //     System.out.println("WebContentLink: " + responseAudioUpload.get(1) );
 
     //     System.out.println("Done!");
     // }
