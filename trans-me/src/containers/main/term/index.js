@@ -65,8 +65,10 @@ export default function Term() {
               variant="h5"
               sx={{
                 fontFamily: "Playfair Display",
+                fontSize: 20,
                 color: "rgba(34, 34, 34, 1)",
                 fontWeight: 700,
+                ml: 1,
                 mt: 1,
               }}
             >
