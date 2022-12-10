@@ -92,7 +92,7 @@ export default function Main() {
         "All the blocks and audio files from current project will be deleted and cannot be recovered. Are you sure to create a new project?",
       onConfirm: async () => {
         dispatch(resetState());
-        // TODO: delete all audio files and blocks from server
+        await BlockAPI.deleteBlocks(blocks.map((block) => block.id));
         const response = await AccountAPI.putAccount({
           username,
           blocksId: [],

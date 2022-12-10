@@ -60,7 +60,7 @@ export default function Board() {
       username,
     };
     const response = await BlockAPI.postBlock(newBlock);
-    // TODO: Call DELETE API to delete blocks
+    await BlockAPI.deleteBlocks(selected);
     dispatch(mergeBlocks({ ids: selected, newBlock: response.data.data }));
     setSelected([]);
   };
@@ -76,7 +76,7 @@ export default function Board() {
   };
 
   const handleDeleteSelected = async () => {
-    // TODO: Call API to delete blocks
+    await BlockAPI.deleteBlocks(selected);
     dispatch(deleteBlocks({ ids: selected }));
     setSelected([]);
   };

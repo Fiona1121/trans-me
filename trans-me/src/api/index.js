@@ -26,7 +26,13 @@ export const BlockAPI = {
   putBlocks: (blocks) =>
     axios.put("/api/block", { data: { blocks } }).catch(errorHandler),
   deleteBlocks: (blocksId) =>
-    axios.delete("/api/block", { data: { blocksId } }).catch(errorHandler),
+    fetch("/api/block", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: { blocksId } }),
+    }).catch(errorHandler),
 };
 
 export const TermAPI = {
@@ -35,8 +41,10 @@ export const TermAPI = {
 };
 
 export const TranslationAPI = {
-  postTranslations: (content) =>
-    axios.post("/api/translation", { data: { content } }).catch(errorHandler),
+  postTranslation: (content, language) =>
+    axios
+      .post("/api/translate", { data: { content, language } })
+      .catch(errorHandler),
 };
 
 export const SummaryAPI = {
