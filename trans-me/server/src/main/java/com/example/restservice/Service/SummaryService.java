@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 public class SummaryService {
     public CommonResponse<String> handleSummary(String content) throws IOException {
         String data = "";
-        var processBuilder = new ProcessBuilder("/Users/liaoshenghung/opt/anaconda3/envs/web/bin/python","-W ignore"
-            , "/Users/liaoshenghung/Documents/Repo/course/SE/text_summarize/script.py"
+        var processBuilder = new ProcessBuilder("python","-W ignore"
+            , "./src/main/python/com/example/restservice/Service/Summary.py"
             , content);
         processBuilder.redirectErrorStream(true);
         var process = processBuilder.start();
