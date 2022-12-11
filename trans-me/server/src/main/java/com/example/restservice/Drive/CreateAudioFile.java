@@ -1,12 +1,8 @@
 package com.example.restservice.Drive; 
 
-import java.io.IOException;
-import java.util.Collections;
 import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.lang.Object;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.api.services.drive.model.File;
 import com.google.api.client.http.InputStreamContent;
-import com.google.api.client.util.IOUtils;
 import com.google.api.services.drive.Drive;
 
 @Service
@@ -50,16 +45,4 @@ public class CreateAudioFile {
         }
         return null;
     }
-
-    // public static void main(String[] args) throws IOException {
-    //     java.io.File file = new java.io.File("./src/main/java/com/example/restservice/Drive/test.wav");
-    //     MultipartFile mpFile = new MockMultipartFile("newfile.wav", new FileInputStream(file));
-
-    //     List<String> responseAudioUpload = uploadFile(mpFile, "130DakidoW74dLcOt0sj_3-hppX_ia25E");
-
-    //     System.out.println("Created audio file with id: " + responseAudioUpload.get(0));
-    //     System.out.println("WebContentLink: " + responseAudioUpload.get(1) );
-
-    //     System.out.println("Done!");
-    // }
 }
