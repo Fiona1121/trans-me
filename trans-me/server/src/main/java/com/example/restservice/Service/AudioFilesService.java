@@ -96,7 +96,13 @@ public class AudioFilesService {
         }
     }
 
-    public Payload<Msg, AudioFile> postAudioFile(String username, String name, String format, MultipartFile file) {
+    public Payload<Msg, AudioFile> postAudioFile(String username, 
+                                                String name, 
+                                                String format, 
+                                                MultipartFile file,
+                                                int sampleRate,
+                                                String language) {
+
         Account account = accountRepository.findByUsername(username);
 
         if (account == null) {
@@ -132,7 +138,7 @@ public class AudioFilesService {
 
         String driveId = responseGoogleDrive.get(0);
         String url = responseGoogleDrive.get(1);
-        AudioFile newAudioFile = new AudioFile(null, name, url, driveId, format);
+        AudioFile newAudioFile = new AudioFile(null, name, url, driveId, format, sampleRate, language);
 
         AudioFile savedAudioFile = audioFileRepository.save(newAudioFile);
 

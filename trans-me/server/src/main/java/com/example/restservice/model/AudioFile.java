@@ -20,4 +20,6 @@ public class AudioFile {
     private String url;
     private String driveId;
     private String format;
+    private int sampleRate;
+    private String language;
 }
