@@ -206,22 +206,6 @@ export default function Main() {
         </AppBar>
         <Box sx={{ width: "100%" }}>
           <Toolbar />
-          <Grid sx={{ pl: 2.5, pr: 3.5, pt: 3, width: "100%" }}>
-            <AudioPlayer
-              elevation={1}
-              variation="primary"
-              autoplay={false}
-              rounded={false}
-              download={true}
-              loop={true}
-              displaySlider={true}
-              displayCloseButton={false}
-              spacing={1}
-              debug={false}
-              src={audioSrcs}
-            />
-          </Grid>
-
           <Grid container spacing={2} sx={{ pt: 3, pr: 2, pl: 2 }}>
             <Grid item xs>
               <AudioLibrary />

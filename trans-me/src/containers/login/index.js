@@ -1,38 +1,42 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
-import { Alert } from '@mui/material';
+import { Alert } from "@mui/material";
 import MergeRoundedIcon from "@mui/icons-material/MergeRounded";
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
+import Input from "@mui/material/Input";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
 import { Snackbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="/">
         Trans-me
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
-
 
 export default function Login() {
   const navigate = useNavigate();
@@ -46,14 +50,15 @@ export default function Login() {
     setUsername(event.target.value);
   };
   const handlePassword = (event) => {
-    setPassword(event.target.value)
+    setPassword(event.target.value);
   };
   const handleValidation = (value) => {
     const reg = new RegExp("[A-Za-z0-9_]");
-    return reg.test(value)
+    return reg.test(value);
   };
 
   const handleLogin = (e) => {
+    e.preventDefault();
     const validUsername = handleValidation(username);
     const validPassword = handleValidation(password);
 
@@ -63,22 +68,20 @@ export default function Login() {
         severity: "warning",
         msg: "Username or password cannot be empty.",
       });
-    
-    }else if (!validUsername || !validPassword) {
+    } else if (!validUsername || !validPassword) {
       setAlert({
         open: true,
         severity: "warning",
         msg: "The format of the account number or password is wrong, please enter characters or numbers within 8~12 yards.",
       });
-
-    }else {
-      window.location.href = "/";
+    } else {
+      navigate("/");
       setAlert({
         open: true,
         severity: "success",
         msg: "Log in successfully.",
       });
-      
+
       /*
       if (判斷帳號密碼API){
         setAlert({
@@ -96,7 +99,7 @@ export default function Login() {
         });
       }*/
     }
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -105,20 +108,29 @@ export default function Login() {
         <Box
           sx={{
             marginTop: 15,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            border: '15px',
-            border: 1
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            border: "15px",
+            border: 1,
           }}
         >
-          <Avatar sx={{ width: 100, height: 100, mt: -6.5, mb: 1 }} src={require('./img/SmileImg.png')} />
-          
+          <Avatar
+            sx={{ width: 100, height: 100, mt: -6.5, mb: 1 }}
+            src={require("./img/SmileImg.png")}
+          />
+
           <Typography component="h1" variant="h5">
             Welcome
           </Typography>
 
-          <Box component="form" textAlign='center' onSubmit={handleLogin} noValidate sx={{ ml: 5, mr: 5, mb: 3, mt: 1 }}>
+          <Box
+            component="form"
+            textAlign="center"
+            onSubmit={handleLogin}
+            noValidate
+            sx={{ ml: 5, mr: 5, mb: 3, mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -138,8 +150,8 @@ export default function Login() {
               label="Password"
               type="password"
               id="password"
-              value = {password}
-              onChange= {handlePassword}
+              value={password}
+              onChange={handlePassword}
             />
             <Button
               type="submit"
@@ -147,15 +159,13 @@ export default function Login() {
               variant="outlined"
               alignItems="center"
               justifyContent="center"
-              sx={{ color: 'black', borderColor: 'black', mx: 5, mt: 4, mb: 2 }}
-
+              sx={{ color: "black", borderColor: "black", mx: 5, mt: 4, mb: 2 }}
             >
               Login
-             
             </Button>
 
-            <Grid container >
-              <Grid item sx={{ textAlign: 'center', ml: 11.5, fontSize: 12 }}>
+            <Grid container>
+              <Grid item sx={{ textAlign: "center", ml: 11.5, fontSize: 12 }}>
                 Don't have an account?
                 <br />
                 <Link href="register" variant="body2" sx={{ fontSize: 12 }}>
@@ -163,22 +173,20 @@ export default function Login() {
                 </Link>
               </Grid>
             </Grid>
-
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
       <Snackbar
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          open={alert?.open}
-          autoHideDuration={5000}
-          onClose={() => setAlert({ ...alert, open: false })}
-        >
-          <Alert variant="filled" severity={alert?.severity}>
-            {alert?.msg}
-          </Alert>
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alert?.open}
+        autoHideDuration={5000}
+        onClose={() => setAlert({ ...alert, open: false })}
+      >
+        <Alert variant="filled" severity={alert?.severity}>
+          {alert?.msg}
+        </Alert>
       </Snackbar>
     </ThemeProvider>
-
   );
 }
