@@ -25,8 +25,70 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.Duration;
 
+import com.example.restservice.Response.CommonResponse;
+import com.example.restservice.Response.Msg;
+import com.example.restservice.Service.Payload.Payload;
+import com.example.restservice.Transcription.TranscriptionSupport;
+
 @Service
 public class Transcription {
+    
+    public Payload<Msg, String> transcribe(String username, String audioFileId) {
+        
+        System.out.println("Transcription：");
+        System.out.println("file : " + username + "-" + audioFileId);
+        
+        TranscriptionSupport support = new TranscriptionSupport(
+            audioFileId,
+            username + "-" + audioFileId + ".wav");
+        String filePath = support.downloadFile();
+
+        if (filePath == null) {
+            System.out.println("Something is wrong while downloading the audio file");
+            return new Payload <Msg, String>(
+                new Msg(
+                    "error", 
+                    "Something is wrong while downloading the audio file. Please try again."),
+                ""
+            );
+        }
+        else {
+            System.out.println("try transcription");
+            String transcriptionResult;
+            Payload <Msg, String> result = new Payload<Msg,String>(null, "");
+            
+            try {
+                transcriptionResult = Transcription.asyncRecognizeFile(
+                    filePath, "zh-TW", 44100
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                transcriptionResult = null;
+            }
+            
+            if (transcriptionResult != null) {
+                System.out.println("Transcription completed");
+                result.setMsg( new Msg(
+                    "success", 
+                    "Transcription completed")
+                );
+                result.setData(transcriptionResult);
+            }
+            else {
+                System.out.println("Transcription failed");
+                result.setMsg( new Msg(
+                    "error", 
+                    "Transcription failed")
+                );
+            }
+            
+            support.deleteFile();
+            return result;
+        }
+
+    }
+    
+    
     /**
      * Performs non-blocking speech recognition on remote FLAC file and prints the transcription.
      *

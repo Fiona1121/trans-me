@@ -10,6 +10,8 @@ import com.example.restservice.Request.transcription.PostTranscriptionRequest;
 import com.example.restservice.Response.CommonResponse;
 import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Transcription;
+import com.example.restservice.Service.Payload.Payload;
+import com.example.restservice.Transcription.TranscriptionSupport;
 
 // @Tag(name = "Block Controller")
 @RestController
@@ -23,23 +25,18 @@ public class TranscriptionController {
     @PostMapping("")
     public CommonResponse postTranscription(@RequestBody PostTranscriptionRequest req) {
     
-    // "C:\\Users\\user\\Desktop\\test.wav"
+        // "C:\\Users\\user\\Desktop\\test.wav"
+        
+        Payload <Msg, String> result = transcription.transcribe(
+            req.getData().getUsername(),
+            req.getData().getAudioFileId()
+        );
+        
+        return new CommonResponse <String>(
+            result.getMsg(),
+            result.getData()
+        );
 
-        try {
-            System.out.println("Transcription succeded");
-            return new CommonResponse <String>(
-                new Msg("success", "Transcription succeded"),
-                Transcription.asyncRecognizeFile(req.getData().getAudioFileId(), "zh-TW", 44100)
-            );
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            System.out.println("Transcription failed");
-            e.printStackTrace();
-            return new CommonResponse <String>(
-                new Msg("error", "Transcription failed"),
-                ""
-            );
-        }
         
     }
 }
