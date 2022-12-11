@@ -96,13 +96,7 @@ public class AudioFilesService {
         }
     }
 
-    public Payload<Msg, AudioFile> postAudioFile(String username, 
-                                                String name, 
-                                                String format, 
-                                                MultipartFile file,
-                                                int sampleRate,
-                                                String language) {
-
+    public Payload<Msg, AudioFile> postAudioFile(String username, String name, String format, MultipartFile file, int sampleRate, String language) {
         Account account = accountRepository.findByUsername(username);
 
         if (account == null) {
