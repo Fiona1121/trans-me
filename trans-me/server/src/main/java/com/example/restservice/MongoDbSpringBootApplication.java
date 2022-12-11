@@ -174,13 +174,13 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // System.out.println("Number of terms in collection: " + getCountOfTerms());
     }
 
-    public void createItem(String id, String username, String password) {
-        accountRepo.save(
-            // new Account(id, username, password, 
-            //     new ArrayList<String>(), new ArrayList<String>())
-            new Account(username = username, password = password)
-        );
-    }
+    // public void createItem(String id, String username, String password) {
+    //     accountRepo.save(
+    //         // new Account(id, username, password, 
+    //         //     new ArrayList<String>(), new ArrayList<String>())
+    //         new Account(username = username, password = password)
+    //     );
+    // }
 
     public List<Account> returnAllItems() {
         return accountRepo.findAll();
@@ -201,9 +201,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     //     if (updatedTerm != null) System.out.println("Successfully updated");
     // }
 
-    public void delete(String username) {
-        accountRepo.deleteAllByUsername(username);
-    }
+    // public void delete(String username) {
+    //     accountRepo.deleteAllByUsername(username);
+    // }
 
     // =============================================================
 
