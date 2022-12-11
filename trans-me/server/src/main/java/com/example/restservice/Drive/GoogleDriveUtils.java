@@ -28,7 +28,7 @@ public class GoogleDriveUtils {
 
     // Directory to store user credentials for this application.
     private static final java.io.File CREDENTIALS_FOLDER //
-            = new java.io.File("./src/main/java/com/example/restservice/Drive", "credentials");
+            = new java.io.File("src/main/java/com/example/restservice/Drive", "credentials");
 
     private static final String CLIENT_SECRET_FILE_NAME = "client_secret.json";
 
