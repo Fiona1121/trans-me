@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.restservice.Response.Msg;
+import com.example.restservice.Drive.CreateFolder;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Repository.AccountRepository;
 
@@ -24,14 +25,35 @@ public class Registration {
             );
         }
         else {
-            accountRepository.save(new Account(
-                username, password
+            // Creates a subfolder in transme to store the audio files
+            String driveId;
+            try {
+                driveId = CreateFolder.createGoogleFolder(username);
+            }
+            catch (Exception e) {
+                System.out.println("Error creating google drive subfolder");
+                return new Msg(
+                    "error",
+                    "Error creating google drive subfolder"
+                );
+            }
+            Account newAccount = accountRepository.save(new Account(
+                "", username, password, null, null, driveId
             ));
-            System.out.println("success");
-            return new Msg(
-                "success",
-                "new acount created"
-            );
+            if (newAccount != null) {
+                System.out.println("success");
+                return new Msg(
+                    "success",
+                    "new acount created"
+                );
+            }
+            else {
+                System.out.println("Error creating MongoDB Entry");
+                return new Msg(
+                    "error",
+                    "Error creating MongoDB Entry"
+                );
+            }
         }
         
     }

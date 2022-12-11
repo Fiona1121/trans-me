@@ -44,18 +44,18 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         System.out.println("--------START--------");
         
         // List all accounts
-        System.out.println("ALL ACCOUNTS: ");
-        List<Account> itemList = returnAllItems();
-        for (Account t: itemList) {
-            System.out.println(t.toString());
-        }
+        // System.out.println("ALL ACCOUNTS: ");
+        // List<Account> itemList = returnAllItems();
+        // for (Account t: itemList) {
+        //     System.out.println(t.toString());
+        // }
     
-        // List all blocks
-        System.out.println("All Blocks: ");
-        List<Block> blockList = blockRepository.findAll();
-        for (Block t: blockList) {
-            System.out.println(t.toString());
-        }
+        // // List all blocks
+        // System.out.println("All Blocks: ");
+        // List<Block> blockList = blockRepository.findAll();
+        // for (Block t: blockList) {
+        //     System.out.println(t.toString());
+        // }
     
         // createItem("000", "test", "meow2");
 // delete("test");
@@ -174,13 +174,13 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // System.out.println("Number of terms in collection: " + getCountOfTerms());
     }
 
-    public void createItem(String id, String username, String password) {
-        accountRepo.save(
-            // new Account(id, username, password, 
-            //     new ArrayList<String>(), new ArrayList<String>())
-            new Account(username = username, password = password)
-        );
-    }
+    // public void createItem(String id, String username, String password) {
+    //     accountRepo.save(
+    //         // new Account(id, username, password, 
+    //         //     new ArrayList<String>(), new ArrayList<String>())
+    //         new Account(username = username, password = password)
+    //     );
+    // }
 
     public List<Account> returnAllItems() {
         return accountRepo.findAll();
@@ -201,9 +201,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     //     if (updatedTerm != null) System.out.println("Successfully updated");
     // }
 
-    public void delete(String username) {
-        accountRepo.deleteAllByUsername(username);
-    }
+    // public void delete(String username) {
+    //     accountRepo.deleteAllByUsername(username);
+    // }
 
     // =============================================================
 
@@ -233,4 +233,6 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     // public void deleteTermByName(String name) {
     //     termRepo.deleteById(name);
     // }
+
+    
 }
