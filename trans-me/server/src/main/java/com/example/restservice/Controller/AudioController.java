@@ -20,7 +20,6 @@ import com.example.restservice.Service.AudioFilesService;
 import com.example.restservice.Service.Payload.Payload;
 import com.example.restservice.Model.AudioFile;
 import com.example.restservice.Request.audioFile.DeleteAudioFileRequest;
-import com.example.restservice.Request.audioFile.GetAudioFileRequest;
 // import com.example.restservice.Request.audioFile.PostAudioFileRequest;
 import com.example.restservice.Request.audioFile.PutAudioFileRequest;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,9 +34,7 @@ public class AudioController {
     AudioFilesService audioFilesService;
 
     @GetMapping("")
-    public CommonResponse<List<AudioFile>> getAudioFilesByUsername(@RequestBody GetAudioFileRequest req) {
-        String username = req.getData().getUsername();
-
+    public CommonResponse<List<AudioFile>> getAudioFilesByUsername(@RequestParam("username") String username) {
         Payload <Msg, List<AudioFile>> result = audioFilesService.getAudioFiles(username);
 
         return new CommonResponse<List<AudioFile>>(
@@ -60,7 +57,7 @@ public class AudioController {
         );
     }
 
-    @PutMapping("/rename")
+    @PutMapping("")
     public CommonResponse <AudioFile> putAudioFile(@RequestBody PutAudioFileRequest req) {
         String id = req.getData().getId();
         String name = req.getData().getName();
