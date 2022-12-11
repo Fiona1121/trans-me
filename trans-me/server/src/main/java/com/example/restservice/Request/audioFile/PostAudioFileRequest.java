@@ -1,5 +1,7 @@
 package com.example.restservice.Request.audioFile;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.restservice.Model.AudioFile;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ public class PostAudioFileRequest {
         private String username;
         private String name;
         private String format;
+        private MultipartFile file;
     }
 
     private RequestData data;

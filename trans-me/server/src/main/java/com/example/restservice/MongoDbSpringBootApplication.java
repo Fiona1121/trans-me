@@ -44,18 +44,18 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         System.out.println("--------START--------");
         
         // List all accounts
-        System.out.println("ALL ACCOUNTS: ");
-        List<Account> itemList = returnAllItems();
-        for (Account t: itemList) {
-            System.out.println(t.toString());
-        }
+        // System.out.println("ALL ACCOUNTS: ");
+        // List<Account> itemList = returnAllItems();
+        // for (Account t: itemList) {
+        //     System.out.println(t.toString());
+        // }
     
-        // List all blocks
-        System.out.println("All Blocks: ");
-        List<Block> blockList = blockRepository.findAll();
-        for (Block t: blockList) {
-            System.out.println(t.toString());
-        }
+        // // List all blocks
+        // System.out.println("All Blocks: ");
+        // List<Block> blockList = blockRepository.findAll();
+        // for (Block t: blockList) {
+        //     System.out.println(t.toString());
+        // }
     
         // createItem("000", "test", "meow2");
 // delete("test");

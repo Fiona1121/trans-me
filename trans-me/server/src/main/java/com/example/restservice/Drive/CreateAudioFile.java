@@ -26,6 +26,9 @@ public class CreateAudioFile {
     // Second element is the download URL for the frontend to download the file
     public static List<String> uploadFile(MultipartFile file, String folderId) {
         try {
+            if (folderId == "" || folderId == null) {
+                folderId = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
+            }
             File fileMetadata = new File();
 
             fileMetadata.setName(file.getName());

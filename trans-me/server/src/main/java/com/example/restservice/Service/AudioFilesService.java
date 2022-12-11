@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.stereotype.Service;
 import com.example.restservice.Drive.CreateAudioFile;
 import com.example.restservice.Drive.DeleteFile;
 import com.example.restservice.Model.Account;
@@ -34,7 +34,7 @@ public class AudioFilesService {
 
         if (account != null) {
             List<String> audioFilesId = account.getAudioFilesId();
-            if (audioFilesId.isEmpty()) {
+            if (audioFilesId == null) {
                 System.out.println("No audio files found");
                 return new Payload <Msg, List<AudioFile>> (
                         new Msg(
@@ -113,6 +113,7 @@ public class AudioFilesService {
         }
 
         String subfolderId = account.getDriveId();
+        System.out.println("Driveid of the account is: " + subfolderId);
         List<String> responseGoogleDrive = new ArrayList<String>();
 
         System.out.println("Uploading audio file to google drive");
@@ -133,16 +134,19 @@ public class AudioFilesService {
 
         String driveId = responseGoogleDrive.get(0);
         String url = responseGoogleDrive.get(1);
-        AudioFile newAudioFile = new AudioFile("", name, url, driveId, format);
+        AudioFile newAudioFile = new AudioFile(null, name, url, driveId, format);
 
         AudioFile savedAudioFile = audioFileRepository.save(newAudioFile);
 
         if (savedAudioFile != null) {
             System.out.println("Success, return audio file data");
-            System.out.println("Audio file data : " + savedAudioFile);
+            System.out.println("Audio file url : " + savedAudioFile.getUrl() + "\nAudio file id: " + savedAudioFile.getDriveId());
 
             // Update the list of audio files of the given user
             List<String> audioFilesId = account.getAudioFilesId();
+            if (audioFilesId == null) {
+                audioFilesId = new ArrayList<String>();
+            }
             audioFilesId.add(savedAudioFile.getId());
             account.setAudioFilesId(audioFilesId);
             accountRepository.save(account);
