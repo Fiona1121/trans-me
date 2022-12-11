@@ -101,7 +101,7 @@ public class DriveOperator {
         Drive driveService = GoogleDriveUtils.getDriveService();
 
         String pageToken = null;
-        List<File> list = new ArrayList()<File>();
+        List<File> list = new ArrayList<File>();
 
         String query = " mimeType = 'application/vnd.google-apps.folder' " //
                 + " and '" + folderIdParent + "' in parents";
