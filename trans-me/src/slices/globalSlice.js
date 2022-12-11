@@ -3,12 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   // audio operation
   audioFiles: [],
-  currentPlaying: null,
-  isPlaying: false,
 
   // block operation
   blocks: [],
-  isRecording: false,
 };
 
 export const globalSlice = createSlice({
@@ -18,12 +15,6 @@ export const globalSlice = createSlice({
     // audio operation
     setAudioFiles: (state, action) => {
       state.audioFiles = action.payload;
-    },
-    setCurrentPlaying: (state, action) => {
-      state.currentPlaying = action.payload;
-    },
-    setIsPlaying: (state, action) => {
-      state.isPlaying = action.payload;
     },
     setBlocks: (state, action) => {
       state.blocks = action.payload;
@@ -114,9 +105,6 @@ export const globalSlice = createSlice({
       const { ids } = action.payload;
       state.blocks = state.blocks.filter((block) => !ids.includes(block.id));
     },
-    setIsRecording: (state, action) => {
-      state.isRecording = action.payload;
-    },
     resetState: () => {
       return initialState;
     },
@@ -125,10 +113,7 @@ export const globalSlice = createSlice({
 
 export const {
   setAudioFiles,
-  setCurrentPlaying,
-  setIsPlaying,
   setBlocks,
-  setIsRecording,
   moveBlockUp,
   moveBlockDown,
   insertBlock,
