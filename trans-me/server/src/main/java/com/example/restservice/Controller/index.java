@@ -31,31 +31,5 @@ public class index {
     @Autowired
     CreateFolder createFolder;
 
-    @PostMapping("/testInit")
-    public String testInit(){
-        String test =  "C:\\Users\\user\\Desktop\\test.wav";
-        
-        // File folder
-        String fileId;
-        try {
-            fileId = createFolder.createGoogleFolder("transcription");
-            System.out.println("Created folder with id= "+ fileId);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            System.out.println("wrong");
-            e.printStackTrace();
-        }
-
-        File file = new File(test);
-        // MultipartFile mpFile = new MockMultipartFile("newfile.mp3", new FileInputStream(file));
-
-        // File googleFile = uploadFile(mpFile, "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4");
-
-        // System.out.println("Created audio file with id: " + googleFile.getId());
-        // System.out.println("WebContentLink: " + googleFile.getWebContentLink() );
-
-        return "done";
-    }
-
 }
 

@@ -22,7 +22,7 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepository;
 
-    public Payload <Msg, Account> update(PutAccountRequest.RequestData data) {
+    public Payload <Msg, Account> updateAccount(PutAccountRequest.RequestData data) {
         
         System.out.println("Update account：");
         
