@@ -1,13 +1,13 @@
 package com.example.restservice;
 
 import com.example.restservice.Model.Account;
-import com.example.restservice.Model.Block;
-import com.example.restservice.Model.Term;
+// import com.example.restservice.Model.Block;
+// import com.example.restservice.Model.Term;
 import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Repository.BlockRepository;
-import com.example.restservice.Repository.TermRepository;
+// import com.example.restservice.Repository.TermRepository;
 import com.example.restservice.Service.AccountService;
-import com.example.restservice.Service.Login;
+// import com.example.restservice.Transcription.TranscriptionSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,11 +15,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import java.util.ArrayList;
-import java.util.Collection;
+// import java.util.ArrayList;
+// import java.util.Collection;
 import java.util.List;
-import java.io.File;
-import java.io.FileWriter;
+// import java.io.File;
+// import java.io.FileWriter;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -36,6 +36,10 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
+        // TranscriptionSupport support = new TranscriptionSupport("1I-gvn7OH59Be-5ltTLrIUM5dlUd0H5Z-", "test.wav");
+        // String filePath = support.downloadFile();
+        // System.out.println("Stored file at: " + filePath);
+        // support.deleteFile();
     }    
     
     @Override
@@ -44,18 +48,18 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         System.out.println("--------START--------");
         
         // List all accounts
-        System.out.println("ALL ACCOUNTS: ");
-        List<Account> itemList = returnAllItems();
-        for (Account t: itemList) {
-            System.out.println(t.toString());
-        }
+        // System.out.println("ALL ACCOUNTS: ");
+        // List<Account> itemList = returnAllItems();
+        // for (Account t: itemList) {
+        //     System.out.println(t.toString());
+        // }
     
-        // List all blocks
-        System.out.println("All Blocks: ");
-        List<Block> blockList = blockRepository.findAll();
-        for (Block t: blockList) {
-            System.out.println(t.toString());
-        }
+        // // List all blocks
+        // System.out.println("All Blocks: ");
+        // List<Block> blockList = blockRepository.findAll();
+        // for (Block t: blockList) {
+        //     System.out.println(t.toString());
+        // }
     
         // createItem("000", "test", "meow2");
 // delete("test");
@@ -174,13 +178,13 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // System.out.println("Number of terms in collection: " + getCountOfTerms());
     }
 
-    public void createItem(String id, String username, String password) {
-        accountRepo.save(
-            // new Account(id, username, password, 
-            //     new ArrayList<String>(), new ArrayList<String>())
-            new Account(username = username, password = password)
-        );
-    }
+    // public void createItem(String id, String username, String password) {
+    //     accountRepo.save(
+    //         // new Account(id, username, password, 
+    //         //     new ArrayList<String>(), new ArrayList<String>())
+    //         new Account(username = username, password = password)
+    //     );
+    // }
 
     public List<Account> returnAllItems() {
         return accountRepo.findAll();
@@ -201,9 +205,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     //     if (updatedTerm != null) System.out.println("Successfully updated");
     // }
 
-    public void delete(String username) {
-        accountRepo.deleteAllByUsername(username);
-    }
+    // public void delete(String username) {
+    //     accountRepo.deleteAllByUsername(username);
+    // }
 
     // =============================================================
 
@@ -233,4 +237,6 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     // public void deleteTermByName(String name) {
     //     termRepo.deleteById(name);
     // }
+
+    
 }

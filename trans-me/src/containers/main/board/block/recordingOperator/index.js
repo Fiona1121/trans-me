@@ -1,4 +1,12 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { insertBlock } from "../../../../../slices/globalSlice";
+import { selectSession } from "../../../../../slices/sessionSlice";
+
+import { BlockAPI } from "../../../../../api";
+
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -6,23 +14,24 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Snackbar,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-
-import { BlockAPI } from "../../../../../api";
-import { insertBlock } from "../../../../../slices/globalSlice";
-import { useDispatch } from "react-redux";
 import useAudioRecorder from "../../../../../components/audioRecorder/hooks";
 import AudioRecorder from "../../../../../components/audioRecorder";
 
 export default function RecordingOperator({ index, open, setOpen }) {
   const dispatch = useDispatch();
+  const { username } = useSelector(selectSession);
+
   const audioBoxRef = useRef();
   const [isListening, setIsListening] = useState(false);
+  const [alert, setAlert] = useState({});
+
   const { transcript, resetTranscript } = useSpeechRecognition();
 
   const recorderControls = useAudioRecorder();
@@ -72,12 +81,21 @@ export default function RecordingOperator({ index, open, setOpen }) {
   };
 
   const handleFinishRecord = async () => {
-    const response = await BlockAPI.postBlock({
-      content: `<p>${transcript}</p>`,
-      hidden: false,
-    });
-    dispatch(insertBlock({ index: index + 1, block: response.data.data }));
-    handleCloseRecord();
+    if (transcript !== "") {
+      const response = await BlockAPI.postBlock({
+        content: `<p>${transcript}</p>`,
+        hidden: false,
+        username,
+      });
+      dispatch(insertBlock({ index: index + 1, block: response.data.data }));
+      handleCloseRecord();
+    } else {
+      setAlert({
+        open: true,
+        msg: "Please speak something before inserting",
+        severity: "warning",
+      });
+    }
   };
 
   useEffect(() => {
@@ -86,7 +104,7 @@ export default function RecordingOperator({ index, open, setOpen }) {
   }, [open]);
 
   return (
-    <div>
+    <>
       <Dialog open={open} maxWidth="md" fullWidth>
         <DialogTitle>Recording Conversion</DialogTitle>
         <DialogContent>
@@ -94,7 +112,6 @@ export default function RecordingOperator({ index, open, setOpen }) {
             Please allow the access to your microphone and speak into it. Chrome
             Browser is recommended for this feature.
           </DialogContentText>
-
           <Box
             sx={{
               display: "grid",
@@ -103,6 +120,7 @@ export default function RecordingOperator({ index, open, setOpen }) {
               p: 2,
               gap: 1,
               maxHeight: "30vh",
+              overflowY: "scroll",
             }}
             ref={audioBoxRef}
           />
@@ -121,6 +139,7 @@ export default function RecordingOperator({ index, open, setOpen }) {
           <TextField
             id="recording-content"
             fullWidth
+            multiline
             InputProps={{
               readOnly: true,
             }}
@@ -130,6 +149,7 @@ export default function RecordingOperator({ index, open, setOpen }) {
               !SpeechRecognition.browserSupportsSpeechRecognition() ??
               "Your browser does not support speech recognition"
             }
+            rows={10}
           />
         </DialogContent>
         <DialogActions sx={{ pr: 3, pb: 2 }}>
@@ -143,6 +163,16 @@ export default function RecordingOperator({ index, open, setOpen }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alert?.open}
+        autoHideDuration={5000}
+        onClose={() => setAlert({ ...alert, open: false })}
+      >
+        <Alert variant="filled" severity={alert?.severity}>
+          {alert?.msg}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
