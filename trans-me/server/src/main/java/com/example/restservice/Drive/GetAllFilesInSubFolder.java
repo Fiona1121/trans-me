@@ -33,15 +33,4 @@ public class GetAllFilesInSubFolder {
         //
         return list;
     }
-
-    // public static void main(String[] args) throws IOException {
-    //     String folderIdParent = "1syckAI2pLO-WZT2BR7J-B01i0jhDo8D4";
-    //     List<File> googleFiles = getGoogleFilesInFolder(folderIdParent);
-    //     for (File file : googleFiles) {
-
-    //         System.out.println("Mime Type: " + file.getMimeType() + " --- Name: " + file.getName() + " --- Id: " + file.getId());
-    //     }
-
-    //     System.out.println("Done!");
-    // }
 }

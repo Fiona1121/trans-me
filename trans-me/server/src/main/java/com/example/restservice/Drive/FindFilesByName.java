@@ -33,15 +33,4 @@ public class FindFilesByName {
         //
         return list;
     }
-
-    // public static void main(String[] args) throws IOException {
-    //     String folderIdParent = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
-    //     List<File> rootGoogleFolders = getGoogleFilesByName(folderIdParent, "newfile.txt");
-    //     for (File folder : rootGoogleFolders) {
-
-    //         System.out.println("Mime Type: " + folder.getMimeType() + " --- Name: " + folder.getName());
-    //     }
-
-    //     System.out.println("Done!");
-    // }
 }
