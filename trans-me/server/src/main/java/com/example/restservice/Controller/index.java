@@ -28,8 +28,5 @@ public class index {
         return "Hello ";
     }
 
-    @Autowired
-    CreateFolder createFolder;
-
 }
 

@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Payload.Payload;
-import com.example.restservice.Drive.DeleteFile;
-import com.example.restservice.Drive.GetSubFolders;
+import com.example.restservice.Drive.DriveOperator;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Repository.AudioFileRepository;
@@ -56,10 +55,10 @@ public class SystemService {
 
     public void resetDrive() {
         try {
-            List<String> listOfIds = GetSubFolders.getGoogleSubFolders();
+            List<String> listOfIds = DriveOperator.getSubFolders();
             listOfIds.forEach((id) -> {
                 try {
-                    DeleteFile.deleteFile(id);
+                    DriveOperator.deleteFile(id);
                 }
                 catch (Exception f) {
                     System.out.println(f);
