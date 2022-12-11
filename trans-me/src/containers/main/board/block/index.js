@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteBlock,
   insertBlock,
@@ -10,13 +10,25 @@ import {
 } from "../../../../slices/globalSlice";
 import RichEditor from "./richEditor";
 import {
+  Alert,
   Box,
+  Button,
   ButtonGroup,
   CardContent,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
   IconButton,
+  InputLabel,
   Menu,
   MenuItem,
   Paper,
+  Select,
+  Snackbar,
   Tooltip,
 } from "@mui/material";
 
@@ -28,15 +40,21 @@ import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
 import VisibilityOffRoundedIcon from "@mui/icons-material/VisibilityOffRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
-import { BlockAPI } from "../../../../api";
+import { BlockAPI, SummaryAPI, TranslationAPI } from "../../../../api";
 import RecordingOperator from "./recordingOperator";
+import { selectSession } from "../../../../slices/sessionSlice";
 
 export default function Block({ index, id, content, hidden }) {
   const dispatch = useDispatch();
+  const { username } = useSelector(selectSession);
 
+  const [alert, setAlert] = useState({});
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isOpened, setIsOpened] = useState(false);
+  const [isMenuOpened, setIsMenuOpened] = useState(false);
   const [isRecordOpened, setIsRecordOpened] = useState(false);
+  const [isTranslateOpened, setIsTranslateOpened] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [loading, setLoading] = useState(false);
 
   const BLOCK_TOOLBAR = [
     {
@@ -60,6 +78,7 @@ export default function Block({ index, id, content, hidden }) {
         const response = await BlockAPI.postBlock({
           content: "",
           hidden: false,
+          username,
         });
         dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
@@ -67,8 +86,8 @@ export default function Block({ index, id, content, hidden }) {
     {
       title: "Delete Block",
       icon: <DeleteRoundedIcon />,
-      onClick: () => {
-        // TODO: Call API to delete block
+      onClick: async () => {
+        await BlockAPI.deleteBlocks([id]);
         dispatch(deleteBlock({ id }));
       },
     },
@@ -79,6 +98,7 @@ export default function Block({ index, id, content, hidden }) {
         const response = await BlockAPI.postBlock({
           content: content,
           hidden: false,
+          username,
         });
         dispatch(insertBlock({ index: index + 1, block: response.data.data }));
       },
@@ -96,12 +116,14 @@ export default function Block({ index, id, content, hidden }) {
     {
       title: "Translate Block",
       onClick: () => {
+        setIsTranslateOpened(true);
         handleMenuClose();
       },
     },
     {
       title: "Generate Abstract",
       onClick: () => {
+        handleGenerateAbstract();
         handleMenuClose();
       },
     },
@@ -109,31 +131,99 @@ export default function Block({ index, id, content, hidden }) {
       title: "Recording Conversion",
       onClick: () => {
         handleMenuClose();
-        onOpenRecord();
+        handleOpenRecord();
       },
     },
   ];
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
-    setIsOpened(!isOpened);
+    setIsMenuOpened(!isMenuOpened);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    setIsOpened(false);
+    setIsMenuOpened(false);
   };
 
   const handleBlockUpdate = (content) => {
     dispatch(updateBlockContent({ id, content }));
   };
 
-  const onOpenRecord = () => {
+  const handleTranslateConfirm = async () => {
+    setLoading(true);
+    const text = content.replace(/<[^>]+>/g, "");
+    TranslationAPI.postTranslation(text, language).then((response) => {
+      BlockAPI.postBlock({
+        content: response.data.data,
+        hidden: false,
+        username,
+      }).then((response) => {
+        if (response.status === 200) {
+          dispatch(
+            insertBlock({ index: index + 1, block: response.data.data })
+          );
+          setAlert({
+            open: true,
+            severity: "success",
+            msg: "Block translated successfully",
+          });
+        } else {
+          setAlert({
+            open: true,
+            severity: "error",
+            msg: "Block translation failed",
+          });
+        }
+        handleTranslateClose();
+      });
+    });
+  };
+
+  const handleTranslateClose = () => {
+    setIsTranslateOpened(false);
+    setLanguage("en");
+    setLoading(false);
+  };
+
+  const handleLanguageChange = (event) => {
+    setLanguage(event.target.value);
+  };
+
+  const handleGenerateAbstract = () => {
+    const text = content.replace(/<[^>]+>/g, "");
+    SummaryAPI.postSummary(text).then((response) => {
+      BlockAPI.postBlock({
+        content: response.data.data,
+        hidden: false,
+        username,
+      }).then((response) => {
+        if (response.status === 200) {
+          dispatch(
+            insertBlock({ index: index + 1, block: response.data.data })
+          );
+          setAlert({
+            open: true,
+            severity: "success",
+            msg: "Abstract generated successfully",
+          });
+        } else {
+          setAlert({
+            open: true,
+            severity: "error",
+            msg: "Abstract generation failed",
+          });
+        }
+      });
+    });
+  };
+
+  const handleOpenRecord = () => {
     setIsRecordOpened(true);
   };
 
   return (
-    <div>
+    <>
       <Paper sx={{ width: "100%" }} variant="outlined">
         <CardContent>
           <RichEditor content={content} onUpdate={handleBlockUpdate} />
@@ -155,9 +245,9 @@ export default function Block({ index, id, content, hidden }) {
                 <IconButton
                   id="menu-button"
                   onClick={handleMenuClick}
-                  aria-controls={isOpened ? "menu" : undefined}
+                  aria-controls={isMenuOpened ? "menu" : undefined}
                   aria-haspopup="true"
-                  aria-expanded={isOpened ? "true" : undefined}
+                  aria-expanded={isMenuOpened ? "true" : undefined}
                 >
                   <MoreVertRoundedIcon />
                 </IconButton>
@@ -168,7 +258,7 @@ export default function Block({ index, id, content, hidden }) {
         <Menu
           id="menu"
           anchorEl={anchorEl}
-          open={isOpened}
+          open={isMenuOpened}
           onClose={handleMenuClose}
           MenuListProps={{
             "aria-labelledby": "menu-button",
@@ -185,12 +275,64 @@ export default function Block({ index, id, content, hidden }) {
           ))}
         </Menu>
       </Paper>
-
+      <Dialog open={isTranslateOpened} onClose={handleTranslateClose}>
+        <DialogTitle>Translate Block</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please select the language you want to translate to:
+          </DialogContentText>
+          <br />
+          <FormControl fullWidth>
+            <InputLabel id="language-select-label">Language</InputLabel>
+            <Select
+              labelId="language-select-label"
+              id="language-select"
+              value={language}
+              label="Language"
+              onChange={handleLanguageChange}
+            >
+              <MenuItem value={"zh-cn"}>Chinese (Simplified)</MenuItem>
+              <MenuItem value={"zh-tw"}>Chinese (Traditional)</MenuItem>
+              <MenuItem value={"en"}>English</MenuItem>
+              <MenuItem value={"fr"}>French</MenuItem>
+              <MenuItem value={"de"}>German</MenuItem>
+              <MenuItem value={"it"}>Italian</MenuItem>
+              <MenuItem value={"ja"}>Japanese</MenuItem>
+              <MenuItem value={"ko"}>Korean</MenuItem>
+              <MenuItem value={"pt"}>Portuguese</MenuItem>
+              <MenuItem value={"ru"}>Russian</MenuItem>
+              <MenuItem value={"es"}>Spanish</MenuItem>
+            </Select>
+          </FormControl>
+        </DialogContent>
+        <DialogActions sx={{ pr: 3, pb: 3 }}>
+          {loading ? (
+            <CircularProgress size={36} />
+          ) : (
+            <>
+              <Button onClick={handleTranslateClose}>Cancel</Button>
+              <Button onClick={handleTranslateConfirm} variant="contained">
+                Confirm
+              </Button>
+            </>
+          )}
+        </DialogActions>
+      </Dialog>
       <RecordingOperator
         index={index}
         open={isRecordOpened}
         setOpen={setIsRecordOpened}
       />
-    </div>
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={alert?.open}
+        autoHideDuration={5000}
+        onClose={() => setAlert({ ...alert, open: false })}
+      >
+        <Alert variant="filled" severity={alert?.severity}>
+          {alert?.msg}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }
