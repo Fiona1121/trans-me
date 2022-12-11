@@ -29,7 +29,7 @@ public class TranscriptionController {
             System.out.println("Transcription succeded");
             return new CommonResponse <String>(
                 new Msg("success", "Transcription succeded"),
-                Transcription.asyncRecognizeFile(req.getData().getAudioFileId())
+                Transcription.asyncRecognizeFile(req.getData().getAudioFileId(), "zh-TW", 44100)
             );
         } catch (Exception e) {
             // TODO Auto-generated catch block
