@@ -14,7 +14,7 @@ public class DeleteAudioFileRequest {
     @Setter
     public class RequestData {
         private String username;
-        private String audioFileId;
+        private String id;
     }
 
     private RequestData data;
