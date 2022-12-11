@@ -64,7 +64,6 @@ public class AudioFilesService {
                 }
                 else if (audioFiles.size() != audioFilesId.size()) {
                     System.out.println("Some of the Audio Files were not found");
-                    System.out.println("Audio File data :　" + audioFiles);
                     return new Payload <Msg, List<AudioFile>> (
                             new Msg(
                                 "warning",
@@ -75,7 +74,6 @@ public class AudioFilesService {
                 }
                 else {
                     System.out.println("Success, return all Audio Files data");
-                    System.out.println("Audio Files data :　" + audioFiles);
                     return new Payload <Msg, List<AudioFile>> (
                             new Msg(
                                 "success",
@@ -179,11 +177,11 @@ public class AudioFilesService {
             updatedAudioFile.setName(name);
             AudioFile responseAudioFile = audioFileRepository.save(updatedAudioFile);
             if (responseAudioFile != null) {
-                System.out.println("Successfully added audio file");
+                System.out.println("Successfully renamed audio file to: " + responseAudioFile.getName());
                 return new Payload <Msg, AudioFile> (
                     new Msg(
                         "success",
-                        "Successfully added audio file"
+                        "Successfully renamed audio file"
                     ),
                     responseAudioFile
                 );
