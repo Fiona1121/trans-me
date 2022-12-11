@@ -108,20 +108,20 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // setEnv(testMap);
             // side effect 是系統很不穩，一定要關掉 process 才能跑，所以 maybe 還是手動設好
 
-        // test : Google API
-            System.out.println("trial 1");
-            Transcription.asyncRecognizeFile("./src/main/java/com/example/restservice/Transcription/testAudio/test.wav", "zh-TW", 44100);
-            // System.out.println("trial 2");
-            // Transcription.asyncRecognizeFile( "C:/Users/user/Desktop/test.wav");
-            // 兩種都可以
+        // // test : Google API
+        //     System.out.println("trial 1");
+        //     Transcription.asyncRecognizeFile("./src/main/java/com/example/restservice/Transcription/testAudio/test.wav", "zh-TW", 44100);
+        //     // System.out.println("trial 2");
+        //     // Transcription.asyncRecognizeFile( "C:/Users/user/Desktop/test.wav");
+        //     // 兩種都可以
         
-            System.out.println("trial 3");
-            String testString = "gs://example-qscgyj830856700/audio-files/test.wav";
-            Transcription.asyncRecognizeGcs(testString);
-            // 這個不行...
+        //     System.out.println("trial 3");
+        //     String testString = "gs://example-qscgyj830856700/audio-files/test.wav";
+        //     Transcription.asyncRecognizeGcs(testString);
+        //     // 可以了
             
-            // sample rate & language 記得改
-            // 要用 single channel，audacity 要檢查
+        //     // sample rate & language 記得改
+        //     // 要用 single channel，audacity 要檢查
         
     
         // createItem("000", "test", "meow2");
