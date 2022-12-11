@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import com.example.restservice.Drive.DownloadFile;
+import com.example.restservice.Drive.DriveOperator;
 
 public class TranscriptionSupport {
     private String fileId;
@@ -23,7 +23,7 @@ public class TranscriptionSupport {
 
     public String downloadFile() {
         try {
-            ByteArrayOutputStream BAoutputStream = DownloadFile.downloadFile(fileId);
+            ByteArrayOutputStream BAoutputStream = DriveOperator.downloadFile(fileId);
             OutputStream outputStream = new FileOutputStream(new File(FILES_LOCATION + name));
             BAoutputStream.writeTo(outputStream);
             System.out.println("Created the file " + name + " at location " + FILES_LOCATION);

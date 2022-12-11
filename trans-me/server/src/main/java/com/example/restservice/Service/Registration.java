@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.restservice.Response.Msg;
-import com.example.restservice.Drive.CreateFolder;
+import com.example.restservice.Drive.DriveOperator;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Repository.AccountRepository;
 
@@ -28,7 +28,7 @@ public class Registration {
             // Creates a subfolder in transme to store the audio files
             String driveId;
             try {
-                driveId = CreateFolder.createGoogleFolder(username);
+                driveId = DriveOperator.createFolder(username);
             }
             catch (Exception e) {
                 System.out.println("Error creating google drive subfolder");
