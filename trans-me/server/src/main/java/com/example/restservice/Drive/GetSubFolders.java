@@ -36,14 +36,4 @@ public class GetSubFolders {
         //
         return list;
     }
-
-    // public static void main(String[] args) throws IOException {
-
-    //     List<File> googleRootFolders = getGoogleSubFolders();
-    //     for (File folder : googleRootFolders) {
-
-    //         System.out.println("Folder ID: " + folder.getId() + " --- Name: " + folder.getName());
-    //     }
-    // }
-
 }
