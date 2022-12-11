@@ -1,10 +1,14 @@
 package com.example.restservice.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Payload.Payload;
+import com.example.restservice.Drive.DeleteFile;
+import com.example.restservice.Drive.GetSubFolders;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Repository.AudioFileRepository;
@@ -51,7 +55,20 @@ public class SystemService {
     }
 
     public void resetDrive() {
-        // TODO : Fernando
+        try {
+            List<String> listOfIds = GetSubFolders.getGoogleSubFolders();
+            listOfIds.forEach((id) -> {
+                try {
+                    DeleteFile.deleteFile(id);
+                }
+                catch (Exception f) {
+                    System.out.println(f);
+                }
+            });
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
 
