@@ -131,3 +131,6 @@ dist
 
 # audio files
 *.wav
+
+# temp storage of audio files
+tmp/

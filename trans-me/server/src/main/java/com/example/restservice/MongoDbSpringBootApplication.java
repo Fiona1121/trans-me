@@ -1,13 +1,13 @@
 package com.example.restservice;
 
 import com.example.restservice.Model.Account;
-import com.example.restservice.Model.Block;
-import com.example.restservice.Model.Term;
+// import com.example.restservice.Model.Block;
+// import com.example.restservice.Model.Term;
 import com.example.restservice.Repository.AccountRepository;
 import com.example.restservice.Repository.BlockRepository;
-import com.example.restservice.Repository.TermRepository;
+// import com.example.restservice.Repository.TermRepository;
 import com.example.restservice.Service.AccountService;
-import com.example.restservice.Service.Login;
+// import com.example.restservice.Transcription.TranscriptionSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,11 +15,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import java.util.ArrayList;
-import java.util.Collection;
+// import java.util.ArrayList;
+// import java.util.Collection;
 import java.util.List;
-import java.io.File;
-import java.io.FileWriter;
+// import java.io.File;
+// import java.io.FileWriter;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -36,6 +36,10 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
+        // TranscriptionSupport support = new TranscriptionSupport("1I-gvn7OH59Be-5ltTLrIUM5dlUd0H5Z-", "test.wav");
+        // String filePath = support.downloadFile();
+        // System.out.println("Stored file at: " + filePath);
+        // support.deleteFile();
     }    
     
     @Override
