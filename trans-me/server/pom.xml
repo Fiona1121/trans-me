@@ -162,6 +162,11 @@
             <artifactId>javafx-controls</artifactId>
             <version>19</version>
         </dependency>
+		<!-- only put here to test CreateAudioFile main -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
