@@ -62,7 +62,6 @@ export default function RecordingOperator({ index, open, setOpen }) {
   };
 
   const addAudioElement = (blob) => {
-    console.log(blob);
     const url = URL.createObjectURL(blob);
     const audio = document.createElement("audio");
     audio.src = url;
@@ -73,11 +72,11 @@ export default function RecordingOperator({ index, open, setOpen }) {
     formData.append("file", blob);
     formData.append("username", username);
     formData.append("name", "Record_" + moment().format("YYMMDDHHmmss"));
-    formData.append("format", "audio/mp3");
+    formData.append("format", "webm");
     formData.append("language", "zh-TW");
     formData.append(
       "sampleRate",
-      new Blob(["44100"], { type: "application/json" })
+      new Blob(["48000"], { type: "application/json" })
     );
     AudioFileAPI.postAudioFile(formData).then((response) => {
       if (response.status === 200) {

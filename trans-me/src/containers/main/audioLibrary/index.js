@@ -42,6 +42,7 @@ export default function AudioLibrary() {
   const [isUploadDialogOpened, setIsUploadDialogOpened] = useState(false);
   const [uploadFile, setUploadFile] = useState(null);
   const [language, setLanguage] = useState("en-US");
+  const [currentPlayingAudioFile, setCurrentPlayingAudioFile] = useState(null);
 
   const handleMenuClick = (event, index) => {
     setAnchorEl(event.currentTarget);
@@ -50,8 +51,7 @@ export default function AudioLibrary() {
   };
 
   const handlePlayFile = () => {
-    const audio = new Audio(audioFiles[selectedIndex].url);
-    audio.play();
+    setCurrentPlayingAudioFile(audioFiles[selectedIndex]);
     setIsMenuOpened(false);
   };
 
@@ -63,24 +63,6 @@ export default function AudioLibrary() {
     link.click();
     document.body.removeChild(link);
     setIsMenuOpened(false);
-
-    // var xhr = new XMLHttpRequest();
-    // xhr.open("GET", audioFiles[selectedIndex].url, true);
-    // xhr.responseType = "blob";
-    // xhr.onload = function () {
-    //   if (this.status === 200) {
-    //     var blob = this.response;
-    //     var link = document.createElement("a");
-    //     console.log(blob);
-    //     link.href = window.URL.createObjectURL(blob);
-    //     link.setAttribute("download", audioFiles[selectedIndex].name);
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    //   }
-    // };
-    // xhr.send();
-    // setIsMenuOpened(false);
   };
 
   const handleDeleteFile = () => {
@@ -136,11 +118,14 @@ export default function AudioLibrary() {
     if (uploadFile) {
       const formData = new FormData();
       formData.append("username", username);
-      formData.append("filename", uploadFile.name);
-      formData.append("format", uploadFile.type);
+      formData.append("name", uploadFile.name);
+      formData.append("format", "wav");
       formData.append("file", uploadFile);
       formData.append("language", language);
-      formData.append("sampleRate", 44100);
+      formData.append(
+        "sampleRate",
+        new Blob(["44100"], { type: "application/json" })
+      );
       AudioFileAPI.postAudioFile(formData).then((response) => {
         if (response?.status === 200) {
           setAlert({
@@ -210,6 +195,14 @@ export default function AudioLibrary() {
             </Grid>
           </Grid>
         </ListSubheader>
+        {currentPlayingAudioFile && (
+          <audio
+            src={currentPlayingAudioFile.url.slice(0, -16)}
+            controls
+            autoPlay
+            style={{ width: "250px" }}
+          />
+        )}
         <List>
           {audioFiles.map((audioFile, index) => (
             <ListItemButton
@@ -241,6 +234,7 @@ export default function AudioLibrary() {
             </ListItemButton>
           ))}
         </List>
+
         <Menu
           id="audio-menu"
           anchorEl={anchorEl}
