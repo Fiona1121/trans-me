@@ -109,7 +109,7 @@ public class AccountController {
 	@PutMapping("")
     public CommonResponse putAccount(@RequestBody PutAccountRequest req) {
         
-		Payload <Msg, Account> result = accountService.update(req.getData());
+		Payload <Msg, Account> result = accountService.updateAccount(req.getData());
 
         return new CommonResponse<Account>(
 			result.getMsg(),

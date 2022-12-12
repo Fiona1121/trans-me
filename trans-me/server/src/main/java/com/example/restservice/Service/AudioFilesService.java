@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.stereotype.Service;
-import com.example.restservice.Drive.CreateAudioFile;
-import com.example.restservice.Drive.DeleteFile;
+
+import com.example.restservice.Drive.DriveOperator;
 import com.example.restservice.Model.Account;
 import com.example.restservice.Model.AudioFile;
 import com.example.restservice.Repository.AccountRepository;
@@ -96,7 +96,7 @@ public class AudioFilesService {
         }
     }
 
-    public Payload<Msg, AudioFile> postAudioFile(String username, String name, String format, MultipartFile file) {
+    public Payload<Msg, AudioFile> postAudioFile(String username, String name, String format, MultipartFile file, int sampleRate, String language) {
         Account account = accountRepository.findByUsername(username);
 
         if (account == null) {
@@ -117,14 +117,14 @@ public class AudioFilesService {
         System.out.println("Uploading audio file to google drive");
 
         try {
-            responseGoogleDrive = CreateAudioFile.uploadFile(file, subfolderId);
+            responseGoogleDrive = DriveOperator.uploadFile(file, subfolderId, name, format);
         }
         catch (Exception e) {
             System.out.println("Error uploading to google drive, " + e);
             return new Payload<Msg,AudioFile>(
                 new Msg(
                     "error",
-                    "Error uploading to google drive"
+                    "Error uploading to google drive" + e.getMessage()
                 ), 
             null
             );
@@ -132,7 +132,7 @@ public class AudioFilesService {
 
         String driveId = responseGoogleDrive.get(0);
         String url = responseGoogleDrive.get(1);
-        AudioFile newAudioFile = new AudioFile(null, name, url, driveId, format);
+        AudioFile newAudioFile = new AudioFile(null, name, url, driveId, format, sampleRate, language);
 
         AudioFile savedAudioFile = audioFileRepository.save(newAudioFile);
 
@@ -257,7 +257,7 @@ public class AudioFilesService {
         // Remove from google Drive
         String googleDriveId = savedAudioFile.get().getDriveId();
         try {
-            DeleteFile.deleteFile(googleDriveId);
+            DriveOperator.deleteFile(googleDriveId);
         }
         catch (Exception e) {
             // Might have deleted by mistake, but still will delete from MongoDB
