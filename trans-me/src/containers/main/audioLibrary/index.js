@@ -63,6 +63,24 @@ export default function AudioLibrary() {
     link.click();
     document.body.removeChild(link);
     setIsMenuOpened(false);
+
+    // var xhr = new XMLHttpRequest();
+    // xhr.open("GET", audioFiles[selectedIndex].url, true);
+    // xhr.responseType = "blob";
+    // xhr.onload = function () {
+    //   if (this.status === 200) {
+    //     var blob = this.response;
+    //     var link = document.createElement("a");
+    //     console.log(blob);
+    //     link.href = window.URL.createObjectURL(blob);
+    //     link.setAttribute("download", audioFiles[selectedIndex].name);
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //   }
+    // };
+    // xhr.send();
+    // setIsMenuOpened(false);
   };
 
   const handleDeleteFile = () => {
@@ -122,9 +140,7 @@ export default function AudioLibrary() {
       formData.append("format", uploadFile.type);
       formData.append("file", uploadFile);
       formData.append("language", language);
-      AudioContext.decodeAudioData(uploadFile).then((audioBuffer) => {
-        formData.append("sampleRate", audioBuffer.sampleRate);
-      });
+      formData.append("sampleRate", 44100);
       AudioFileAPI.postAudioFile(formData).then((response) => {
         if (response?.status === 200) {
           setAlert({
@@ -200,27 +216,27 @@ export default function AudioLibrary() {
               key={audioFile.id}
               selected={selectedIndex === index}
               onClick={() => setSelectedIndex(index)}
-              sx={{ pr: 0 }}
             >
-              <ListItem
-                secondaryAction={
-                  <IconButton
-                    edge="end"
-                    aria-label="more"
-                    onClick={handleMenuClick}
-                    aria-controls={isMenuOpened ? "menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={isMenuOpened ? "true" : undefined}
-                  >
-                    <MoreHorizIcon />
-                  </IconButton>
-                }
-                disablePadding
-              >
+              <ListItem disablePadding>
                 <ListItemText
                   primary={audioFile.name}
                   secondary={audioFile.language}
+                  sx={{
+                    width: "150px",
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                  }}
                 />
+                <IconButton
+                  edge="end"
+                  aria-label="more"
+                  onClick={handleMenuClick}
+                  aria-controls={isMenuOpened ? "menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={isMenuOpened ? "true" : undefined}
+                >
+                  <MoreHorizIcon />
+                </IconButton>
               </ListItem>
             </ListItemButton>
           ))}

@@ -56,14 +56,12 @@ export const AudioFileAPI = {
   getAudioFiles: (username) =>
     axios.get("/api/audioFile", { params: { username } }).catch(errorHandler),
   postAudioFile: (formData) =>
-    axios
-      .post("/api/audioFile", {
-        data: formData,
-        headers: {
-          ...formData.getHeaders(),
-        },
-      })
-      .catch(errorHandler),
+    axios({
+      method: "post",
+      url: "/api/audioFile",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).catch(errorHandler),
   putAudioFile: (id, name) =>
     axios.put("/api/audioFile", { data: { id, name } }).catch(errorHandler),
   deleteAudioFiles: (id, username) =>
