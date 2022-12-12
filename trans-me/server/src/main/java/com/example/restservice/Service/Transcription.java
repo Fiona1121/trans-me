@@ -75,6 +75,7 @@ public class Transcription {
         // check mongo，return error if not found or wrong data
         String language = fetchedFile.get().getLanguage();
         // String language = fetchedFile.get(0).getLanguage();
+        System.out.println("fetched language : " + language);
         if ( (language == null) || 
         !((language.equals("zh-TW")) || (language.equals("en-US")))) {
             language = "zh-TW";
@@ -82,6 +83,7 @@ public class Transcription {
             warningMessage += "Unsupported language, use default (zh-TW).";
         }
         int sampleRate = fetchedFile.get().getSampleRate();
+        System.out.println("fetched sampleRate : " + sampleRate);
         // int sampleRate = fetchedFile.get(0).getSampleRate();
         if ( (sampleRate == 0) ) { 
             // add range limitation?
@@ -90,6 +92,7 @@ public class Transcription {
             warningMessage += " Sample rate not specified, use default (0 Hz).";
         }
         String driveId = fetchedFile.get().getDriveId();
+        System.out.println("fetched driveId : " + driveId);
         if ( (driveId == null) ) {
             System.out.println("audio file with null driveId");
             return new Payload <Msg, String> (
