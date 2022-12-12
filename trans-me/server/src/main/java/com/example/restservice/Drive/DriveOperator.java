@@ -38,6 +38,9 @@ public class DriveOperator {
             if (format.equals("wav")) {
                 mimeType = "audio/x-wav";
             }
+            else if (format.equals("webm")) {
+                mimeType = "audio/webm";
+            }
             else {
                 System.out.println("Not the expected file type");
                 throw(new Exception("Not the expected file type"));
