@@ -94,6 +94,7 @@ public class Transcription {
         String format = fetchedFile.get().getFormat();
         System.out.println("fetched format : " + format);
         AudioEncoding encoding;
+        
 
         if (format == null) {
             System.out.println("audio file with null format");
@@ -136,7 +137,7 @@ public class Transcription {
 
         TranscriptionSupport support = new TranscriptionSupport(
             driveId,
-            username + "-" + audioFileId + ".wav");
+            username + "-" + audioFileId + "." + format);
         String filePath = support.downloadFile();
 
         if (filePath == null) {
