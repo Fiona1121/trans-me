@@ -26,7 +26,7 @@ public class TranscriptionController {
     public CommonResponse postTranscription(@RequestBody PostTranscriptionRequest req) {
     
         // "C:\\Users\\user\\Desktop\\test.wav"
-        
+
         Payload <Msg, String> result = transcription.transcribe(
             req.getData().getUsername(),
             req.getData().getAudioFileId()
