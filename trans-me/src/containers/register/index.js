@@ -222,8 +222,6 @@ export default function Register() {
               type="submit"
               size="large"
               variant="contained"
-              alignItems="center"
-              justifyContent="center"
               fullWidth
               sx={{ mt: 4, mb: 4 }}
             >
