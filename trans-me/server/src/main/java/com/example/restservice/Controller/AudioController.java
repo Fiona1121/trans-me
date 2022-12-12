@@ -47,8 +47,10 @@ public class AudioController {
     public CommonResponse <AudioFile> postAudioFile(@RequestPart("username") String username,
                                                     @RequestPart("name") String name,
                                                     @RequestPart("format") String format,
-                                                    @RequestPart("file") MultipartFile file) {
-        Payload <Msg, AudioFile> result = audioFilesService.postAudioFile(username, name, format, file);
+                                                    @RequestPart("file") MultipartFile file,
+                                                    @RequestPart("sampleRate") int sampleRate,
+                                                    @RequestPart("language") String language) {
+        Payload <Msg, AudioFile> result = audioFilesService.postAudioFile(username, name, format, file, sampleRate, language);
 
         return new CommonResponse <AudioFile>(
             result.getMsg(),
