@@ -39,10 +39,7 @@ export default function Term() {
   };
 
   return (
-    <Paper
-      variant="outlined"
-      sx={{ maxWidth: 300, height: "85vh", overflow: "scroll" }}
-    >
+    <Paper variant="outlined" sx={{ height: "85vh", overflow: "scroll" }}>
       <ListSubheader
         sx={{
           pt: 2,

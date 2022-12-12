@@ -40,6 +40,13 @@ export const TermAPI = {
     axios.post("/api/term", { data: { content } }).catch(errorHandler),
 };
 
+export const TranscriptionAPI = {
+  postTranscription: (username, audioFileId) =>
+    axios
+      .post("/api/transcription", { data: { username, audioFileId } })
+      .catch(errorHandler),
+};
+
 export const TranslationAPI = {
   postTranslation: (content, language) =>
     axios
