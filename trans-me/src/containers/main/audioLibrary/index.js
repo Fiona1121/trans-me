@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Alert,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -47,6 +48,7 @@ export default function AudioLibrary() {
   const [uploadFile, setUploadFile] = useState(null);
   const [language, setLanguage] = useState("en-US");
   const [currentPlayingAudioFile, setCurrentPlayingAudioFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleMenuClick = (event, index) => {
     setAnchorEl(event.currentTarget);
@@ -60,13 +62,15 @@ export default function AudioLibrary() {
   };
 
   const handleTranscribeFile = () => {
+    setLoading(true);
+    setIsMenuOpened(false);
     TranscriptionAPI.postTranscription(
       username,
       audioFiles[selectedIndex].id
     ).then((response) => {
       if (response?.status === 200) {
         BlockAPI.postBlock({
-          content: response.data,
+          content: response.data.data,
           hidden: false,
           username: username,
         }).then((response) => {
@@ -92,8 +96,8 @@ export default function AudioLibrary() {
           msg: "Transcription failed.",
         });
       }
+      setLoading(false);
     });
-    setIsMenuOpened(false);
   };
 
   const handleDownloadFile = () => {
@@ -260,16 +264,21 @@ export default function AudioLibrary() {
                     overflow: "hidden",
                   }}
                 />
-                <IconButton
-                  edge="end"
-                  aria-label="more"
-                  onClick={handleMenuClick}
-                  aria-controls={isMenuOpened ? "menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={isMenuOpened ? "true" : undefined}
-                >
-                  <MoreHorizIcon />
-                </IconButton>
+                {loading && selectedIndex === index ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <IconButton
+                    edge="end"
+                    aria-label="more"
+                    onClick={handleMenuClick}
+                    disabled={loading}
+                    aria-controls={isMenuOpened ? "menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={isMenuOpened ? "true" : undefined}
+                  >
+                    <MoreHorizIcon />
+                  </IconButton>
+                )}
               </ListItem>
             </ListItemButton>
           ))}
