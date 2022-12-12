@@ -21,30 +21,75 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.threeten.bp.Duration;
 
-import com.example.restservice.Response.CommonResponse;
+import com.example.restservice.Model.AudioFile;
+import com.example.restservice.Repository.AudioFileRepository;
 import com.example.restservice.Response.Msg;
 import com.example.restservice.Service.Payload.Payload;
 import com.example.restservice.Transcription.TranscriptionSupport;
 
 @Service
 public class Transcription {
+
+    @Autowired
+    AudioFileRepository audioFileRepository;
     
     public Payload<Msg, String> transcribe(String username, String audioFileId) {
         
         System.out.println("Transcription：");
         System.out.println("file : " + username + "-" + audioFileId);
 
-        // TODO: add sampleRate & language
-        // check mongo，return error if not found or wrong data
-        // 
-        String language = "zh-TW";
-        int sampleRate = 44100;
+        String warningMessage = "";
+        
+        Optional<AudioFile> fetchedFile = audioFileRepository.findById(audioFileId);
+        if (!fetchedFile.isPresent()) {
+            System.out.println("fetchedFile : " + fetchedFile);
+            System.out.println("audio file not found");
+            return new Payload <Msg, String> (
+                new Msg(
+                    "error",
+                    "audio file not found"
+                ),
+                ""
+            );
+        }
+        // List<AudioFile> fetchedFile = audioFileRepository.findByDriveId(audioFileId);
+        // if (fetchedFile.size() == 0) {
+        //     System.out.println("fetchedFile : " + fetchedFile);
+        //     System.out.println("audio file not found (list.size() == 0)");
+        //     return new Payload <Msg, String> (
+        //         new Msg(
+        //             "error",
+        //             "audio file not found"
+        //         ),
+        //         ""
+        //     );
+        // }
 
         
+        // check mongo，return error if not found or wrong data
+        String language = fetchedFile.get().getLanguage();
+        // String language = fetchedFile.get(0).getLanguage();
+        if ( (language == null) || 
+        !((language.equals("zh-TW")) || (language.equals("en-US")))) {
+            language = "zh-TW";
+            System.out.println("unsupported language, use default (zh-TW)");
+            warningMessage += "Unsupported language, use default (zh-TW).";
+        }
+        int sampleRate = fetchedFile.get().getSampleRate();
+        // int sampleRate = fetchedFile.get(0).getSampleRate();
+        if ( (sampleRate == 0) ) { 
+            // add range limitation?
+            sampleRate = 44100;
+            System.out.println("sample rate not specified, use default (0 Hz)");
+            warningMessage += " Sample rate not specified, use default (0 Hz).";
+        }
+
         TranscriptionSupport support = new TranscriptionSupport(
             audioFileId,
             username + "-" + audioFileId + ".wav");
@@ -90,6 +135,7 @@ public class Transcription {
             }
             
             support.deleteFile();
+            result.getMsg().setMsg(result.getMsg().getMsg() + warningMessage);;
             return result;
         }
 

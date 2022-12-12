@@ -2,9 +2,11 @@ package com.example.restservice;
 
 import com.example.restservice.Drive.DriveOperator;
 import com.example.restservice.Model.Account;
+import com.example.restservice.Model.AudioFile;
 import com.example.restservice.Model.Block;
 import com.example.restservice.Model.Term;
 import com.example.restservice.Repository.AccountRepository;
+import com.example.restservice.Repository.AudioFileRepository;
 import com.example.restservice.Repository.BlockRepository;
 import com.example.restservice.Repository.TermRepository;
 import com.example.restservice.Service.AccountService;
@@ -23,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Field;
@@ -40,8 +43,9 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
     @Autowired
     AccountService accountService;
 
-    // @Autowired
-    // Transcription transcription;
+    // test
+        // @Autowired
+        // AudioFileRepository audioFileRepository;
     
     public static void main(String[] args) {
         SpringApplication.run(MongoDbSpringBootApplication.class, args);
@@ -96,6 +100,17 @@ public class MongoDbSpringBootApplication implements CommandLineRunner {
         // for (Block t: blockList) {
         //     System.out.println(t.toString());
         // }
+
+        // test : transcription v2.0
+        // modify audioFile first
+            // Optional<AudioFile> fetchedFile = audioFileRepository.findByDriveId("1I-gvn7OH59Be-5ltTLrIUM5dlUd0H5Z-");
+            // if (fetchedFile.isPresent()) {
+            //     fetchedFile.get().setId("0000");
+            //     audioFileRepository.save(fetchedFile.get());
+            // }
+            // else {
+            //     System.out.println("fetchedFile is null");
+            // }
 
         // set path to look for google cloud credential
         // Map<String, String> testMap = new HashMap<String, String>();
