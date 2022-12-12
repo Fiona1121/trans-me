@@ -117,14 +117,14 @@ public class AudioFilesService {
         System.out.println("Uploading audio file to google drive");
 
         try {
-            responseGoogleDrive = DriveOperator.uploadFile(file, subfolderId);
+            responseGoogleDrive = DriveOperator.uploadFile(file, subfolderId, name, format);
         }
         catch (Exception e) {
             System.out.println("Error uploading to google drive, " + e);
             return new Payload<Msg,AudioFile>(
                 new Msg(
                     "error",
-                    "Error uploading to google drive"
+                    "Error uploading to google drive" + e.getMessage()
                 ), 
             null
             );

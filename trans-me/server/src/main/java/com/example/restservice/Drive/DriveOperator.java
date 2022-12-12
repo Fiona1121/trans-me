@@ -23,23 +23,33 @@ public class DriveOperator {
     // List of two elements
     // First element is the file id from google drive
     // Second element is the download URL for the frontend to download the file
-    public static List<String> uploadFile(MultipartFile file, String folderId) {
+    public static List<String> uploadFile(MultipartFile file, String folderId, String name, String format) {
         try {
             if (folderId == "" || folderId == null) {
                 folderId = "130DakidoW74dLcOt0sj_3-hppX_ia25E";
             }
             File fileMetadata = new File();
 
-            fileMetadata.setName(file.getName());
+            fileMetadata.setName(name + "." + format);
             List<String> parents = Arrays.asList(folderId);
             fileMetadata.setParents(parents);
+
+            String mimeType;
+            if (format.equals("wav")) {
+                mimeType = "audio/x-wav";
+            }
+            else {
+                System.out.println("Not the expected file type");
+                throw(new Exception("Not the expected file type"));
+            }
             
             Drive driveService = GoogleDriveUtils.getDriveService();
             File fileResponse = driveService.files().create(fileMetadata, new InputStreamContent(
-                    file.getContentType(),
+                    mimeType,
                     new ByteArrayInputStream(file.getBytes())
                 ))
                 .setFields("id, webContentLink").execute();
+            System.out.println(fileResponse.getId() + " " + fileResponse.getWebContentLink());
             List<String> responseList = Arrays.asList(fileResponse.getId(), fileResponse.getWebContentLink());
             return responseList;
         } catch (Exception e) {
