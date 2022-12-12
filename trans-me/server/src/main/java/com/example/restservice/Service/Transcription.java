@@ -37,6 +37,13 @@ public class Transcription {
         
         System.out.println("Transcription：");
         System.out.println("file : " + username + "-" + audioFileId);
+
+        // TODO: add sampleRate & language
+        // check mongo，return error if not found or wrong data
+        // 
+        String language = "zh-TW";
+        int sampleRate = 44100;
+
         
         TranscriptionSupport support = new TranscriptionSupport(
             audioFileId,
@@ -59,7 +66,7 @@ public class Transcription {
             
             try {
                 transcriptionResult = Transcription.asyncRecognizeFile(
-                    filePath, "zh-TW", 44100
+                    filePath, language, sampleRate
                 );
             } catch (Exception e) {
                 e.printStackTrace();
