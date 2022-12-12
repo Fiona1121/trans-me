@@ -89,9 +89,20 @@ public class Transcription {
             System.out.println("sample rate not specified, use default (0 Hz)");
             warningMessage += " Sample rate not specified, use default (0 Hz).";
         }
+        String driveId = fetchedFile.get().getDriveId();
+        if ( (driveId == null) ) {
+            System.out.println("audio file with null driveId");
+            return new Payload <Msg, String> (
+                new Msg(
+                    "error",
+                    "audio file with null driveId"
+                ),
+                ""
+            );
+        }
 
         TranscriptionSupport support = new TranscriptionSupport(
-            audioFileId,
+            driveId,
             username + "-" + audioFileId + ".wav");
         String filePath = support.downloadFile();
 
