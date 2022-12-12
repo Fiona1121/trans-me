@@ -1,3 +1,18 @@
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetState,
+  selectGlobal,
+  setAudioFiles,
+  setBlocks,
+} from "../../slices/globalSlice";
+import { selectSession } from "../../slices/sessionSlice";
+
+import { AccountAPI, AudioFileAPI, BlockAPI } from "../../api";
+import Board from "./board";
+import Term from "./term";
+import AudioLibrary from "./audioLibrary";
+
 import {
   Alert,
   AppBar,
@@ -18,13 +33,6 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import TurndownService from "turndown";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { resetState, selectGlobal, setBlocks } from "../../slices/globalSlice";
-import { selectSession } from "../../slices/sessionSlice";
-import Board from "./board";
-import Term from "./term";
-import { AccountAPI, BlockAPI } from "../../api";
 
 export default function Main() {
   const dispatch = useDispatch();
@@ -121,9 +129,17 @@ export default function Main() {
 
   // TODO: initialize audioFiles from server
   useEffect(() => {
-    async function getAccountData() {
-      const response = await BlockAPI.getBlocks(username);
-      if (response?.status === 200) dispatch(setBlocks(response.data.data));
+    function getAccountData() {
+      BlockAPI.getBlocks(username).then((response) => {
+        if (response?.status === 200) {
+          dispatch(setBlocks(response.data.data));
+        }
+      });
+      AudioFileAPI.getAudioFiles(username).then((response) => {
+        if (response?.status === 200) {
+          dispatch(setAudioFiles(response.data.data));
+        }
+      });
     }
     function handleWelcome() {
       setWelcome(true);
@@ -191,8 +207,10 @@ export default function Main() {
         <Box sx={{ width: "100%" }}>
           <Toolbar />
           <Grid container spacing={2} sx={{ pt: 3, pr: 2, pl: 2 }}>
-            <Grid item xs></Grid>
-            <Grid item xs={8}>
+            <Grid item xs>
+              <AudioLibrary />
+            </Grid>
+            <Grid item xs={7}>
               <Board />
             </Grid>
             <Grid item xs>
@@ -211,7 +229,7 @@ export default function Main() {
           <Button
             onClick={dialog?.onConfirm}
             color="secondary"
-            variant="outlined"
+            variant="contained"
           >
             Confirm
           </Button>
@@ -220,35 +238,32 @@ export default function Main() {
       <Dialog open={welcome} onClose={() => setWelcome(false)}>
         <DialogTitle>Welcome to TransMe</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            <Typography variant="body1">
-              This is a multi-functional tool for transcription. We support:
-              <ul>
-                <li>audio-to-text conversion</li>
-                <li>audio recording with speach recognition</li>
-                <li>summary generating</li>
-                <li>term detection</li>
-                <li>text editing</li>
-                <li>translation</li>
-              </ul>
-            </Typography>
-            <Typography variant="body1">
-              <i>
-                Chrome is recommended for the best experience with above
-                features.
-              </i>
-            </Typography>
-            <br />
-            <Typography variant="body1">
-              You can use the buttons on the top right corner to save your
-              project, export the transcription, or create a new project.{" "}
-              <b>
-                Make sure to save your project before you leave the page to
-                avoid losing your work.
-              </b>{" "}
-              Enjoy!
-            </Typography>
-          </DialogContentText>
+          <Typography variant="body1" component="div">
+            This is a multi-functional tool for transcription. We support:
+            <ul>
+              <li>audio-to-text conversion</li>
+              <li>audio recording with speach recognition</li>
+              <li>summary generating</li>
+              <li>term detection</li>
+              <li>text editing</li>
+              <li>translation</li>
+            </ul>
+          </Typography>
+          <Typography variant="body1">
+            <i>
+              Chrome is recommended for the best experience with above features.
+            </i>
+          </Typography>
+          <br />
+          <Typography variant="body1">
+            You can use the buttons on the top right corner to save your
+            project, export the transcription, or create a new project.{" "}
+            <b>
+              Make sure to save your project before you leave the page to avoid
+              losing your work.
+            </b>{" "}
+            Enjoy!
+          </Typography>
         </DialogContent>
         <DialogActions sx={{ pr: 3, pb: 3 }}>
           <Button onClick={() => setWelcome(false)} variant="contained">

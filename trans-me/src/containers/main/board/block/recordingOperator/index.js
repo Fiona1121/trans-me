@@ -1,9 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { insertBlock } from "../../../../../slices/globalSlice";
+import {
+  insertBlock,
+  selectGlobal,
+  setAudioFiles,
+} from "../../../../../slices/globalSlice";
 import { selectSession } from "../../../../../slices/sessionSlice";
 
-import { BlockAPI } from "../../../../../api";
+import { AudioFileAPI, BlockAPI } from "../../../../../api";
 
 import {
   Alert,
@@ -23,10 +27,12 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import useAudioRecorder from "../../../../../components/audioRecorder/hooks";
 import AudioRecorder from "../../../../../components/audioRecorder";
+import moment from "moment";
 
 export default function RecordingOperator({ index, open, setOpen }) {
   const dispatch = useDispatch();
   const { username } = useSelector(selectSession);
+  const { audioFiles } = useSelector(selectGlobal);
 
   const audioBoxRef = useRef();
   const [isListening, setIsListening] = useState(false);
@@ -61,6 +67,28 @@ export default function RecordingOperator({ index, open, setOpen }) {
     audio.src = url;
     audio.controls = true;
     audioBoxRef.current.appendChild(audio);
+    // upload audio file to server
+    const formData = new FormData();
+    formData.append("file", blob);
+    formData.append("username", username);
+    formData.append("name", "Record_" + moment().format("YYMMDDHHmmss"));
+    formData.append("format", "webm");
+    formData.append("language", "zh-TW");
+    formData.append(
+      "sampleRate",
+      new Blob(["48000"], { type: "application/json" })
+    );
+    AudioFileAPI.postAudioFile(formData).then((response) => {
+      if (response.status === 200) {
+        dispatch(setAudioFiles([...audioFiles, response.data.data]));
+      } else {
+        setAlert({
+          open: true,
+          msg: "Upload audio file failed",
+          severity: "error",
+        });
+      }
+    });
   };
 
   const handleListing = () => {
