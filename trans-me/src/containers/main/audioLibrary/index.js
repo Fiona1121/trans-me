@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import {
   Alert,
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -27,9 +28,13 @@ import {
 import UploadIcon from "@mui/icons-material/Upload";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import { useDispatch, useSelector } from "react-redux";
-import { selectGlobal, setAudioFiles } from "../../../slices/globalSlice";
+import {
+  addBlock,
+  selectGlobal,
+  setAudioFiles,
+} from "../../../slices/globalSlice";
 import { selectSession } from "../../../slices/sessionSlice";
-import { AudioFileAPI } from "../../../api";
+import { AudioFileAPI, BlockAPI, TranscriptionAPI } from "../../../api";
 
 export default function AudioLibrary() {
   const dispatch = useDispatch();
@@ -43,6 +48,7 @@ export default function AudioLibrary() {
   const [uploadFile, setUploadFile] = useState(null);
   const [language, setLanguage] = useState("en-US");
   const [currentPlayingAudioFile, setCurrentPlayingAudioFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleMenuClick = (event, index) => {
     setAnchorEl(event.currentTarget);
@@ -53,6 +59,45 @@ export default function AudioLibrary() {
   const handlePlayFile = () => {
     setCurrentPlayingAudioFile(audioFiles[selectedIndex]);
     setIsMenuOpened(false);
+  };
+
+  const handleTranscribeFile = () => {
+    setLoading(true);
+    setIsMenuOpened(false);
+    TranscriptionAPI.postTranscription(
+      username,
+      audioFiles[selectedIndex].id
+    ).then((response) => {
+      if (response?.status === 200) {
+        BlockAPI.postBlock({
+          content: response.data.data,
+          hidden: false,
+          username: username,
+        }).then((response) => {
+          if (response?.status === 200) {
+            dispatch(addBlock(response.data.data));
+            setAlert({
+              open: true,
+              severity: "success",
+              msg: "Transcription ",
+            });
+          } else {
+            setAlert({
+              open: true,
+              severity: "error",
+              msg: "Transcription failed.",
+            });
+          }
+        });
+      } else {
+        setAlert({
+          open: true,
+          severity: "error",
+          msg: "Transcription failed.",
+        });
+      }
+      setLoading(false);
+    });
   };
 
   const handleDownloadFile = () => {
@@ -153,13 +198,12 @@ export default function AudioLibrary() {
   };
   return (
     <>
-      <Paper
-        variant="outlined"
-        sx={{ maxWidth: 300, height: "85vh", overflow: "scroll" }}
-      >
+      <Paper variant="outlined" sx={{ height: "85vh", overflow: "scroll" }}>
         <ListSubheader
           sx={{
             pt: 2,
+            pb: 1,
+            mb: 1,
             zIndex: 950,
             backgroundColor: "rgba(255, 255, 255, 1)",
             borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
@@ -198,7 +242,7 @@ export default function AudioLibrary() {
               src={currentPlayingAudioFile.url.slice(0, -16)}
               controls
               autoPlay
-              style={{ width: "250px" }}
+              style={{ width: "280px" }}
             />
           )}
         </ListSubheader>
@@ -220,16 +264,21 @@ export default function AudioLibrary() {
                     overflow: "hidden",
                   }}
                 />
-                <IconButton
-                  edge="end"
-                  aria-label="more"
-                  onClick={handleMenuClick}
-                  aria-controls={isMenuOpened ? "menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={isMenuOpened ? "true" : undefined}
-                >
-                  <MoreHorizIcon />
-                </IconButton>
+                {loading && selectedIndex === index ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <IconButton
+                    edge="end"
+                    aria-label="more"
+                    onClick={handleMenuClick}
+                    disabled={loading}
+                    aria-controls={isMenuOpened ? "menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={isMenuOpened ? "true" : undefined}
+                  >
+                    <MoreHorizIcon />
+                  </IconButton>
+                )}
               </ListItem>
             </ListItemButton>
           ))}
@@ -245,6 +294,7 @@ export default function AudioLibrary() {
           }}
         >
           <MenuItem onClick={handlePlayFile}>Play</MenuItem>
+          <MenuItem onClick={handleTranscribeFile}>Transcibe</MenuItem>
           <MenuItem onClick={handleDownloadFile}>Download</MenuItem>
           <MenuItem onClick={handleDeleteFile}>Delete</MenuItem>
         </Menu>
