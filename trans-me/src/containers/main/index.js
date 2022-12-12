@@ -210,7 +210,7 @@ export default function Main() {
             <Grid item xs>
               <AudioLibrary />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <Board />
             </Grid>
             <Grid item xs>

@@ -128,6 +128,7 @@ export default function AudioLibrary() {
       );
       AudioFileAPI.postAudioFile(formData).then((response) => {
         if (response?.status === 200) {
+          dispatch(setAudioFiles([...audioFiles, response.data.data]));
           setAlert({
             open: true,
             severity: "success",
@@ -159,8 +160,6 @@ export default function AudioLibrary() {
         <ListSubheader
           sx={{
             pt: 2,
-            pb: 1,
-            mb: 1,
             zIndex: 950,
             backgroundColor: "rgba(255, 255, 255, 1)",
             borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
@@ -194,15 +193,16 @@ export default function AudioLibrary() {
               </Tooltip>
             </Grid>
           </Grid>
+          {currentPlayingAudioFile && (
+            <audio
+              src={currentPlayingAudioFile.url.slice(0, -16)}
+              controls
+              autoPlay
+              style={{ width: "250px" }}
+            />
+          )}
         </ListSubheader>
-        {currentPlayingAudioFile && (
-          <audio
-            src={currentPlayingAudioFile.url.slice(0, -16)}
-            controls
-            autoPlay
-            style={{ width: "250px" }}
-          />
-        )}
+
         <List>
           {audioFiles.map((audioFile, index) => (
             <ListItemButton
