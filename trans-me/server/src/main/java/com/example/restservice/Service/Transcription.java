@@ -20,8 +20,10 @@ import com.google.cloud.speech.v1.SpeechSettings;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,47 +60,75 @@ public class Transcription {
                 ""
             );
         }
-        // List<AudioFile> fetchedFile = audioFileRepository.findByDriveId(audioFileId);
-        // if (fetchedFile.size() == 0) {
-        //     System.out.println("fetchedFile : " + fetchedFile);
-        //     System.out.println("audio file not found (list.size() == 0)");
-        //     return new Payload <Msg, String> (
-        //         new Msg(
-        //             "error",
-        //             "audio file not found"
-        //         ),
-        //         ""
-        //     );
-        // }
-
         
         // check mongo，return error if not found or wrong data
         String language = fetchedFile.get().getLanguage();
-        // String language = fetchedFile.get(0).getLanguage();
-        System.out.println("fetched language : " + language);
+        System.out.println(" fetched language : " + language);
         if ( (language == null) || 
         !((language.equals("zh-TW")) || (language.equals("en-US")))) {
             language = "zh-TW";
             System.out.println("unsupported language, use default (zh-TW)");
             warningMessage += "Unsupported language, use default (zh-TW).";
         }
-        int sampleRate = fetchedFile.get().getSampleRate();
-        System.out.println("fetched sampleRate : " + sampleRate);
-        // int sampleRate = fetchedFile.get(0).getSampleRate();
-        if ( (sampleRate == 0) ) { 
+        Integer sampleRate = fetchedFile.get().getSampleRate();
+        System.out.println(" fetched sampleRate : " + sampleRate);
+        if ( (sampleRate.equals(0)) ) { 
             // add range limitation?
             sampleRate = 44100;
-            System.out.println("sample rate not specified, use default (0 Hz)");
-            warningMessage += " Sample rate not specified, use default (0 Hz).";
+            System.out.println("sample rate not specified, use default (44100 Hz)");
+            warningMessage += " Sample rate not specified, use default (44100 Hz).";
         }
         String driveId = fetchedFile.get().getDriveId();
-        System.out.println("fetched driveId : " + driveId);
+        System.out.println(" fetched driveId : " + driveId);
         if ( (driveId == null) ) {
             System.out.println("audio file with null driveId");
             return new Payload <Msg, String> (
                 new Msg(
                     "error",
                     "audio file with null driveId"
+                ),
+                ""
+            );
+        }
+        
+        String format = fetchedFile.get().getFormat();
+        System.out.println("fetched format : " + format);
+        AudioEncoding encoding;
+
+        if (format == null) {
+            System.out.println("audio file with null format");
+            return new Payload <Msg, String> (
+                new Msg(
+                    "error",
+                    "audio file with null format"
+                ),
+                ""
+            );
+        }
+        else if (format.equals("wav")) {
+            encoding = AudioEncoding.LINEAR16;
+        }
+        else if (format.equals("webm")) {
+            encoding = AudioEncoding.WEBM_OPUS;
+            // sample rate can only be 8000 Hz, 12000 Hz, 16000 Hz, 24000 Hz, or 48000 Hz
+            int[] acceptableSampleRate = {8000, 12000, 16000, 24000, 48000};
+            Integer test = sampleRate;
+            if (!IntStream.of(acceptableSampleRate).anyMatch(x -> x == test)) {
+                return new Payload <Msg, String> (
+                new Msg(
+                    "error",
+                    "unsupported sampleRate for webm format, only the following are accpted : 8000 Hz, 12000 Hz, 16000 Hz, 24000 Hz, or 48000 Hz"
+                ),
+                ""
+            );
+            }
+        }
+        else {
+            System.out.println("unsupported format, only WAV & WEBM are accepted");
+            return new Payload <Msg, String> (
+                new Msg(
+                    "error",
+                    "unsupported format, only WAV & WEBM are accepted"
                 ),
                 ""
             );
@@ -125,7 +155,7 @@ public class Transcription {
             
             try {
                 transcriptionResult = Transcription.asyncRecognizeFile(
-                    filePath, language, sampleRate
+                    filePath, language, sampleRate, encoding
                 );
             } catch (Exception e) {
                 e.printStackTrace();
@@ -216,7 +246,7 @@ public class Transcription {
  *
  * @param fileName the path to a PCM audio file to transcribe.
  */
-    public static String asyncRecognizeFile(String fileName, String language, int sampleRate) throws Exception {
+    public static String asyncRecognizeFile(String fileName, String language, int sampleRate, AudioEncoding encoding) throws Exception {
         // Instantiates a client with GOOGLE_APPLICATION_CREDENTIALS
         try (SpeechClient speech = SpeechClient.create()) {
     
@@ -230,7 +260,7 @@ public class Transcription {
         // Configure request with local raw PCM audio
         RecognitionConfig config =
             RecognitionConfig.newBuilder()
-                .setEncoding(AudioEncoding.LINEAR16)
+                .setEncoding(encoding) // AudioEncoding.LINEAR16
                 .setLanguageCode(language) // "zh-TW", en-US
                 .setSampleRateHertz(sampleRate) // 44100
                 .build();
