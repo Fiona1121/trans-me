@@ -1,16 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Todo: current initial state is just for testing
 const initialState = {
-  username: "Admin",
-  password: "AdminPW",
-  expirationTime: 1769303561038,
+  username: null,
+  password: null,
+  expirationTime: null,
 };
-
-// const initialState = {
-//   username: null,
-//   expirationTime: null,
-// };
 
 export const sessionSlice = createSlice({
   name: "session",

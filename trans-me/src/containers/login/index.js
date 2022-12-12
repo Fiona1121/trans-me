@@ -1,24 +1,33 @@
-import * as React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
-import { Alert } from "@mui/material";
-import MergeRoundedIcon from "@mui/icons-material/MergeRounded";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import { Snackbar } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Alert,
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  Link,
+  OutlinedInput,
+  Paper,
+  Snackbar,
+  TextField,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { AccountAPI } from "../../api";
+import sha256 from "crypto-js/sha256";
+import Base64 from "crypto-js/enc-base64";
+import { setLogin } from "../../slices/sessionSlice";
+import { useDispatch } from "react-redux";
 
 function Copyright(props) {
   return (
@@ -39,79 +48,120 @@ function Copyright(props) {
 }
 
 export default function Login() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const theme = createTheme();
   const [alert, setAlert] = useState({});
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [link, setLink] = useState(false);
+  const [username, setUsername] = useState({
+    value: "",
+    error: false,
+    helperText: "",
+  });
+  const [password, setPassword] = useState({
+    value: "",
+    show: false,
+    error: false,
+    helperText: "",
+  });
 
-  const handleUsername = (event) => {
-    setUsername(event.target.value);
+  const handleChangeUsername = (event) => {
+    setUsername({
+      ...username,
+      value: event.target.value,
+    });
   };
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
+
+  const handleChangePassword = (event) => {
+    setPassword({ ...password, value: event.target.value });
   };
-  const handleValidation = (value) => {
-    const reg = new RegExp("[A-Za-z0-9_]");
+
+  const handleClickShowPassword = () => {
+    setPassword({ ...password, show: !password.show });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
+  const validate = (value) => {
+    // 1. Username/Password must be at least 5 characters long
+    // 2. Username/Password must be at most 20 characters long
+    // 3. Username/Password must contain only letters, numbers, and underscores
+    const reg = new RegExp("^[A-Za-z0-9_]{5,20}$");
     return reg.test(value);
   };
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    const validUsername = handleValidation(username);
-    const validPassword = handleValidation(password);
-
-    if (username === "" || password === "") {
-      setAlert({
-        open: true,
-        severity: "warning",
-        msg: "Username or password cannot be empty.",
-      });
-    } else if (!validUsername || !validPassword) {
-      setAlert({
-        open: true,
-        severity: "warning",
-        msg: "The format of the account number or password is wrong, please enter characters or numbers within 8~12 yards.",
+  const handleLogin = (event) => {
+    event.preventDefault();
+    if (validate(username.value) && validate(password.value)) {
+      AccountAPI.getAccount(
+        username.value,
+        Base64.stringify(sha256(password.value))
+      ).then((response) => {
+        if (response.data.data) {
+          dispatch(
+            setLogin({
+              username: username.value,
+              password: Base64.stringify(sha256(password.value)),
+            })
+          );
+          navigate("/");
+        } else {
+          setUsername({ ...username, error: false, helperText: "" });
+          setPassword({ value: "", error: false, helperText: "" });
+          setAlert({
+            open: true,
+            severity: "error",
+            msg: "Incorrect username or password",
+          });
+        }
       });
     } else {
-      navigate("/");
-      setAlert({
-        open: true,
-        severity: "success",
-        msg: "Log in successfully.",
-      });
-
-      /*
-      if (判斷帳號密碼API){
-        setAlert({
-          open: true,
-          severity: "success",
-          msg: "Log in successfully.",
+      if (!validate(username.value)) {
+        setUsername({
+          ...username,
+          error: true,
+          helperText: "Username must be 5-20 characters long",
         });
-        // 切換至main page，即從API取得該帳號資料
-
-      }else{
-        setAlert({
-          open: true,
-          severity: "warning",
-          msg: "The entered account and password are invalid.",
+      }
+      if (!validate(password.value)) {
+        setPassword({
+          ...password,
+          error: true,
+          helperText: "Password must be 5-20 characters long",
         });
-      }*/
+      }
     }
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
+      <AppBar sx={{ width: "100%", pl: 2, pr: 2 }}>
+        <Toolbar disableGutters>
+          <Typography
+            variant="h4"
+            noWrap
+            sx={{
+              mr: 2,
+              display: "flex",
+              flexGrow: 1,
+              fontFamily: "Playfair Display SC",
+              fontWeight: 500,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            TransMe
+          </Typography>
+        </Toolbar>
+      </AppBar>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
+        <Toolbar />
+        <Paper
           sx={{
             marginTop: 15,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            border: "15px",
             border: 1,
           }}
         >
@@ -129,37 +179,56 @@ export default function Login() {
             textAlign="center"
             onSubmit={handleLogin}
             noValidate
-            sx={{ ml: 5, mr: 5, mb: 3, mt: 1 }}
+            sx={{ ml: 5, mr: 5, mb: 3, mt: 3 }}
           >
             <TextField
-              margin="normal"
-              required
               fullWidth
-              autoFocus
-              autoComplete="given-name"
               label="Username"
               id="username"
-              value={username}
-              onChange={handleUsername}
+              value={username.value}
+              error={username.error}
+              helperText={username.helperText}
+              onChange={handleChangeUsername}
+              sx={{ mb: 2 }}
             />
-            <TextField
-              margin="normal"
-              required
+            <FormControl
               fullWidth
-              autoComplete="current-password"
-              label="Password"
-              type="password"
-              id="password"
-              value={password}
-              onChange={handlePassword}
-            />
+              sx={{ mb: 2 }}
+              variant="outlined"
+              error={password.error}
+            >
+              <InputLabel>Password</InputLabel>
+              <OutlinedInput
+                id="login-password"
+                type={password.show ? "text" : "password"}
+                value={password.value}
+                onChange={handleChangePassword}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {password.show ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+              <FormHelperText id="login-password-helper-text">
+                {password.helperText}
+              </FormHelperText>
+            </FormControl>
             <Button
               type="submit"
               size="large"
-              variant="outlined"
+              variant="contained"
               alignItems="center"
               justifyContent="center"
-              sx={{ color: "black", borderColor: "black", mx: 5, mt: 4, mb: 2 }}
+              fullWidth
+              sx={{ mt: 4, mb: 4 }}
             >
               Login
             </Button>
@@ -174,7 +243,7 @@ export default function Login() {
               </Grid>
             </Grid>
           </Box>
-        </Box>
+        </Paper>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
       <Snackbar
@@ -187,6 +256,6 @@ export default function Login() {
           {alert?.msg}
         </Alert>
       </Snackbar>
-    </ThemeProvider>
+    </>
   );
 }
