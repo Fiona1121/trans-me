@@ -24,8 +24,6 @@ import { useNavigate } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { AccountAPI } from "../../api";
-import sha256 from "crypto-js/sha256";
-import Base64 from "crypto-js/enc-base64";
 import { setLogin } from "../../slices/sessionSlice";
 import { useDispatch } from "react-redux";
 
@@ -93,15 +91,12 @@ export default function Login() {
   const handleLogin = (event) => {
     event.preventDefault();
     if (validate(username.value) && validate(password.value)) {
-      AccountAPI.getAccount(
-        username.value,
-        Base64.stringify(sha256(password.value))
-      ).then((response) => {
+      AccountAPI.getAccount(username.value, password.value).then((response) => {
         if (response.data.data) {
           dispatch(
             setLogin({
               username: username.value,
-              password: Base64.stringify(sha256(password.value)),
+              password: password.value,
             })
           );
           navigate("/");

@@ -15,8 +15,6 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { AccountAPI } from "../../api";
-import sha256 from "crypto-js/sha256";
-import Base64 from "crypto-js/enc-base64";
 
 function Copyright(props) {
   return (
@@ -80,30 +78,29 @@ export default function Register() {
       validate(repeatPassword.value) &&
       password.value === repeatPassword.value
     ) {
-      AccountAPI.postAccount(
-        username.value,
-        Base64.stringify(sha256(password.value))
-      ).then((response) => {
-        if (response.data.msg.status === "success") {
-          setAlert({
-            open: true,
-            severity: "success",
-            msg: "Account created successfully",
-          });
-          setTimeout(() => {
-            navigate("/login");
-          }, 1000);
-        } else {
-          setUsername({ value: "", error: false, helperText: "" });
-          setPassword({ value: "", error: false, helperText: "" });
-          setRepeatPassword({ value: "", error: false, helperText: "" });
-          setAlert({
-            open: true,
-            severity: "error",
-            msg: "Username already exists",
-          });
+      AccountAPI.postAccount(username.value, password.value).then(
+        (response) => {
+          if (response.data.msg.status === "success") {
+            setAlert({
+              open: true,
+              severity: "success",
+              msg: "Account created successfully",
+            });
+            setTimeout(() => {
+              navigate("/login");
+            }, 1000);
+          } else {
+            setUsername({ value: "", error: false, helperText: "" });
+            setPassword({ value: "", error: false, helperText: "" });
+            setRepeatPassword({ value: "", error: false, helperText: "" });
+            setAlert({
+              open: true,
+              severity: "error",
+              msg: "Username already exists",
+            });
+          }
         }
-      });
+      );
     } else {
       if (!validate(username.value)) {
         setUsername({
