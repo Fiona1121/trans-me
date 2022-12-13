@@ -167,7 +167,7 @@ export default function Login() {
         >
           <Avatar
             sx={{ width: 100, height: 100, mt: -6.5, mb: 1 }}
-            src={require("./img/SmileImg.png")}
+            src={require("./img/favicon.png")}
           />
 
           <Typography component="h1" variant="h5">
