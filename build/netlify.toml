@@ -1,0 +1,62 @@
+[[redirects]]
+  from = "/api/account"
+  to = "https://140.112.29.135:8080/account"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/block"
+  to = "https://140.112.29.135:8080/block"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/audioFile"
+  to = "https://140.112.29.135:8080/audioFile"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/term"
+  to = "https://140.112.29.135:8080/term"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/summary"
+  to = "https://140.112.29.135:8080/summary"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/translate"
+  to = "https://140.112.29.135:8080/translate"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
+
+[[redirects]]
+  from = "/api/transcription"
+  to = "https://140.112.29.135:8080/transcription"
+  status = 200
+  force = true
+  [redirects.headers]
+    X-From = "Netlify"
+    X-Api-Key = "some-api-key-string"
