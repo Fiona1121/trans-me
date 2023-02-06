@@ -134,3 +134,6 @@ dist
 
 # temp storage of audio files
 tmp/
+
+# macbook
+.DS_Store
