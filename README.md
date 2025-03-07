@@ -1,49 +1,136 @@
-# TransMe - A Multifunctional Verbatim Management System
+# TransMe 🎙✨  
+**A powerful online transcription tool**
 
-## Getting Started
+[![Java](https://img.shields.io/badge/Java-8%2B-blue)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5-green)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/React-17-blue)](https://reactjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-brightgreen)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-### For the first time:
+> **TransMe** is an advanced transcription management system that provides real-time speech-to-text conversion, terminology extraction, translation, and summarization. It integrates AI-based speech recognition with a user-friendly text editor to enhance productivity.
 
-1. Please clone this project to your computer
-2. Make sure you have [Node LTS Version (includeing npm)](https://nodejs.org/en/download/) installed in your computer
-3. Under `trans-me/` directory, use the following command to install the packages used in this project:
+## 🚀 Features  
 
-   ```
-   npm install
-   ```
+- 🎤 **Speech-to-Text** – Converts audio recordings into editable text.  
+- 🔍 **Terminology Extraction** – Automatically identifies and highlights key terms.  
+- 🔄 **Translation & Summarization** – Provides multilingual translations and concise summaries.  
+- 📂 **Audio Management** – Upload, organize, and process audio files.  
+- 🔐 **Secure Authentication** – User authentication with JWT and role-based access control.  
+- 🎛 **Intuitive UI** – Block-based text editing for easy content structuring.  
 
-4. You can then run the scripts from "Available Scripts"
 
-### For development:
+## 🛠️ Tech Stack  
 
-1. Fetch and rebase the project from remote to your local repo. Make sure that before you do anything, your main branch is always up-to-date with the upstream.
-2. Create a new branch from main branch with the issue number
-3. Under `trans-me/` directory, use the following command to install the packages used in this project:
+- **Frontend**: React, Redux, Material-UI  
+- **Backend**: Spring Boot, MongoDB, Google Speech-to-Text API  
+- **Authentication**: JWT-based security  
+- **Cloud Storage**: Google Drive API for audio files  
+- **Deployment**: Docker (planned), GitLab CI/CD  
 
-   ```
-   npm install
-   ```
 
-4. You can then run the scripts from "Available Scripts" and start develop!
+## 📥 Installation  
 
-## Available Scripts
+### 1️⃣ Clone the Repository  
 
-In the project directory, you can run:
+```sh
+git clone https://github.com/Fiona1121/trans-me.git
+cd trans-me
+```
 
-### `npm start` (frontend)
+### 2️⃣ Backend Setup  
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Navigate to the backend directory**  
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+  ```sh
+  cd backend
+  ```
 
-### `npm run server` (backend)
+- **Set up environment variables** in a `.env` file:  
 
-Runs the server with Node in [http://localhost:8080](http://localhost:8080).
+  ```ini
+  SERVER_PORT=8080
+  MONGO_URI=<your_mongodb_connection_string>
+  JWT_SECRET=<your_jwt_secret>
+  GOOGLE_API_KEY=<your_google_api_key>
+  ```
 
-### `npm run dev-server` (backend; only for develop)
+- **Install dependencies and start the backend**  
 
-Runs the development server with Nodemon in [http://localhost:8080](http://localhost:8080).
+  ```sh
+  mvn clean install
+  mvn spring-boot:run
+  ```
 
-It will automatically restart the node application when file changes in the directory are detected.
+### 3️⃣ Frontend Setup  
+
+- **Navigate to the frontend directory**  
+
+  ```sh
+  cd ../frontend
+  ```
+
+- **Install dependencies**  
+
+  ```sh
+  npm install
+  ```
+
+- **Start the frontend server**  
+
+  ```sh
+  npm start
+  ```
+
+- Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+
+## 📂 Project Structure  
+
+```plaintext
+trans-me/
+├── backend/  
+│   ├── src/main/java/com/transme/  
+│   │   ├── controllers/  # API Controllers  
+│   │   ├── services/     # Business Logic  
+│   │   ├── models/       # MongoDB Schema  
+│   │   ├── config/       # Security & Configurations  
+│   │   ├── repositories/ # Database Access Layer  
+│   ├── application.yml   # Spring Boot Configurations  
+│   ├── pom.xml           # Maven Dependencies  
+│   ├── Dockerfile        # Planned Deployment  
+├── frontend/  
+│   ├── src/components/   # UI Components  
+│   ├── src/pages/        # Application Pages  
+│   ├── src/redux/        # Global State Management  
+│   ├── src/api/          # API Calls  
+│   ├── package.json      # Node Dependencies  
+│   ├── Dockerfile        # Planned Deployment  
+└── README.md  
+```
+
+
+## ⚙️ Usage  
+
+1. **Upload an Audio File**  
+   - Supports `.wav` format  
+   - Uses Google Speech-to-Text for transcription  
+
+2. **Text Editing & Block Management**  
+   - Add, remove, and restructure blocks of text  
+   - Extract key terms for further use  
+
+3. **Translation & Summarization**  
+   - Get instant translations in multiple languages  
+   - Summarize lengthy transcripts automatically  
+
+4. **User Authentication**  
+   - Secure login & registration using JWT  
+
+
+## 🚧 Roadmap  
+
+- [x] Speech-to-Text Integration  
+- [x] Terminology Extraction  
+- [ ] UI Enhancements for Block-based Editing  
+- [ ] Docker Deployment  
+- [ ] CI/CD Integration with GitLab  
